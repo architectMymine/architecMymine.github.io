@@ -13,12 +13,12 @@
   
 
   <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
-  <meta name="description" content="由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了一个如何手动一个v-model的问题，由此展开了学习。在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：&lt;input type&#x3D;&quot;text&quot; v-model&#x3D;&quot;name&quot;&gt;实则是等于下面的：&lt;input type&#x3D;&quot;text&amp;quo">
+  <meta name="description" content="由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了一个如何手动一个v-model的问题，由此展开了学习。在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="手动实现一个v-model的不同做法">
 <meta property="og:url" content="http://yoursite.com/2020/03/08/model/index.html">
 <meta property="og:site_name" content="RadiomM的博客世界">
-<meta property="og:description" content="由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了一个如何手动一个v-model的问题，由此展开了学习。在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：&lt;input type&#x3D;&quot;text&quot; v-model&#x3D;&quot;name&quot;&gt;实则是等于下面的：&lt;input type&#x3D;&quot;text&amp;quo">
+<meta property="og:description" content="由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了一个如何手动一个v-model的问题，由此展开了学习。在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/2020/03/08/model/model.png">
 <meta property="article:published_time" content="2020-03-08T02:02:42.000Z">
@@ -29,7 +29,7 @@
 <meta name="twitter:image" content="http://yoursite.com/2020/03/08/model/model.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1590295559348">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590304203185">-->
 
   
 <meta name="generator" content="Hexo 4.2.1"></head>
@@ -43,7 +43,7 @@
         <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
         <div class="mdui-toolbar-spacer"></div>
         <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
-        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" alt="RadiomM"></a>
+        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM"></a>
        </div>
     </div>
   </div>
@@ -51,12 +51,12 @@
       <div class="nexmoe-drawer mdui-drawer" id="drawer">
     <div class="nexmoe-avatar mdui-ripple">
         <a href="/" title="RadiomM">
-            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
+            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>1</div>
-        <div><span>标签</span>1</div>
+        <div><span>文章</span>2</div>
+        <div><span>标签</span>2</div>
         <div><span>分类</span>1</div>
     </div>
     <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
@@ -131,7 +131,7 @@
 
         <li class="category-list-item">
           <a class="category-list-link" href="/categories/web前端/">web前端</a>
-          <span class="category-list-count">1</span>
+          <span class="category-list-count">2</span>
         </li>
 
         
@@ -146,7 +146,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">标签云</h3>
     <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
-      <a href="/tags/vue/" style="font-size: 10px;">vue</a>
+      <a href="/tags/qqq/" style="font-size: 10px;">qqq</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a>
     </div>
     
   </div>
@@ -156,7 +156,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">文章归档</h3>
     <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li></ul>
     </div>
   </div>
  -->
@@ -167,7 +167,33 @@
     .about-me {
         margin: 5px 0;
     }
+
+    .music-wrapper {
+        box-shadow: 0 0 1rem rgba(161, 177, 204, .4);
+        background-color: #fff;
+        margin: 20px;
+        overflow: hidden;
+        white-space: normal;
+    }
+    .music-wrapper .aplayer{
+        margin: 0 !important;
+    }
+    .music-wrapper .aplayer .aplayer-body{
+        padding-bottom: 10px;
+    }
+    .music-wrapper .aplayer.aplayer-withlrc .aplayer-pic{
+        /* width: 95px;
+        height: 95px; */
+    }
+    .music-wrapper .aplayer.aplayer-withlist .aplayer-info{
+        /* margin-left: 95px;
+        height: 95px; */
+        border: none;
+    }
 </style>
+<div class="music-wrapper">
+    <div id="player"></div>
+</div>
   
 </aside>
     <div class="nexmoe-copyright">
@@ -210,7 +236,9 @@
   </div>
 
   <article>
-    <p>由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了<strong>一个如何手动一个v-model</strong>的问题，由此展开了学习。<br>在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：<br><code>&lt;input type=&quot;text&quot; v-model=&quot;name&quot;&gt;</code><br>实则是等于下面的：<br><code>&lt;input type=&quot;text&quot; :value=&quot;name&quot; @input=&quot;name=$event.target.value&quot;&gt;</code><br>也就是说，v-model就是<strong>绑定了一个名为value的props和一个事件input</strong><br>            注意：所以在子组件中可以通过props中定义value接受值，然后通过$emit触发input事件传新值并修改。 </p>
+    <p>由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了<strong>一个如何手动一个v-model</strong>的问题，由此展开了学习。<br>在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：</p>
+<a id="more"></a>
+<p><code>&lt;input type=&quot;text&quot; v-model=&quot;name&quot;&gt;</code><br>实则是等于下面的：<br><code>&lt;input type=&quot;text&quot; :value=&quot;name&quot; @input=&quot;name=$event.target.value&quot;&gt;</code><br>也就是说，v-model就是<strong>绑定了一个名为value的props和一个事件input</strong><br>            注意：所以在子组件中可以通过props中定义value接受值，然后通过$emit触发input事件传新值并修改。 </p>
 <p>知道了这个知识之后啊，那么我们就开始实现一个自定义的v-model啦<del>~</del></p>
 <h2 id="一、最简单的实现方法"><a href="#一、最简单的实现方法" class="headerlink" title="一、最简单的实现方法"></a>一、最简单的实现方法</h2><p>首先是父组件的代码：</p>
 <pre><code class="hljs xquery"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span>
@@ -424,14 +452,50 @@ export <span class="hljs-keyword">default</span> &#123;
 <script
     src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1590295559349"></script>-->
+<!--<script src="/js/app.js?v=1590304203186"></script>-->
 
 
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
 
 
 
-
+<script>
+var ap = new APlayer({
+    element: document.getElementById('player'),
+    narrow: false,
+    autoplay: false,         
+    showlrc: true,
+    volume:0.4,
+    theme: '#F5F5F5',   
+    music: [
+        {
+            title: '往后余生',
+            author: '王贰浪',
+            url: 'https://blog-static.cnblogs.com/files/php-linux/%E7%8E%8B%E8%B4%B0%E6%B5%AA-%E5%BE%80%E5%90%8E%E4%BD%99%E7%94%9F.js',
+            pic: 'https://www.cnblogs.com/images/cnblogs_com/php-linux/674292/t_109951163337847600.jpg'
+        },
+        {
+            title: '拂雪',
+            author: '不才',
+            url: 'https://files.cnblogs.com/files/php-linux/%E4%B8%8D%E6%89%8D-%E6%8B%82%E9%9B%AA.js',
+            pic: 'https://www.cnblogs.com/images/cnblogs_com/php-linux/674292/t_6631154628171782.jpg'
+        },
+        {
+            title: '我的一个道姑朋友',
+            author: '洛尘鞅',
+            url: 'https://files.cnblogs.com/files/php-linux/%E6%B4%9B%E5%B0%98%E9%9E%85-%E6%88%91%E7%9A%84%E4%B8%80%E4%B8%AA%E9%81%93%E5%A7%91%E6%9C%8B%E5%8F%8B.js',
+            pic: 'https://www.cnblogs.com/images/cnblogs_com/php-linux/674292/t_109951162818478976.jpg'
+        },
+        {
+            title: '大田后生仔',
+            author: '王玉萌',
+            url: 'https://files.cnblogs.com/files/php-linux/%E7%8E%8B%E7%8E%89%E8%90%8C-%E5%A4%A7%E7%94%B0%E5%BE%8C%E7%94%9F%E4%BB%94.js',
+            pic: 'https://www.cnblogs.com/images/cnblogs_com/php-linux/674292/t_109951164423988553.jpg'
+        }
+    ]
+});
+ap.init()
+</script>
   
 
 
