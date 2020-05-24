@@ -4,7 +4,7 @@
 
 <head>
   
-  <title>RadiomM的博客世界</title>
+  <title>手动实现一个v-model的不同做法 - RadiomM的博客世界</title>
   <meta charset="UTF-8">
   <meta name="description" content="web前端开发的有趣学习者">
   <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
@@ -13,18 +13,23 @@
   
 
   <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
-  <meta name="description" content="web前端开发的有趣学习者">
-<meta property="og:type" content="website">
-<meta property="og:title" content="RadiomM的博客世界">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了一个如何手动一个v-model的问题，由此展开了学习。在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：&lt;input type&#x3D;&quot;text&quot; v-model&#x3D;&quot;name&quot;&gt;实则是等于下面的：&lt;input type&#x3D;&quot;text&amp;quo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手动实现一个v-model的不同做法">
+<meta property="og:url" content="http://yoursite.com/2020/03/08/model/index.html">
 <meta property="og:site_name" content="RadiomM的博客世界">
-<meta property="og:description" content="web前端开发的有趣学习者">
+<meta property="og:description" content="由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了一个如何手动一个v-model的问题，由此展开了学习。在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：&lt;input type&#x3D;&quot;text&quot; v-model&#x3D;&quot;name&quot;&gt;实则是等于下面的：&lt;input type&#x3D;&quot;text&amp;quo">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/08/model/model.png">
+<meta property="article:published_time" content="2020-03-08T02:02:42.000Z">
+<meta property="article:modified_time" content="2020-03-08T02:02:42.000Z">
 <meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="vue">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/08/model/model.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1590295506577">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590295506567">-->
 
   
 <meta name="generator" content="Hexo 4.2.1"></head>
@@ -178,27 +183,34 @@
   </div>
   <div id="nexmoe-content">
     <div class="nexmoe-primary">
-        <section class="nexmoe-posts">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+          <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="手动实现一个v-model的不同做法" class="lazyload">
+          <h1>手动实现一个v-model的不同做法</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年03月08日</a>
+    <a><i class="nexmoefont icon-areachart"></i>1.1k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 5 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
     
-    <div class="nexmoe-post">
-        <a href="/2020/03/08/model/">
-            
-                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 66.66666666666666%;"> 
-                    <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="手动实现一个v-model的不同做法" class="lazyload">
-                    <h1>手动实现一个v-model的不同做法</h1>
-                </div>
-            
-        </a>
-
-        <div class="nexmoe-post-meta nexmoe-rainbow">
-            <a><i class="nexmoefont icon-calendar-fill"></i>2020年03月08日</a>
-            <a><i class="nexmoefont icon-areachart"></i>1.1k 字</a>
-            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 5 分钟</a>
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、最简单的实现方法"><span class="toc-number">1.</span> <span class="toc-text">一、最简单的实现方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、使用watch和-emit实现"><span class="toc-number">2.</span> <span class="toc-text">二、使用watch和$emit实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、使用最新的语法，model属性。"><span class="toc-number">3.</span> <span class="toc-text">三、使用最新的语法，model属性。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件"><span class="toc-number">3.0.1.</span> <span class="toc-text">同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件</span></a></li></ol></li></ol></li></ol>
+            </div>
         </div>
+      </div>
+    
+  </div>
 
-        <article>
-            
-                <p>由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了<strong>一个如何手动一个v-model</strong>的问题，由此展开了学习。<br>在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：<br><code>&lt;input type=&quot;text&quot; v-model=&quot;name&quot;&gt;</code><br>实则是等于下面的：<br><code>&lt;input type=&quot;text&quot; :value=&quot;name&quot; @input=&quot;name=$event.target.value&quot;&gt;</code><br>也就是说，v-model就是<strong>绑定了一个名为value的props和一个事件input</strong><br>            注意：所以在子组件中可以通过props中定义value接受值，然后通过$emit触发input事件传新值并修改。 </p>
+  <article>
+    <p>由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了<strong>一个如何手动一个v-model</strong>的问题，由此展开了学习。<br>在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：<br><code>&lt;input type=&quot;text&quot; v-model=&quot;name&quot;&gt;</code><br>实则是等于下面的：<br><code>&lt;input type=&quot;text&quot; :value=&quot;name&quot; @input=&quot;name=$event.target.value&quot;&gt;</code><br>也就是说，v-model就是<strong>绑定了一个名为value的props和一个事件input</strong><br>            注意：所以在子组件中可以通过props中定义value接受值，然后通过$emit触发input事件传新值并修改。 </p>
 <p>知道了这个知识之后啊，那么我们就开始实现一个自定义的v-model啦<del>~</del></p>
 <h2 id="一、最简单的实现方法"><a href="#一、最简单的实现方法" class="headerlink" title="一、最简单的实现方法"></a>一、最简单的实现方法</h2><p>首先是父组件的代码：</p>
 <pre><code class="hljs xquery"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span>
@@ -363,19 +375,56 @@ export <span class="hljs-keyword">default</span> &#123;
 
 <p>其实也没多大的修改，只是想贴出来而已。那么手写一个v-model我就写完了，觉得有用的同志给我点个赞赞赞赞赞赞呗。</p>
 
-            
-        </article>
-    </div>
-    
-</section>
+  </article>
 
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/vue/" rel="tag">vue</a>
+    
+</div>
+
+  <!-- <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    
+    <strong>本文作者：</strong>RadiomM<br>
+    <strong>本文链接：</strong><a href="http://yoursite.com/2020/03/08/model/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;08&#x2F;model&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;08&#x2F;model&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'architectmymine.github.io',
+        owner: 'architectmymine',
+        admin: 'architectmymine'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+  </div> -->
+</div>
     </div>
   </div>
   <div id="music-wrapper"></div>
 <script
     src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1590295506578"></script>-->
+<!--<script src="/js/app.js?v=1590295506568"></script>-->
 
 
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
