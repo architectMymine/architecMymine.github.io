@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1590286704822">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590288734933">-->
 
   
 <meta name="generator" content="Hexo 4.2.1"></head>
@@ -299,10 +299,11 @@
 
     </div>
   </div>
-  <script
+  <div id="music-wrapper"></div>
+<script
     src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1590286704824"></script>-->
+<!--<script src="/js/app.js?v=1590288734936"></script>-->
 
 
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
@@ -310,7 +311,22 @@
 
 
 
-<script src=" https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/js/aplayer.js"></script>
+<script>
+    $.ajax({
+        url: 'http://musicapi.leanapp.cn/playlist/detail?id=375615253',
+        dataType: 'json',
+        async: 'false',
+        success: function (data) {
+            console.log(data);
+        }
+    })
+    const ap = new APlayer({
+        container: document.getElementById('music-wrapper'),
+        fixed: true,
+        autoplay: true,
+        audio: []
+    });
+</script>
   
 
 
