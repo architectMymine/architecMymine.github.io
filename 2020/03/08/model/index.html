@@ -33,7 +33,7 @@
   
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
-  <!--<link rel="stylesheet" href="/css/style.css?v=1590423662986">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590479089114">-->
 
   
 <meta name="generator" content="Hexo 4.2.1"></head>
@@ -61,8 +61,8 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>2</div>
-        <div><span>标签</span>2</div>
+        <div><span>文章</span>4</div>
+        <div><span>标签</span>3</div>
         <div><span>分类</span>1</div>
     </div>
     <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
@@ -137,7 +137,7 @@
 
         <li class="category-list-item">
           <a class="category-list-link" href="/categories/web前端/">web前端</a>
-          <span class="category-list-count">2</span>
+          <span class="category-list-count">3</span>
         </li>
 
         
@@ -152,7 +152,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">标签云</h3>
     <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
-      <a href="/tags/qqq/" style="font-size: 10px;">qqq</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a>
+      <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/qqq/" style="font-size: 10px;">qqq</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a>
     </div>
     
   </div>
@@ -234,7 +234,7 @@
       <div class="nexmoe-fixed">
         <div class="nexmoe-valign">
             <div class="nexmoe-toc">
-                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、最简单的实现方法"><span class="toc-number">1.</span> <span class="toc-text">一、最简单的实现方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、使用watch和-emit实现"><span class="toc-number">2.</span> <span class="toc-text">二、使用watch和$emit实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、使用最新的语法，model属性。"><span class="toc-number">3.</span> <span class="toc-text">三、使用最新的语法，model属性。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件"><span class="toc-number">3.0.1.</span> <span class="toc-text">同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件</span></a></li></ol></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、最简单的实现方法"><span class="toc-number">1.</span> <span class="toc-text">一、最简单的实现方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、使用watch和-emit实现"><span class="toc-number">2.</span> <span class="toc-text">二、使用watch和$emit实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、使用最新的语法，model属性。"><span class="toc-number">3.</span> <span class="toc-text">三、使用最新的语法，model属性。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件"><span class="toc-number">3.1.</span> <span class="toc-text">同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件</span></a></li></ol></li></ol>
             </div>
         </div>
       </div>
@@ -247,50 +247,50 @@
 <p><code>&lt;input type=&quot;text&quot; v-model=&quot;name&quot;&gt;</code><br>实则是等于下面的：<br><code>&lt;input type=&quot;text&quot; :value=&quot;name&quot; @input=&quot;name=$event.target.value&quot;&gt;</code><br>也就是说，v-model就是<strong>绑定了一个名为value的props和一个事件input</strong><br>            注意：所以在子组件中可以通过props中定义value接受值，然后通过$emit触发input事件传新值并修改。 </p>
 <p>知道了这个知识之后啊，那么我们就开始实现一个自定义的v-model啦<del>~</del></p>
 <h2 id="一、最简单的实现方法"><a href="#一、最简单的实现方法" class="headerlink" title="一、最简单的实现方法"></a>一、最简单的实现方法</h2><p>首先是父组件的代码：</p>
-<pre><code class="hljs xquery"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span>
-<span class="xml">  </span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">""</span>&gt;</span></span>
-<span class="xml">      </span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><span class="xquery">&#123;<span class="hljs-built_in">&#123;name</span>&#125;</span><span class="xml">&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span>
-<span class="xml">      </span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">son</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">"name"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">son</span>&gt;</span></span>
-<span class="xml">      <span class="hljs-comment">&lt;!-- 等同于下面 --&gt;</span></span>
-<span class="xml">      <span class="hljs-comment">&lt;!-- </span></span><span class="xml"><span class="hljs-comment">&lt;son type="text" :value="name" @input="name=子组件传回来的值"&gt; --&gt;</span></span>
-<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
-<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+<pre><code class="highlight xquery"><span class="xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span>
+<span class="xml">  </span><span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">""</span>&gt;</span></span>
+<span class="xml">      </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><span class="xquery">&#123;<span class="built_in">&#123;name</span>&#125;</span><span class="xml">&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span>
+<span class="xml">      </span><span class="xml"><span class="tag">&lt;<span class="name">son</span> <span class="attr">v-model</span>=<span class="string">"name"</span>&gt;</span><span class="tag">&lt;/<span class="name">son</span>&gt;</span></span>
+<span class="xml">      <span class="comment">&lt;!-- 等同于下面 --&gt;</span></span>
+<span class="xml">      <span class="comment">&lt;!-- </span></span><span class="xml"><span class="comment">&lt;son type="text" :value="name" @input="name=子组件传回来的值"&gt; --&gt;</span></span>
+<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>
+<span class="xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span>
 
-<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span>&gt;</span></span>
+<span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span>
 <span class="xml">import Son from './son'</span>
 <span class="xml">export default </span><span class="xquery">&#123;</span>
-<span class="xquery"> <span class="hljs-built_in"> name</span>: <span class="hljs-string">""</span>,</span>
+<span class="xquery"> <span class="built_in"> name</span>: <span class="string">""</span>,</span>
 <span class="xquery">  data() &#123;</span>
-<span class="xquery">    <span class="hljs-keyword">return</span> &#123;</span>
-<span class="xquery">       <span class="hljs-built_in"> name</span>:<span class="hljs-string">'ydw'</span>,</span>
+<span class="xquery">    <span class="keyword">return</span> &#123;</span>
+<span class="xquery">       <span class="built_in"> name</span>:<span class="string">'ydw'</span>,</span>
 <span class="xquery">    &#125;</span>
 <span class="xml">  &#125;,</span>
 <span class="xml">  components: </span><span class="xquery">&#123;</span>
 <span class="xquery">      Son</span>
 <span class="xquery">  &#125;</span>
 <span class="xml">&#125;</span>
-<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></code></pre>
+<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></code></pre>
 
 <p>然后是子组件的代码：</p>
-<pre><code class="hljs pgsql">&lt;<span class="hljs-keyword">template</span>&gt;
-  &lt;div <span class="hljs-keyword">class</span>&gt;
-      &lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>="text" :<span class="hljs-keyword">value</span>="value" @input="$emit('input',$event.target.value)"&gt;
+<pre><code class="highlight pgsql">&lt;<span class="keyword">template</span>&gt;
+  &lt;div <span class="keyword">class</span>&gt;
+      &lt;<span class="keyword">input</span> <span class="keyword">type</span>="text" :<span class="keyword">value</span>="value" @input="$emit('input',$event.target.value)"&gt;
   &lt;/div&gt;
-&lt;/<span class="hljs-keyword">template</span>&gt;
+&lt;/<span class="keyword">template</span>&gt;
 
-&lt;script <span class="hljs-keyword">type</span>="text/javascript"&gt;
-export <span class="hljs-keyword">default</span> &#123;
-  <span class="hljs-type">name</span>: "",
+&lt;script <span class="keyword">type</span>="text/javascript"&gt;
+export <span class="keyword">default</span> &#123;
+  <span class="type">name</span>: "",
   props:&#123;
-      <span class="hljs-keyword">value</span>:&#123;
-          <span class="hljs-keyword">type</span>: String,
+      <span class="keyword">value</span>:&#123;
+          <span class="keyword">type</span>: String,
           defalut () 
-              <span class="hljs-keyword">return</span> <span class="hljs-string">''</span>
+              <span class="keyword">return</span> <span class="string">''</span>
           &#125;
       &#125;
   &#125;,
   data() &#123;
-    <span class="hljs-keyword">return</span> &#123;
+    <span class="keyword">return</span> &#123;
 
     &#125;
   &#125;,
@@ -300,37 +300,37 @@ export <span class="hljs-keyword">default</span> &#123;
 &lt;/script&gt;</code></pre>
 <p>父组件中我加了一个注释的代码行，其实是帮助我自己理解的，不知道有没有小伙伴跟我一样，第一次看的时候压根不知道它在做什么的？哭唧唧。</p>
 <h2 id="二、使用watch和-emit实现"><a href="#二、使用watch和-emit实现" class="headerlink" title="二、使用watch和$emit实现"></a>二、使用watch和$emit实现</h2><p>跟上面的一个有些类似，只不过上面是用本身input事件的作用，通过input事件的频发触发传递值给父组件，这里只是将这个过程换成了通过watch监听值得变化，然后通过input事件触发函数事件，函数事件里提交变化的值给父组件。好了，我只需要修改子组件，如下：</p>
-<pre><code class="hljs kotlin">&lt;template&gt;
-  &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>&gt;</span>
-    &lt;input type=<span class="hljs-string">"text"</span> :value=<span class="hljs-string">"sonVal"</span> <span class="hljs-meta">@input</span>=<span class="hljs-string">"handleModel"</span> /&gt;
+<pre><code class="highlight kotlin">&lt;template&gt;
+  &lt;div <span class="class"><span class="keyword">class</span>&gt;</span>
+    &lt;input type=<span class="string">"text"</span> :value=<span class="string">"sonVal"</span> <span class="meta">@input</span>=<span class="string">"handleModel"</span> /&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
-&lt;script type=<span class="hljs-string">"text/javascript"</span>&gt;
-export <span class="hljs-keyword">default</span> &#123;
-  name: <span class="hljs-string">""</span>,
+&lt;script type=<span class="string">"text/javascript"</span>&gt;
+export <span class="keyword">default</span> &#123;
+  name: <span class="string">""</span>,
   props: &#123;
     value: &#123;
       type: String,
       defalut() &#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
+        <span class="keyword">return</span> <span class="string">""</span>;
       &#125;
     &#125;
   &#125;,
-  <span class="hljs-keyword">data</span>() &#123;
-    <span class="hljs-keyword">return</span> &#123;
-      sonVal:<span class="hljs-keyword">this</span>.value
+  <span class="keyword">data</span>() &#123;
+    <span class="keyword">return</span> &#123;
+      sonVal:<span class="keyword">this</span>.value
     &#125;;
   &#125;,
   watch: &#123;
     value(newval) &#123;
-      <span class="hljs-keyword">this</span>.sonVal = newval
+      <span class="keyword">this</span>.sonVal = newval
     &#125;
   &#125;,
   methods:&#123;
     handleModel(e)&#123;
-        <span class="hljs-keyword">this</span>.sonVal = e.target.value
-        <span class="hljs-keyword">this</span>.$emit(<span class="hljs-string">'input'</span>,<span class="hljs-keyword">this</span>.sonVal)
+        <span class="keyword">this</span>.sonVal = e.target.value
+        <span class="keyword">this</span>.$emit(<span class="string">'input'</span>,<span class="keyword">this</span>.sonVal)
     &#125;
   &#125;
 &#125;;
@@ -339,69 +339,69 @@ export <span class="hljs-keyword">default</span> &#123;
 <h2 id="三、使用最新的语法，model属性。"><a href="#三、使用最新的语法，model属性。" class="headerlink" title="三、使用最新的语法，model属性。"></a>三、使用最新的语法，model属性。</h2><p>本来我是不知道有这个属性的，就是在网上搜索关于v-model实现方法的时候，就不知不觉的查到这个属性，查看官方文档如下：<br><img data-sizes="auto" data-src="./model.png" alt="avatar" class="lazyload"></p>
 <p>也就是说这个属性是为了回避props定义的value这个名字的。</p>
 <p>下面看看它的用法，我们先看子组件怎么修改：</p>
-<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">:value</span>=<span class="hljs-string">"val"</span> @<span class="hljs-attr">input</span>=<span class="hljs-string">"$emit('change',$event.target.value)"</span> /&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+<pre><code class="highlight xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span>
+  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">:value</span>=<span class="string">"val"</span> @<span class="attr">input</span>=<span class="string">"$emit('change',$event.target.value)"</span> /&gt;</span>
+  <span class="tag">&lt;/<span class="name">div</span>&gt;</span>
+<span class="tag">&lt;/<span class="name">template</span>&gt;</span>
 
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span>&gt;</span>
-<span class="javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;</span>
-<span class="actionscript">  name: <span class="hljs-string">""</span>,</span>
+<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span>
+<span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span>
+<span class="actionscript">  name: <span class="string">""</span>,</span>
   model:&#123;
-<span class="actionscript">    prop:<span class="hljs-string">'val'</span>,</span>
-<span class="actionscript">    event:<span class="hljs-string">'change'</span></span>
+<span class="actionscript">    prop:<span class="string">'val'</span>,</span>
+<span class="actionscript">    event:<span class="string">'change'</span></span>
   &#125;,
   props: &#123;
     val: &#123;
-<span class="javascript">      type: <span class="hljs-built_in">String</span>,</span>
+<span class="javascript">      type: <span class="built_in">String</span>,</span>
       defalut() &#123;
-<span class="actionscript">        <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;</span>
+<span class="actionscript">        <span class="keyword">return</span> <span class="string">""</span>;</span>
       &#125;
     &#125;
   &#125;,
   data() &#123;
-<span class="actionscript">    <span class="hljs-keyword">return</span> &#123;</span>
+<span class="actionscript">    <span class="keyword">return</span> &#123;</span>
     &#125;;
   &#125;
 &#125;;
-<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
 <p>model属性中prop是重新命名传值的名字，而event则是重新命名事件的名字，但是同样的，props中的传值名字必须与model属性中的prop的名字一样。其实只要对比一下第一种方法就知道，vue多出一个model属性是为了value这个名字可以使用。</p>
-<h4 id="同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件"><a href="#同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件" class="headerlink" title="同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件"></a>同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件</h4><pre><code class="hljs kotlin">&lt;template&gt;
-  &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>&gt;</span>
-    &lt;input type=<span class="hljs-string">"text"</span> :value=<span class="hljs-string">"sonVal"</span> <span class="hljs-meta">@input</span>=<span class="hljs-string">"handleModel"</span> /&gt;
+<h3 id="同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件"><a href="#同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件" class="headerlink" title="同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件"></a>同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件</h3><pre><code class="highlight kotlin">&lt;template&gt;
+  &lt;div <span class="class"><span class="keyword">class</span>&gt;</span>
+    &lt;input type=<span class="string">"text"</span> :value=<span class="string">"sonVal"</span> <span class="meta">@input</span>=<span class="string">"handleModel"</span> /&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
-&lt;script type=<span class="hljs-string">"text/javascript"</span>&gt;
-export <span class="hljs-keyword">default</span> &#123;
-  name: <span class="hljs-string">""</span>,
+&lt;script type=<span class="string">"text/javascript"</span>&gt;
+export <span class="keyword">default</span> &#123;
+  name: <span class="string">""</span>,
   model:&#123;
-    prop:<span class="hljs-string">'val'</span>,
-    event:<span class="hljs-string">'change'</span>
+    prop:<span class="string">'val'</span>,
+    event:<span class="string">'change'</span>
   &#125;,
   props: &#123;
-    <span class="hljs-keyword">val</span>: &#123;
+    <span class="keyword">val</span>: &#123;
       type: String,
       defalut() &#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
+        <span class="keyword">return</span> <span class="string">""</span>;
       &#125;
     &#125;
   &#125;,
-  <span class="hljs-keyword">data</span>() &#123;
-    <span class="hljs-keyword">return</span> &#123;
-      sonVal:<span class="hljs-keyword">this</span>.<span class="hljs-keyword">val</span>
+  <span class="keyword">data</span>() &#123;
+    <span class="keyword">return</span> &#123;
+      sonVal:<span class="keyword">this</span>.<span class="keyword">val</span>
     &#125;;
   &#125;,
   watch: &#123;
     value(newval) &#123;
-      <span class="hljs-keyword">this</span>.sonVal = newval
+      <span class="keyword">this</span>.sonVal = newval
     &#125;
   &#125;,
   methods:&#123;
     handleModel(e)&#123;
-        <span class="hljs-keyword">this</span>.sonVal = e.target.value
-        <span class="hljs-keyword">this</span>.$emit(<span class="hljs-string">'change'</span>,<span class="hljs-keyword">this</span>.sonVal)
+        <span class="keyword">this</span>.sonVal = e.target.value
+        <span class="keyword">this</span>.$emit(<span class="string">'change'</span>,<span class="keyword">this</span>.sonVal)
     &#125;
   &#125;
 &#125;;
@@ -455,7 +455,7 @@ export <span class="hljs-keyword">default</span> &#123;
 <script
     src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1590423662987"></script>-->
+<!--<script src="/js/app.js?v=1590479089115"></script>-->
 
 
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>

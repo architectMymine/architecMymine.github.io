@@ -4,7 +4,7 @@
 
 <head>
   
-  <title>分类 - RadiomM的博客世界</title>
+  <title>建议改成：this的全面解析(一) - RadiomM的博客世界</title>
   <meta charset="UTF-8">
   <meta name="description" content="web前端开发的有趣学习者">
   <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
@@ -13,14 +13,17 @@
   
 
   <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
-  <meta property="og:type" content="website">
-<meta property="og:title" content="分类">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="article p{     font-size:16px;     line-height:28px; }    嗨，大家好！过了那么几天我又开始写文章了，这次给大家带来的是this的全面解析。会不会有人会问，怎么突然就这么高产了？其实是这样的，因为这次疫情的出现，让我原本的计划出现了变动，当然也让我认清了我小公司的老板是多么的抠门。所以接下来的文章，基本都是会写一些面试多次会考的问题。当然，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="建议改成：this的全面解析(一)">
+<meta property="og:url" content="http://yoursite.com/2020/03/12/this%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90(%E4%B8%80)/index.html">
 <meta property="og:site_name" content="RadiomM的博客世界">
+<meta property="og:description" content="article p{     font-size:16px;     line-height:28px; }    嗨，大家好！过了那么几天我又开始写文章了，这次给大家带来的是this的全面解析。会不会有人会问，怎么突然就这么高产了？其实是这样的，因为这次疫情的出现，让我原本的计划出现了变动，当然也让我认清了我小公司的老板是多么的抠门。所以接下来的文章，基本都是会写一些面试多次会考的问题。当然，">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-05-20T08:06:09.000Z">
-<meta property="article:modified_time" content="2020-05-20T08:06:09.000Z">
+<meta property="article:published_time" content="2020-03-12T05:27:24.000Z">
+<meta property="article:modified_time" content="2020-03-12T05:27:24.000Z">
 <meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="JavaScript">
 <meta name="twitter:card" content="summary">
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css"
@@ -28,10 +31,13 @@
   
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
-  <!--<link rel="stylesheet" href="/css/style.css?v=1590479089096">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590479089111">-->
 
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
 <body class="mdui-drawer-body-left">
   
@@ -213,15 +219,15 @@
       <div class="nexmoe-post">
   
       <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
-          <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="分类" class="lazyload">
-          <h1>分类</h1>
+          <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="建议改成：this的全面解析(一)" class="lazyload">
+          <h1>建议改成：this的全面解析(一)</h1>
       </div>
   
   
   <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
-    <a><i class="nexmoefont icon-calendar-fill"></i>2020年05月20日</a>
-    <a><i class="nexmoefont icon-areachart"></i>0 字</a>
-    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年03月12日</a>
+    <a><i class="nexmoefont icon-areachart"></i>950 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 4 分钟</a>
 </div>
 
   <div class="nexmoe-post-right">
@@ -229,7 +235,7 @@
       <div class="nexmoe-fixed">
         <div class="nexmoe-valign">
             <div class="nexmoe-toc">
-                
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1"><span class="toc-number">1.</span> <span class="toc-text">this是指向的是谁？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2"><span class="toc-number">2.</span> <span class="toc-text">this的作用域指向哪里？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2.1"><span class="toc-number">2.1.</span> <span class="toc-text">声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2.2"><span class="toc-number">2.2.</span> <span class="toc-text">调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2.3"><span class="toc-number">2.3.</span> <span class="toc-text">分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
             </div>
         </div>
       </div>
@@ -237,11 +243,93 @@
   </div>
 
   <article>
-    
+    <style>
+article p{
+    font-size:16px;
+    line-height:28px;
+}
+</style>
+
+
+<p>嗨，大家好！过了那么几天我又开始写文章了，这次给大家带来的是this的全面解析。会不会有人会问，怎么突然就这么高产了？其实是这样的，因为这次疫情的出现，让我原本的计划出现了变动，当然也让我认清了我小公司的老板是多么的抠门。所以接下来的文章，基本都是会写一些面试多次会考的问题。当然，作为前端工程师，那么我们的基本功除了HTML，CSS意外，最重要的就是这个JS中的this。废话说完，那么接下来我们就开始了。</p>
+<h2 id="1">this是指向的是谁？</h2>
+在多数的情况下，this指向的是调用方法的那个对象。**简单的说就是谁调用函数，那么this就是指向这个对象。**
+ <pre><code class="highlight delphi"><span class="keyword">var</span> a = <span class="number">1</span>
+<span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span> <span class="comment">&#123;</span></span>
+<span class="function"><span class="comment">    console.log(this.a)</span></span>
+<span class="function"><span class="comment">&#125;</span></span>
+<span class="function"><span class="title">foo</span><span class="params">()</span> <span class="comment">// 输出 1</span></span>
+<span class="function"></span>
+<span class="function"><span class="title">let</span> <span class="title">obj</span> = <span class="comment">&#123;</span></span>
+<span class="function"><span class="comment">    a: 2,</span></span>
+<span class="function"><span class="comment">    foo:foo</span></span>
+<span class="function"><span class="comment">&#125;</span></span>
+<span class="function"></span>
+<span class="function"><span class="title">obj</span>.<span class="title">foo</span><span class="params">()</span> <span class="comment">// 输出2</span></span></code></pre>
+
+<p>上面的代码对于老手来说应该没有什么问题。这里我对新手提点注意的点，那就是foo()的调用其实相当于window.foo()，又因为var定义的变量在<strong>非严格模式下</strong>会自动挂载到全局对象中，<strong>在浏览器中，指向 window；在 Node 中，指向 Global。（严格模式下，指向 undefined）</strong></p>
+<h2 id="2">this的作用域指向哪里？</h2>
+其实在上面的例子中多少可以看出一点苗头，但是呢,为了更加符合面试常见的考题，我打算以下面的代码为例子：
+
+<pre><code class="highlight javascript"><span class="keyword">var</span> name = <span class="string">"zhangsan"</span>;
+
+<span class="keyword">var</span> obj = &#123;
+
+    name:<span class="string">"RadiomM"</span>,
+
+    fn:<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; 
+
+        <span class="keyword">var</span> x = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="keyword">this</span>.name) &#125;;
+
+        x();
+
+    &#125;
+
+&#125;
+
+obj.fn() <span class="comment">// zhangsan</span></code></pre>
+<p>是不是答案有点出乎了意料，这是为什么了呢？其实这就是作用域的指向问题，当然关键点还是如何确定this的作用域指向。先说结论：<strong>this的作用域是在调用时指向的，而不是声明指向的。</strong> 我知道，肯定会有很多萌新不明白什么是声明，什么是调用。下面我解析一下。</p>
+<h3 id="2.1">声明</h3>
+看下面的例子：
+
+<pre><code class="highlight cs"><span class="keyword">var</span> a = <span class="number">1</span>
+
+<span class="function">funciton <span class="title">foo</span>(<span class="params"></span>)</span> &#123;
+    console.log(a)
+&#125;</code></pre>
+<p>没错，就是这么简单，这就是声明。</p>
+<h3 id="2.2">调用</h3>
+看下面的例子：
+
+<pre><code class="highlight stylus"><span class="selector-tag">var</span> <span class="selector-tag">a</span> = <span class="number">1</span>
+
+funciton foo() &#123;
+    console.log(a)
+&#125;
+<span class="comment">// 这就是调用</span>
+<span class="function"><span class="title">foo</span><span class="params">()</span></span></code></pre>
+
+<h3 id="2.3">分析</h3>
+
+<p>你可能以为，哎呀，这x()不是声明在这个对象里面吗？所以你就理所当然的以为，这函数理应输出RadiomM。<br>重要的事情说三遍，建议你大声跟着读下面的字：<br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br>实际上，你读完上面的字，你还是会疑惑，那么为什么输出的就是这个zhangsan呢？其实，我在第一个例子中<br>已经给了提示了，实际上这个x()就相当于window.x()，那么这道题就相当的明了了。</p>
+<h2 id="3">总结</h2>
+话不多说，直接抬总结上来：
+
+<p>1、this绑定实际上是在函数被调用时发生的绑定，它的指向取决于函数在哪里被调用。</p>
+<p>2、this的作用域并不是指向函数的作用域。</p>
+<p>其实这篇文章仅仅是入门this的基础，下一篇文章我将会全面解析this的绑定规则。<br>看到这里你可能会问什么会是下一篇呢？因为我写累了啊，哈哈。<br>给大兄弟来首歌轻松轻松。（这篇文章就是在快乐气氛下写完的。学习可别忘了快乐，hasaki！）</p>
+
+    <div id="aplayer-rRAZEQfz" class="aplayer aplayer-tag-marker meting-tag-marker"
+         data-id="29732992" data-server="netease" data-type="song" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"
+    ></div>
   </article>
 
   <div class="nexmoe-post-meta nexmoe-rainbow">
     
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/JavaScript/" rel="tag">JavaScript</a>
     
 </div>
 
@@ -252,7 +340,7 @@
   <div class="nexmoe-post-copyright">
     
     <strong>本文作者：</strong>RadiomM<br>
-    <strong>本文链接：</strong><a href="http://yoursite.com/categories/index.html" title="http:&#x2F;&#x2F;yoursite.com&#x2F;categories&#x2F;index.html" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;categories&#x2F;index.html</a><br>
+    <strong>本文链接：</strong><a href="http://yoursite.com/2020/03/12/this%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90(%E4%B8%80)/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;12&#x2F;this%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90(%E4%B8%80)&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;12&#x2F;this%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90(%E4%B8%80)&#x2F;</a><br>
     
       <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
     
@@ -280,7 +368,7 @@
 <script
     src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1590479089099"></script>-->
+<!--<script src="/js/app.js?v=1590479089113"></script>-->
 
 
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
