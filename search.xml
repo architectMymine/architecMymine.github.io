@@ -194,6 +194,8 @@ article p{
 
 
 <p>嗨，大家好！过了那么几天我又开始写文章了，这次给大家带来的是this的全面解析。会不会有人会问，怎么突然就这么高产了？其实是这样的，因为这次疫情的出现，让我原本的计划出现了变动，当然也让我认清了我小公司的老板是多么的抠门。所以接下来的文章，基本都是会写一些面试多次会考的问题。当然，作为前端工程师，那么我们的基本功除了HTML，CSS意外，最重要的就是这个JS中的this。废话说完，那么接下来我们就开始了。</p>
+<a id="more"></a>
+
 <h2 id="1">this是指向的是谁？</h2>
 在多数的情况下，this指向的是调用方法的那个对象。**简单的说就是谁调用函数，那么this就是指向这个对象。**
  <pre><code class="highlight delphi"><span class="keyword">var</span> a = <span class="number">1</span>
@@ -261,7 +263,7 @@ funciton foo() &#123;
 <p>2、this的作用域并不是指向函数的作用域。</p>
 <p>其实这篇文章仅仅是入门this的基础，下一篇文章我将会全面解析this的绑定规则。<br>看到这里你可能会问什么会是下一篇呢？因为我写累了啊，哈哈。<br>给大兄弟来首歌轻松轻松。（这篇文章就是在快乐气氛下写完的。学习可别忘了快乐，hasaki！）</p>
 
-    <div id="aplayer-ymybDIjx" class="aplayer aplayer-tag-marker meting-tag-marker"
+    <div id="aplayer-OKzXWgCS" class="aplayer aplayer-tag-marker meting-tag-marker"
          data-id="29732992" data-server="netease" data-type="song" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"
     ></div>]]></content>
       <categories>
