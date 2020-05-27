@@ -31,10 +31,11 @@
   
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
-  <!--<link rel="stylesheet" href="/css/style.css?v=1590480557621">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590598226129">-->
 
   
-<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="RadiomM的博客世界" type="application/atom+xml">
+<link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
 <script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
 <script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
 </head>
@@ -138,7 +139,7 @@
 
         <li class="category-list-item">
           <a class="category-list-link" href="/categories/web前端/">web前端</a>
-          <span class="category-list-count">2</span>
+          <span class="category-list-count">3</span>
         </li>
 
         
@@ -153,7 +154,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">标签云</h3>
     <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
-      <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a>
+      <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a>
     </div>
     
   </div>
@@ -163,7 +164,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">文章归档</h3>
     <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li></ul>
     </div>
   </div>
  -->
@@ -226,7 +227,7 @@
   
   <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
     <a><i class="nexmoefont icon-calendar-fill"></i>2020年03月12日</a>
-    <a><i class="nexmoefont icon-areachart"></i>950 字</a>
+    <a><i class="nexmoefont icon-areachart"></i>999 字</a>
     <a><i class="nexmoefont icon-time-circle-fill"></i>大概 4 分钟</a>
 </div>
 
@@ -235,7 +236,7 @@
       <div class="nexmoe-fixed">
         <div class="nexmoe-valign">
             <div class="nexmoe-toc">
-                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1"><span class="toc-number">1.</span> <span class="toc-text">this是指向的是谁？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2"><span class="toc-number">2.</span> <span class="toc-text">this的作用域指向哪里？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2.1"><span class="toc-number">2.1.</span> <span class="toc-text">声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2.2"><span class="toc-number">2.2.</span> <span class="toc-text">调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2.3"><span class="toc-number">2.3.</span> <span class="toc-text">分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#this是指向的是谁？"><span class="toc-number">1.</span> <span class="toc-text">this是指向的是谁？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#this的作用域指向哪里？"><span class="toc-number">2.</span> <span class="toc-text">this的作用域指向哪里？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#声明"><span class="toc-number">2.1.</span> <span class="toc-text">声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调用"><span class="toc-number">2.2.</span> <span class="toc-text">调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分析"><span class="toc-number">2.3.</span> <span class="toc-text">分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
             </div>
         </div>
       </div>
@@ -254,9 +255,7 @@ article p{
 <p>嗨，大家好！过了那么几天我又开始写文章了，这次给大家带来的是this的全面解析。会不会有人会问，怎么突然就这么高产了？其实是这样的，因为这次疫情的出现，让我原本的计划出现了变动，当然也让我认清了我小公司的老板是多么的抠门。所以接下来的文章，基本都是会写一些面试多次会考的问题。当然，作为前端工程师，那么我们的基本功除了HTML，CSS意外，最重要的就是这个JS中的this。废话说完，那么接下来我们就开始了。</p>
 <a id="more"></a>
 
-<h2 id="1">this是指向的是谁？</h2>
-在多数的情况下，this指向的是调用方法的那个对象。**简单的说就是谁调用函数，那么this就是指向这个对象。**
- <pre><code class="highlight delphi"><span class="keyword">var</span> a = <span class="number">1</span>
+<h2 id="this是指向的是谁？"><a href="#this是指向的是谁？" class="headerlink" title="this是指向的是谁？"></a>this是指向的是谁？</h2><p>在多数的情况下，this指向的是调用方法的那个对象。<strong>简单的说就是谁调用函数，那么this就是指向这个对象。</strong><br> <pre><code class="highlight delphi"><span class="keyword">var</span> a = <span class="number">1</span>
 <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span> <span class="comment">&#123;</span></span>
 <span class="function"><span class="comment">    console.log(this.a)</span></span>
 <span class="function"><span class="comment">&#125;</span></span>
@@ -267,12 +266,9 @@ article p{
 <span class="function"><span class="comment">    foo:foo</span></span>
 <span class="function"><span class="comment">&#125;</span></span>
 <span class="function"></span>
-<span class="function"><span class="title">obj</span>.<span class="title">foo</span><span class="params">()</span> <span class="comment">// 输出2</span></span></code></pre>
-
+<span class="function"><span class="title">obj</span>.<span class="title">foo</span><span class="params">()</span> <span class="comment">// 输出2</span></span></code></pre></p>
 <p>上面的代码对于老手来说应该没有什么问题。这里我对新手提点注意的点，那就是foo()的调用其实相当于window.foo()，又因为var定义的变量在<strong>非严格模式下</strong>会自动挂载到全局对象中，<strong>在浏览器中，指向 window；在 Node 中，指向 Global。（严格模式下，指向 undefined）</strong></p>
-<h2 id="2">this的作用域指向哪里？</h2>
-其实在上面的例子中多少可以看出一点苗头，但是呢,为了更加符合面试常见的考题，我打算以下面的代码为例子：
-
+<h2 id="this的作用域指向哪里？"><a href="#this的作用域指向哪里？" class="headerlink" title="this的作用域指向哪里？"></a>this的作用域指向哪里？</h2><p>很多新手学习JavaScript的同学来说，都会认为this指向的是函数的作用域，实际上并不是这样的，实际上你看了上面的两个例子之后，<br>你就会发现，第一个符合，而第二个却是不符合的。再看下面一个经典的题目，你可能就有点意思了。（不懂作用域的同学，之后我也会出一篇的。）</p>
 <pre><code class="highlight javascript"><span class="keyword">var</span> name = <span class="string">"zhangsan"</span>;
 
 <span class="keyword">var</span> obj = &#123;
@@ -290,19 +286,15 @@ article p{
 &#125;
 
 obj.fn() <span class="comment">// zhangsan</span></code></pre>
-<p>是不是答案有点出乎了意料，这是为什么了呢？其实这就是作用域的指向问题，当然关键点还是如何确定this的作用域指向。先说结论：<strong>this的作用域是在调用时指向的，而不是声明指向的。</strong> 我知道，肯定会有很多萌新不明白什么是声明，什么是调用。下面我解析一下。</p>
-<h3 id="2.1">声明</h3>
-看下面的例子：
-
+<p>是不是答案有点出乎了意料，这大多是因为觉得this指向函数作用域的关系，看x函数在obj对象的属性方法中定义，想当然的以为这时候调用函数x的就是这个obj对象，事实上这是大错特错的，有必要简单的说说，什么是声明，什么是调用。</p>
+<h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>看下面的例子：</p>
 <pre><code class="highlight cs"><span class="keyword">var</span> a = <span class="number">1</span>
 
 <span class="function">funciton <span class="title">foo</span>(<span class="params"></span>)</span> &#123;
     console.log(a)
 &#125;</code></pre>
-<p>没错，就是这么简单，这就是声明。</p>
-<h3 id="2.2">调用</h3>
-看下面的例子：
-
+<p>没错，就是这么简单，这就是声明函数foo。</p>
+<h3 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h3><p>看下面的例子：</p>
 <pre><code class="highlight stylus"><span class="selector-tag">var</span> <span class="selector-tag">a</span> = <span class="number">1</span>
 
 funciton foo() &#123;
@@ -311,19 +303,18 @@ funciton foo() &#123;
 <span class="comment">// 这就是调用</span>
 <span class="function"><span class="title">foo</span><span class="params">()</span></span></code></pre>
 
-<h3 id="2.3">分析</h3>
-
-<p>你可能以为，哎呀，这x()不是声明在这个对象里面吗？所以你就理所当然的以为，这函数理应输出RadiomM。<br>重要的事情说三遍，建议你大声跟着读下面的字：<br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br>实际上，你读完上面的字，你还是会疑惑，那么为什么输出的就是这个zhangsan呢？其实，我在第一个例子中<br>已经给了提示了，实际上这个x()就相当于window.x()，那么这道题就相当的明了了。</p>
-<h2 id="3">总结</h2>
-话不多说，直接抬总结上来：
-
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>重要的事情说三遍，建议你大声跟着读下面的字：<br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br>实际上，你读完上面的字，你还是会疑惑，那么为什么输出的就是这个zhangsan呢？其实，我在第一个例子中<br>已经给了提示了，实际上这个x()就相当于window.x()，那么这道题就相当的明了了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>话不多说，直接抬总结上来：</p>
 <p>1、this绑定实际上是在函数被调用时发生的绑定，它的指向取决于函数在哪里被调用。</p>
 <p>2、this的作用域并不是指向函数的作用域。</p>
 <p>其实这篇文章仅仅是入门this的基础，下一篇文章我将会全面解析this的绑定规则。<br>看到这里你可能会问什么会是下一篇呢？因为我写累了啊，哈哈。<br>给大兄弟来首歌轻松轻松。（这篇文章就是在快乐气氛下写完的。学习可别忘了快乐，hasaki！）</p>
 
-    <div id="aplayer-dqyFbste" class="aplayer aplayer-tag-marker meting-tag-marker"
+    <div id="aplayer-vREnYnAB" class="aplayer aplayer-tag-marker meting-tag-marker"
          data-id="29732992" data-server="netease" data-type="song" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"
     ></div>
+
+<p>如果文章有错误的地方，希望小哥哥小姐姐们在评论区指出，毕竟作者的水平确实有限。</p>
+
   </article>
 
   <div class="nexmoe-post-meta nexmoe-rainbow">
@@ -370,7 +361,7 @@ funciton foo() &#123;
 <script
     src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1590480557623"></script>-->
+<!--<script src="/js/app.js?v=1590598226130"></script>-->
 
 
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
@@ -378,72 +369,7 @@ funciton foo() &#123;
 
 
 <script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/APlayer.min.js"></script>
-<script>
-    var ap = new APlayer({
-        element: document.getElementById('player'),
-        narrow: false,
-        autoplay: false,
-        showlrc: true,
-        volume: 0.4,
-        theme: '#F5F5F5',
-        music: [
-            {
-                title: '嚣张',
-                author: 'en',
-                url: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/music/en - 嚣张.mp3',
-                pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/xiaozhang.jpg'
-            },
-            {
-                title: '自己',
-                author: '刘亦菲',
-                url: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/music/刘亦菲 - 自己.mp3',
-                pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/ziji.jpg'
-            },
-            {
-                title: '无人之岛',
-                author: '任然',
-                url: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/music/任然 - 无人之岛.mp3',
-                pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/wurenzhidao.jpg'
-            },
-            {
-                title: '侧脸',
-                author: '于果',
-                url: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/music/于果 - 侧脸.mp3',
-                pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/celian.jpg'
-            },
-            {
-                title: 'Sold Out',
-                author: 'Hawk Nelson',
-                url: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/music/Hawk Nelson - Sold Out.mp3',
-                pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/SoldOut.jpg'
-            },
-            {
-                title: 'Enchanted',
-                author: 'Taylor Swift',
-                url: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/music/Taylor Swift - Enchanted.mp3',
-                pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/Enchanted.jpg'
-            },
-            {
-                title: 'Last Christmas',
-                author: 'Taylor Swift',
-                url: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/music/Taylor Swift - Last Christmas.mp3',
-                pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/LastChristmas.jpg'
-            },
-            {
-                title: 'Burning Bright',
-                author: '英雄联盟',
-                url: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/music/英雄联盟 - Burning Bright.mp3',
-                pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/BurningBright.jpg'
-            },
-            {
-                title: 'Dizzy',
-                author: 'Ours',
-                url: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/music/Ours - Dizzy.mp3',
-                pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/Dizzy.jpg'
-            },
-        ]
-    });
-</script>
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/aplayer.js"></script>
   
 
 
