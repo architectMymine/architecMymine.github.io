@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" >
+
+<head>
+  
+  <title>Sticky footer布局 - RadiomM的博客世界</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="web前端开发的有趣学习者">
+  <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
+  <meta name="description" content="最近发现公司的在内容较小的时候使用的是js，通过过去body以及内容高度对比，动态设置footer的position的属性来改变footer是否存在与底部。所以最近搜索了很多关于了sticky footer的布局。鉴于国内环境大多文章都是抄袭，很多内容都是没有只给了关键部分，都没有给了完整的配置，所以特地写了这篇文章仅供参考，如果文中有什么不妥的地方，请各位指出，我会尽量快的修改过来。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sticky footer布局">
+<meta property="og:url" content="http://yoursite.com/2019/11/28/Sticky-footer%E5%B8%83%E5%B1%80/index.html">
+<meta property="og:site_name" content="RadiomM的博客世界">
+<meta property="og:description" content="最近发现公司的在内容较小的时候使用的是js，通过过去body以及内容高度对比，动态设置footer的position的属性来改变footer是否存在与底部。所以最近搜索了很多关于了sticky footer的布局。鉴于国内环境大多文章都是抄袭，很多内容都是没有只给了关键部分，都没有给了完整的配置，所以特地写了这篇文章仅供参考，如果文中有什么不妥的地方，请各位指出，我会尽量快的修改过来。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-28T03:36:47.000Z">
+<meta property="article:modified_time" content="2019-11-28T03:36:47.000Z">
+<meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="CSS">
+<meta name="twitter:card" content="summary">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css"
+    crossorigin>
+  
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590631868182">-->
+
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="RadiomM的博客世界" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i
+            class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img
+            src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM"></a>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+    <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="RadiomM">
+            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>8</div>
+        <div><span>标签</span>6</div>
+        <div><span>分类</span>1</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about" title="个人简介">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                个人简介
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=https://architectmymine.github.io" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        
+        <a class="mdui-ripple" href="https://space.bilibili.com/86206061"
+            target="_blank" mdui-tooltip="{content: '哔哩哔哩'}"
+            style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a>
+        <a class="mdui-ripple" href="https://github.com/architectMymine"
+            target="_blank" mdui-tooltip="{content: 'GitHub'}"
+            style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+        <a class="mdui-ripple" href="tencent://message/?uin=516782176&Site=&Menu=yes"
+            target="_blank" mdui-tooltip="{content: 'QQ'}"
+            style="color: rgb(27,193,250);background-color: rgba(27,193,250, .15);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web前端/">web前端</a>
+          <span class="category-list-count">8</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/tags/VScode/" style="font-size: 10px;">VScode</a> <a href="/tags/git/" style="font-size: 20px;">git</a> <a href="/tags/vue/" style="font-size: 20px;">vue</a>
+    </div>
+    
+  </div>
+
+  
+  <!-- 
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+    </div>
+  </div>
+ -->
+
+<!-- 文件归档 -->
+  
+  <style>
+    .about-me {
+        margin: 5px 0;
+    }
+
+    .music-wrapper {
+        box-shadow: 0 0 1rem rgba(161, 177, 204, .4);
+        background-color: #fff;
+        margin: 20px;
+        overflow: hidden;
+        white-space: normal;
+    }
+    .music-wrapper .aplayer{
+        margin: 0 !important;
+    }
+    .music-wrapper .aplayer .aplayer-body{
+        padding-bottom: 10px;
+    }
+    .music-wrapper .aplayer.aplayer-withlrc .aplayer-pic{
+        /* width: 95px;
+        height: 95px; */
+    }
+    .music-wrapper .aplayer.aplayer-withlist .aplayer-info{
+        /* margin-left: 95px;
+        height: 95px; */
+        border: none;
+    }
+</style>
+<div class="music-wrapper">
+    <div id="player"></div>
+</div>
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2020 RadiomM
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+        <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
+    </div>
+</div><!-- .nexmoe-drawer -->
+
+
+
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+      <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 28.307588985896576%;"> 
+          <img data-src="https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg" data-sizes="auto" alt="Sticky footer布局" class="lazyload">
+          <h1>Sticky footer布局</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2019年11月28日</a>
+    <a><i class="nexmoefont icon-areachart"></i>758 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 3 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#利用margin-top以及padding-bottom"><span class="toc-number">1.</span> <span class="toc-text">利用margin-top以及padding-bottom</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用flex布局实现"><span class="toc-number">2.</span> <span class="toc-text">利用flex布局实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用position实现"><span class="toc-number">3.</span> <span class="toc-text">利用position实现</span></a></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <p>最近发现公司的在内容较小的时候使用的是js，通过过去body以及内容高度对比，动态设置footer的position的属性来改变footer是否存在与底部。所以最近搜索了很多关于了sticky footer的布局。鉴于国内环境大多文章都是抄袭，很多内容都是没有只给了关键部分，都没有给了完整的配置，所以特地写了这篇文章仅供参考，如果文中有什么不妥的地方，请各位指出，我会尽量快的修改过来。</p>
+<a id="more"></a>
+<h2 id="利用margin-top以及padding-bottom"><a href="#利用margin-top以及padding-bottom" class="headerlink" title="利用margin-top以及padding-bottom"></a>利用margin-top以及padding-bottom</h2><p>这是一个兼容性比较好的方法，我个人也是比较推荐的，在pc以及移动端都有良好的表现。<br>css代码：</p>
+<pre><code class="highlight stylus">&lt;style&gt;
+			<span class="selector-tag">html</span>,
+			<span class="selector-tag">body</span>,
+			<span class="selector-tag">p</span> &#123;
+				<span class="attribute">margin</span>: <span class="number">0</span>;
+				<span class="attribute">padding</span>: <span class="number">0</span>;
+			&#125;
+
+			<span class="selector-class">.clearfix</span>:after &#123;
+				<span class="attribute">display</span>: block;
+				<span class="attribute">content</span>: <span class="string">''</span>;
+				<span class="attribute">height</span>: <span class="number">0</span>;
+				<span class="attribute">visibility</span>: hidden;
+				<span class="attribute">clear</span>: both;
+			&#125;
+
+			<span class="selector-tag">html</span>,
+			<span class="selector-tag">body</span> &#123;
+				<span class="attribute">height</span>: <span class="number">100%</span>;
+			&#125;
+
+			<span class="selector-class">.wrapper</span> &#123;
+				<span class="attribute">min-height</span>: <span class="number">100%</span>;
+				*<span class="attribute">height</span>: <span class="number">100%</span>;
+				<span class="attribute">background</span>: red;
+			&#125;
+
+			<span class="selector-class">.wrapper</span> <span class="selector-class">.content</span> &#123;
+				<span class="attribute">padding-bottom</span>: <span class="number">100px</span>;
+			&#125;
+
+			<span class="selector-class">.footer</span> &#123;
+				<span class="attribute">height</span>: <span class="number">100px</span>;
+				<span class="attribute">width</span>: <span class="number">100%</span>;
+				<span class="attribute">margin-top</span>: -<span class="number">100px</span>;
+				<span class="attribute">background</span>: hotpink;
+			&#125;
+		&lt;/style&gt;</code></pre>
+<p>html代码：</p>
+<pre><code class="highlight angelscript">&lt;body&gt;
+	&lt;div <span class="keyword">class</span>="<span class="symbol">wrapper</span> <span class="symbol">clearfix</span>"&gt;
+		&lt;<span class="symbol">div</span> <span class="symbol">class</span>="<span class="symbol">content</span>"&gt;
+			&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+			&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+			&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+		&lt;/<span class="symbol">div</span>&gt;
+	&lt;/<span class="symbol">div</span>&gt;
+	&lt;<span class="symbol">div</span> <span class="symbol">class</span>="<span class="symbol">footer</span>"&gt;&lt;/<span class="symbol">div</span>&gt;
+&lt;/<span class="symbol">body</span>&gt;</code></pre>
+
+<p>执行效果自行复制代码实践，这个是经过我自己多次测试发现没有问题的。</p>
+<h2 id="利用flex布局实现"><a href="#利用flex布局实现" class="headerlink" title="利用flex布局实现"></a>利用flex布局实现</h2><p>css代码：</p>
+<pre><code class="highlight xml"><span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span>
+			html,
+			body,
+			div,
+			p&#123;
+				margin: 0;
+				padding: 0;
+			&#125;
+			html&#123;
+				height: 100%;
+			&#125;
+			body&#123;
+				min-height: 100%;
+				display: flex;
+<span class="css">				<span class="selector-tag">flex-direction</span><span class="selector-pseudo">:column</span>;</span>
+			&#125;
+<span class="css">			<span class="selector-class">.content</span>&#123;</span>
+				flex: 1;
+			&#125;
+<span class="css">			<span class="selector-class">.footer</span>&#123;</span>
+				width: 100%;
+				height: 100px;
+				background: hotpink;
+			&#125;
+		<span class="tag">&lt;/<span class="name">style</span>&gt;</span></code></pre>
+<p>html代码：</p>
+<pre><code class="highlight angelscript">   &lt;body&gt;
+	&lt;div <span class="keyword">class</span>="<span class="symbol">content</span>"&gt;
+		&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+		&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+		&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+	&lt;/<span class="symbol">div</span>&gt;
+	&lt;<span class="symbol">div</span> <span class="symbol">class</span>="<span class="symbol">footer</span>"&gt;&lt;/<span class="symbol">div</span>&gt;
+&lt;/<span class="symbol">body</span>&gt;</code></pre>
+
+<h2 id="利用position实现"><a href="#利用position实现" class="headerlink" title="利用position实现"></a>利用position实现</h2><p>css代码：</p>
+<pre><code class="highlight yaml"><span class="string">&lt;style&gt;</span>
+			<span class="string">html,</span>
+			<span class="string">body,</span>
+			<span class="string">p</span> <span class="string">&#123;</span>
+				<span class="attr">margin:</span> <span class="number">0</span><span class="string">;</span>
+				<span class="attr">padding:</span> <span class="number">0</span><span class="string">;</span> 
+			<span class="string">&#125;</span>
+			<span class="string">html,body&#123;</span>
+				<span class="attr">height:</span> <span class="number">100</span><span class="string">%;</span>
+			<span class="string">&#125;</span>
+			<span class="string">.wrapper&#123;</span>
+				<span class="attr">width:</span> <span class="number">100</span><span class="string">%;</span>
+				<span class="attr">position:</span> <span class="string">relative;</span>
+				<span class="attr">min-height:</span> <span class="number">100</span><span class="string">%;</span>
+				<span class="string">*height:</span> <span class="number">100</span><span class="string">%;</span>
+				<span class="attr">padding-bottom:</span> <span class="string">100px;</span>
+				<span class="attr">box-sizing:</span> <span class="string">border-box;</span>
+				<span class="attr">background:</span> <span class="string">red;</span>
+			<span class="string">&#125;</span>
+			<span class="string">.footer&#123;</span>
+				<span class="attr">width:</span> <span class="number">100</span><span class="string">%;</span>
+				<span class="attr">height:</span> <span class="string">100px;</span>
+				<span class="attr">position:</span> <span class="string">absolute;</span>
+				<span class="attr">bottom:</span> <span class="number">0</span><span class="string">;</span>
+				<span class="attr">background:</span> <span class="string">hotpink;</span>
+			<span class="string">&#125;</span>
+		<span class="string">&lt;/style&gt;</span></code></pre>
+<p>html代码：</p>
+<pre><code class="highlight angelscript">&lt;body&gt;
+		&lt;div <span class="keyword">class</span>="<span class="symbol">wrapper</span>"&gt;
+			&lt;<span class="symbol">div</span> <span class="symbol">class</span>="<span class="symbol">content</span>"&gt;
+				&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+				&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+				&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+				&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+				&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+				&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+				&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+				&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+				&lt;<span class="symbol">p</span>&gt;这是一个<span class="symbol">p</span>标签&lt;/<span class="symbol">p</span>&gt;
+			&lt;/<span class="symbol">div</span>&gt;
+			&lt;<span class="symbol">div</span> <span class="symbol">class</span>="<span class="symbol">footer</span>"&gt;&lt;/<span class="symbol">div</span>&gt;
+		&lt;/<span class="symbol">div</span>&gt;
+	&lt;/<span class="symbol">body</span>&gt;</code></pre>
+
+<p>同样的，这里通过<strong>padding-bottom为底部留足空间</strong>，<strong>box-sizing：border-box</strong>是为了不让padding计算在内容里。</p>
+<p>暂时只更新这么多，待我测试一下其他的方法，觉得可行之后，再更新出来。</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/CSS/" rel="tag">CSS</a>
+    
+</div>
+
+  <!-- 开启评论和文章版权声明 -->
+  <div class="nexmoe-post-footer">
+    <!-- 
+      
+  <div class="nexmoe-post-copyright">
+    
+    <strong>本文作者：</strong>RadiomM<br>
+    <strong>本文链接：</strong><a href="http://yoursite.com/2019/11/28/Sticky-footer%E5%B8%83%E5%B1%80/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;28&#x2F;Sticky-footer%E5%B8%83%E5%B1%80&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;28&#x2F;Sticky-footer%E5%B8%83%E5%B1%80&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+     -->
+    <section class="nexmoe-comment">
+    <div class="valine"></div>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.9/dist/Valine.min.js'></script>
+<script>
+    // 使用方法 https://valine.js.org/quickstart.html
+    new Valine({
+        el: '.valine',
+        appId: 'xJaGaHuEfG0RYnPYQCyy1amO-gzGzoHsz',
+        appKey: 'dulGwjmMl6z8kOQzEC3Hc2mQ'
+    })
+</script>
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <div id="music-wrapper"></div>
+<script
+    src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1590631868184"></script>-->
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/aplayer.js"></script>
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?1f8c7b61089021ddab0a2109105def2b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>

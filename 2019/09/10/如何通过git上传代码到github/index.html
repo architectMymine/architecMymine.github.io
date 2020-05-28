@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" >
+
+<head>
+  
+  <title>如何通过git上传代码到github - RadiomM的博客世界</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="web前端开发的有趣学习者">
+  <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
+  <meta name="description" content="最近在学习mpvue的时候遇到了一些小问题（课程是慕课网上的Sam老师的一门课，非常推荐。）由于不知道老师什么时候回复我，而且为了方便起见，所以就想通过github代码管理来实现（其实之前是用过的，不过就随便用了一下，所以忘记了。）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何通过git上传代码到github">
+<meta property="og:url" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/index.html">
+<meta property="og:site_name" content="RadiomM的博客世界">
+<meta property="og:description" content="最近在学习mpvue的时候遇到了一些小问题（课程是慕课网上的Sam老师的一门课，非常推荐。）由于不知道老师什么时候回复我，而且为了方便起见，所以就想通过github代码管理来实现（其实之前是用过的，不过就随便用了一下，所以忘记了。）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910112420671.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910113010728.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910113512447.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/.n/20190910113843525.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910114252199.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/2019091011464548.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910115222266.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910115828779.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910120018496.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910120253553.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910120456576.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910120602384.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/.n/20190910120719132.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910141146852.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910141302161.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910142042873.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910142606889.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910143534808.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910143957279.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910144236906.png">
+<meta property="article:published_time" content="2019-09-10T03:26:20.000Z">
+<meta property="article:modified_time" content="2019-09-10T03:26:20.000Z">
+<meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/20190910112420671.png">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css"
+    crossorigin>
+  
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590631868186">-->
+
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="RadiomM的博客世界" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i
+            class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img
+            src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM"></a>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+    <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="RadiomM">
+            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>8</div>
+        <div><span>标签</span>6</div>
+        <div><span>分类</span>1</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about" title="个人简介">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                个人简介
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=https://architectmymine.github.io" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        
+        <a class="mdui-ripple" href="https://space.bilibili.com/86206061"
+            target="_blank" mdui-tooltip="{content: '哔哩哔哩'}"
+            style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a>
+        <a class="mdui-ripple" href="https://github.com/architectMymine"
+            target="_blank" mdui-tooltip="{content: 'GitHub'}"
+            style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+        <a class="mdui-ripple" href="tencent://message/?uin=516782176&Site=&Menu=yes"
+            target="_blank" mdui-tooltip="{content: 'QQ'}"
+            style="color: rgb(27,193,250);background-color: rgba(27,193,250, .15);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web前端/">web前端</a>
+          <span class="category-list-count">8</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/tags/VScode/" style="font-size: 10px;">VScode</a> <a href="/tags/git/" style="font-size: 20px;">git</a> <a href="/tags/vue/" style="font-size: 20px;">vue</a>
+    </div>
+    
+  </div>
+
+  
+  <!-- 
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+    </div>
+  </div>
+ -->
+
+<!-- 文件归档 -->
+  
+  <style>
+    .about-me {
+        margin: 5px 0;
+    }
+
+    .music-wrapper {
+        box-shadow: 0 0 1rem rgba(161, 177, 204, .4);
+        background-color: #fff;
+        margin: 20px;
+        overflow: hidden;
+        white-space: normal;
+    }
+    .music-wrapper .aplayer{
+        margin: 0 !important;
+    }
+    .music-wrapper .aplayer .aplayer-body{
+        padding-bottom: 10px;
+    }
+    .music-wrapper .aplayer.aplayer-withlrc .aplayer-pic{
+        /* width: 95px;
+        height: 95px; */
+    }
+    .music-wrapper .aplayer.aplayer-withlist .aplayer-info{
+        /* margin-left: 95px;
+        height: 95px; */
+        border: none;
+    }
+</style>
+<div class="music-wrapper">
+    <div id="player"></div>
+</div>
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2020 RadiomM
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+        <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
+    </div>
+</div><!-- .nexmoe-drawer -->
+
+
+
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+      <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 28.307588985896576%;"> 
+          <img data-src="https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg" data-sizes="auto" alt="如何通过git上传代码到github" class="lazyload">
+          <h1>如何通过git上传代码到github</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2019年09月10日</a>
+    <a><i class="nexmoefont icon-areachart"></i>1.1k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 4 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <p>最近在学习mpvue的时候遇到了一些小问题（课程是慕课网上的Sam老师的一门课，非常推荐。）由于不知道老师什么时候回复我，而且为了方便起见，所以就想通过github代码管理来实现（其实之前是用过的，不过就随便用了一下，所以忘记了。）</p>
+<a id="more"></a>
+<p>期间确实遇到不少坑，也比较让我抓狂。（坑会后面单独写一篇，因为上传码云的时候也有坑，所以就一起写）牛皮扯完了，那么就开始介绍了。<br>由于是要上传到github，所以我介绍的是比较通用简单的方法，那么开始第一步（<strong>前提是你电脑已经安装了git</strong>）。<br><strong>先查看有没有ssh秘钥生成</strong><br><img data-sizes="auto" data-src="./20190910112420671.png" alt="ssh" class="lazyload"><br>一般来说就是Administrator里找有没有 .ssh这个文件。<strong>没有就是还没生成ssh秘钥。</strong>（<strong>像我自己的电脑用户名是YDW，所以就是在YDW里面看看有没有这个文件</strong>）<br>直接在桌面git bash<br><img data-sizes="auto" data-src="./20190910113010728.png" alt="在这里插入图片描述" class="lazyload"><br>其实哪里git bash都是可以的。输入以下命令</p>
+<pre><code class="highlight excel">ssh-keygen -<span class="built_in">t</span> rsa -C <span class="string">"你的邮箱地址"</span></code></pre>
+<p><img data-sizes="auto" data-src="./20190910113512447.png" alt="在这里插入图片描述" class="lazyload"><br>因为我已经生成过了ssh秘钥，所以这是会提示我是否要覆盖之前的秘钥（肯定不要啦我，不然我又要重新配置了。）<br>然后回到之前的目录里找.<strong>ssh</strong>文件夹。<br><img data-sizes="auto" data-src=".n/20190910113843525.png" alt="在这里插入图片描述" class="lazyload"><br>第一个是私钥，第二个是秘钥。这是打开第二个文件。（我是有EditPlus，但是大家也可以用记事本打开，这是用记事本打开）<br><img data-sizes="auto" data-src="./20190910114252199.png" alt="不要纠结为什么有这么大的矩形" class="lazyload"><br>这里我进行了处理（其实这算是个人隐私了。）<br>接下来打开<a href="https://github.com" target="_blank" rel="noopener">Github</a>官方网址<br><strong>登陆啥的就不说了，直接新建仓库。</strong><br><img data-sizes="auto" data-src="./2019091011464548.png" alt="新建仓库" class="lazyload"><br>接下来就是下面的界面。<br><img data-sizes="auto" data-src="./20190910115222266.png" alt="仓库创建配置" class="lazyload"><br>仓库已经创建完了。因为我们是通过ssh秘钥上传代码的。所以对应的需要在Github设置一下秘钥。<br><img data-sizes="auto" data-src="./20190910115828779.png" alt="在这里插入图片描述" class="lazyload"><br><img data-sizes="auto" data-src="./20190910120018496.png" alt="在这里插入图片描述" class="lazyload"><br><img data-sizes="auto" data-src="./20190910120253553.png" alt="在这里插入图片描述" class="lazyload"><br>然后回到你之前的仓库那里<br><img data-sizes="auto" data-src="./20190910120456576.png" alt="在这里插入图片描述" class="lazyload"><br><img data-sizes="auto" data-src="./20190910120602384.png" alt="在这里插入图片描述" class="lazyload"><br><img data-sizes="auto" data-src=".n/20190910120719132.png" alt="在这里插入图片描述" class="lazyload"><br><strong>这时候就可以准备上传你的项目了。下面打开你自己的项目，然后右键git bash。</strong><br><img data-sizes="auto" data-src="./20190910141146852.png" alt="在这里插入图片描述" class="lazyload"><br><strong>执行命令 git init 初始化仓库</strong><br><img data-sizes="auto" data-src="./20190910141302161.png" alt="在这里插入图片描述" class="lazyload"><br><strong>创建上传地址的命令是</strong></p>
+<pre><code class="highlight dockerfile">git remote <span class="keyword">add</span><span class="bash"> origin git@github.com:architectMymine/test.git</span></code></pre>
+
+<p><img data-sizes="auto" data-src="./20190910142042873.png" alt="在这里插入图片描述" class="lazyload"><br><strong>ssh地址是上面在git里面的地址，查看当前创建地址的命令是</strong> </p>
+<pre><code class="highlight ebnf"><span class="attribute">git remote -v</span></code></pre>
+<p><strong>把项目放入暂存区命令(后面是有一个小点的)</strong></p>
+<pre><code class="highlight dockerfile">git <span class="keyword">add</span><span class="bash"> .</span></code></pre>
+<p><strong>这时候会有警告，其实就是不用管，就是提醒你这个文件之前没有而已。（一般警告没有那么多，我这里那么多是因为这个webpack是我自己的配置的，而且还有很多忽略文件没有写，所以这里报错特别多。一般来说做项目都是直接用脚手架帮我们自己创建好比较好。</strong><br><img data-sizes="auto" data-src="./20190910142606889.png" alt="在这里插入图片描述" class="lazyload"><br><strong>提交项目命令</strong></p>
+<pre><code class="highlight nginx"><span class="attribute">git</span> commit -m “提交说明”</code></pre>
+<p><strong>说明那里按照我的习惯就是修复bug，就是写修复什么什么bug，或者出现了什么问题没有解决先提交什么什么的。（执行这个命令后也会有少量警告，不用理会。除非是报错）</strong><br><img data-sizes="auto" data-src="./20190910143534808.png" alt="在这里插入图片描述" class="lazyload"><br><strong>这时候我们就可以执行提交命令了。</strong></p>
+<pre><code class="highlight maxima">git <span class="built_in">push</span> <span class="built_in">origin</span> master</code></pre>
+<p><strong>master这是默认的主分支，实际工作中一般会创建很多分支进行测试或者是调试，这里不详细说了。有空会写一篇详细的介绍。</strong><br><img data-sizes="auto" data-src="./20190910143957279.png" alt="在这里插入图片描述" class="lazyload"><br>上面命令行会多了 -u 这是我上传码云的时候，码云那边给的示例代码，具体上传到Github实际上只要我上面的写的命令行就行了。<br>这时候刷新我们之前的Github页面，就会出现有代码了。<br><img data-sizes="auto" data-src="./20190910144236906.png" alt="在这里插入图片描述" class="lazyload"><br>这个项目是我之前写的一个vue的qq音乐，因为之前提供接口的老朋友被腾讯爸爸警告了，所以我就没再维护用了。好了关于如何将代码上传到Github介绍到这里，码云的其实也差不多原理，而且码云在仓库创建好会给一些初始化命令提示，有兴趣的可以去了解一下，或者咨询一下我也行啊。</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/git/" rel="tag">git</a>
+    
+</div>
+
+  <!-- 开启评论和文章版权声明 -->
+  <div class="nexmoe-post-footer">
+    <!-- 
+      
+  <div class="nexmoe-post-copyright">
+    
+    <strong>本文作者：</strong>RadiomM<br>
+    <strong>本文链接：</strong><a href="http://yoursite.com/2019/09/10/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;09&#x2F;10&#x2F;%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;09&#x2F;10&#x2F;%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87git%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0github&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+     -->
+    <section class="nexmoe-comment">
+    <div class="valine"></div>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.9/dist/Valine.min.js'></script>
+<script>
+    // 使用方法 https://valine.js.org/quickstart.html
+    new Valine({
+        el: '.valine',
+        appId: 'xJaGaHuEfG0RYnPYQCyy1amO-gzGzoHsz',
+        appKey: 'dulGwjmMl6z8kOQzEC3Hc2mQ'
+    })
+</script>
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <div id="music-wrapper"></div>
+<script
+    src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1590631868188"></script>-->
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/aplayer.js"></script>
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?1f8c7b61089021ddab0a2109105def2b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
