@@ -24,6 +24,8 @@
 <meta property="og:description" content="article p{     font-size:16px;     line-height:28px; }   大家好！许久不见甚是想念，仅仅过了两天不到，我又开始给你们写技(cai)术(ji)文章了。上回说到，这this的指向，以及作用域的问题，其实我后来发现这个两个说的好像都差不多，但是呢，过于懒得我就不想改了。所以今天，我就立马给大家介绍this的绑定规则！！！是不是好高兴，好激动，甚至">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/2020/03/13/this%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90(%E4%BA%8C)/jienigui.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/this%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90(%E4%BA%8C)/qiguaidezhishi.jpeg">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/this%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90(%E4%BA%8C)/this.jpg">
 <meta property="article:published_time" content="2020-03-13T12:28:49.000Z">
 <meta property="article:modified_time" content="2020-03-13T12:28:49.000Z">
 <meta property="article:author" content="RadiomM">
@@ -36,10 +38,13 @@
   
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
-  <!--<link rel="stylesheet" href="/css/style.css?v=1590654842226">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590687393396">-->
 
   
 <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="RadiomM的博客世界" type="application/atom+xml">
+<link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
 </head>
 
 <body class="mdui-drawer-body-left">
@@ -229,8 +234,8 @@
   
   <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
     <a><i class="nexmoefont icon-calendar-fill"></i>2020年03月13日</a>
-    <a><i class="nexmoefont icon-areachart"></i>1.4k 字</a>
-    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 6 分钟</a>
+    <a><i class="nexmoefont icon-areachart"></i>3.5k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 15 分钟</a>
 </div>
 
   <div class="nexmoe-post-right">
@@ -238,7 +243,7 @@
       <div class="nexmoe-fixed">
         <div class="nexmoe-valign">
             <div class="nexmoe-toc">
-                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#调用位置"><span class="toc-number">1.</span> <span class="toc-text">调用位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绑定规则"><span class="toc-number">2.</span> <span class="toc-text">绑定规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#默认绑定"><span class="toc-number">2.1.</span> <span class="toc-text">默认绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#秒杀默认绑定的技巧"><span class="toc-number">2.2.</span> <span class="toc-text">秒杀默认绑定的技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#立即执行函数（IIFE）、"><span class="toc-number">2.2.1.</span> <span class="toc-text">立即执行函数（IIFE）、</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#setTimeout-和-setInterval-中传入的函数"><span class="toc-number">2.2.2.</span> <span class="toc-text">setTimeout 和 setInterval 中传入的函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#隐式绑定"><span class="toc-number">2.3.</span> <span class="toc-text">隐式绑定</span></a></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#调用位置"><span class="toc-number">1.</span> <span class="toc-text">调用位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绑定规则"><span class="toc-number">2.</span> <span class="toc-text">绑定规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#默认绑定"><span class="toc-number">2.1.</span> <span class="toc-text">默认绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#秒杀默认绑定的技巧"><span class="toc-number">2.2.</span> <span class="toc-text">秒杀默认绑定的技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#立即执行函数（IIFE）、"><span class="toc-number">2.2.1.</span> <span class="toc-text">立即执行函数（IIFE）、</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#setTimeout-和-setInterval-中传入的函数"><span class="toc-number">2.2.2.</span> <span class="toc-text">setTimeout 和 setInterval 中传入的函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#隐式绑定"><span class="toc-number">2.3.</span> <span class="toc-text">隐式绑定</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#隐式丢失"><span class="toc-number">2.3.1.</span> <span class="toc-text">隐式丢失</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#显式绑定"><span class="toc-number">2.4.</span> <span class="toc-text">显式绑定</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#改变后直接调用函数"><span class="toc-number">2.4.1.</span> <span class="toc-text">改变后直接调用函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#改变后返回一个函数"><span class="toc-number">2.4.2.</span> <span class="toc-text">改变后返回一个函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#new绑定"><span class="toc-number">2.5.</span> <span class="toc-text">new绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#箭头函数"><span class="toc-number">2.6.</span> <span class="toc-text">箭头函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优先级"><span class="toc-number">2.7.</span> <span class="toc-text">优先级</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
             </div>
         </div>
       </div>
@@ -354,7 +359,205 @@ me.hello() <span class="comment">// 大家再猜下输出啥了？</span></code>
 me.hello() <span class="comment">// 你好，我是RadiomM</span></code></pre>
 <p>是不是觉得好神奇？我们的 this.name 明明看起来是在 me.hello () 里被调用的，结果却输出了 window.name。 setTimeout 到底对函数做了什么？</p>
 <p>其实，我们所看到的延时效果（setTimeout）和定时效果（setInterval），都是在全局作用域下实现的。无论是 setTimeout 还是 setInterval 里传入的函数，都会首先被交付到全局对象手上。因此，函数中 this 的值，会被自动指向 window。</p>
-<h3 id="隐式绑定"><a href="#隐式绑定" class="headerlink" title="隐式绑定"></a>隐式绑定</h3>
+<h3 id="隐式绑定"><a href="#隐式绑定" class="headerlink" title="隐式绑定"></a>隐式绑定</h3><p>所谓的隐式绑定其实就是函数调用位置是否有上下文对象，或者说是否被某个对象拥有或者包含。<br>是的，概念就是这么拗口，直接上代码：</p>
+<pre><code class="highlight javascript"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;
+    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)
+&#125;
+
+<span class="keyword">var</span> obj =&#123;
+  a: <span class="number">2</span>,
+  foo: foo
+&#125;
+
+obj.foo()  <span class="comment">// 2</span></code></pre>
+
+<p>是不是很眼熟？没错，上一篇文章可是已经做过例子了！！</p>
+<p>首先需要注意的是foo函数的声明方式，及其之后是如何被当做引用属性添加到obj中的。<br>但是无论是直接在obj中定义还是先定义在添加为引用属性，这个函数严格来说都不属于obj对象。</p>
+<p>然而，调用位置会使用obj上下文来引用函数，因此你可以说函数被调用时obj对象”拥有”或者”包含“函数引用。<br>没错，这就是隐式绑定规则，将函数的this绑定到了上下文对象中（如上面obj对象），所以this.a和obj.a是一样的</p>
+<p>但是有一点是值得注意的，那就是对象属性引用链中只有最接近的一层有效。看下面的例子：<br> <pre><code class="highlight delphi"> <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span> <span class="comment">&#123;</span></span>
+<span class="function"><span class="comment">    console.log(this.a)</span></span>
+<span class="function"><span class="comment">&#125;</span></span>
+<span class="function"></span>
+<span class="function"><span class="title">var</span> <span class="title">obj1</span> =<span class="comment">&#123;</span></span>
+<span class="function"><span class="comment">  a: 12,</span></span>
+<span class="function"><span class="comment">  foo: foo</span></span>
+<span class="function"><span class="comment">&#125;</span></span>
+<span class="function"></span>
+<span class="function"><span class="title">var</span> <span class="title">obj12</span> =<span class="comment">&#123;</span></span>
+<span class="function"><span class="comment">  a: 22,</span></span>
+<span class="function"><span class="comment">  foo: foo</span></span>
+<span class="function"><span class="comment">&#125;</span></span>
+<span class="function"><span class="title">obj1</span>.<span class="title">obj2</span>.<span class="title">foo</span><span class="params">()</span>  <span class="comment">// 22</span></span>
+<span class="function"><span class="title">obj2</span>.<span class="title">obj1</span>.<span class="title">foo</span><span class="params">()</span>  <span class="comment">// 12</span></span></code></pre><br> <img data-sizes="auto" data-src="./qiguaidezhishi.jpeg" alt="奇怪的知识增加了！" class="lazyload"></p>
+<p> <strong>注意了，要是面试问到了，你记得一定要说是我告诉你的！！是的，这会大大的加分！！！</strong><br> <strong>什么？你不信，那你可以收藏一下，关闭网页了。</strong></p>
+<h4 id="隐式丢失"><a href="#隐式丢失" class="headerlink" title="隐式丢失"></a>隐式丢失</h4><p> 一个非常常见的问题，或者你平时刷题也会看见的。表现大多是<strong>被隐式绑定的函数会丢失绑定对象，也就是说<br> 它会应用默认绑定，从而把this绑定到全局对象或者undefined上，这个取决于是否是严格模式（strict mode）</strong></p>
+<p> 准备好了吗？接招<br> <pre><code class="highlight javascript"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;
+  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);
+&#125;
+
+<span class="keyword">var</span> obj = &#123;
+   a: <span class="number">2</span>,
+   foo: foo
+&#125;
+
+<span class="keyword">var</span> bar = obj.foo  <span class="comment">// 函数别名</span>
+<span class="keyword">var</span> a = <span class="string">"Oh My God"</span>
+
+bar(); <span class="comment">// ?</span></code></pre><br> 来吧，多读几遍定义，来说说你的答案是什么？</p>
+<p> 没错，答案就是”Oh My God”，你猜到了吗？什么！？你没猜到，那正好，不然我没法写下去了。</p>
+<p> 看清楚了！虽然bar是obj.foo的一个引用，但是实际上，它引用的是foo函数本身。什么意思？就是bar()和foo()其实是一样的。<br> 看到foo()，按照我们上面说的，明显就是一个默认规则了。</p>
+<p> 来点开发的时候经常用到的，就是传入回调函数时：<br> <pre><code class="highlight javascript"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;
+  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);
+&#125;
+
+<span class="function"><span class="keyword">function</span> <span class="title">doFoo</span>(<span class="params">fn</span>) </span>&#123;
+  <span class="comment">// fn其实引用的是foo</span>
+  fn() <span class="comment">//  &lt;-- 调用位置</span>
+&#125;
+
+<span class="keyword">var</span> obj = &#123;
+  a: <span class="number">2</span>,
+  foo: foo
+&#125;
+
+<span class="keyword">var</span> a = <span class="string">"Oh My God"</span>
+
+doFoo( obj.foo ) <span class="comment">// "Oh My God"</span></code></pre></p>
+<p> 参数传递是<strong>按值传递的，而且算是一种隐式赋值</strong>，因此，从结果上看跟上面的例子没有两样。</p>
+<p> 这时候你就可能会问：“哎呀，这是我自己定义的函数，如果不是自己定义的函数会怎么样啊？”<br> 答案是一样的，没有什么区别的，把setTimeout兄弟抬上来：<br> <pre><code class="highlight javascript"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;
+  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a);
+&#125;
+
+ <span class="keyword">var</span> obj = &#123;
+  a: <span class="number">2</span>,
+  foo: foo
+&#125;
+
+<span class="keyword">var</span> a = <span class="string">"Oh My God"</span>
+
+setTimeout( obj.foo, <span class="number">100</span>) <span class="comment">// "Oh My God"</span></code></pre></p>
+<p> <strong>JavaScript环境中内置的setTimeout()函数实现和下面的伪代码类似：</strong><br> <pre><code class="highlight reasonml"><span class="keyword">function</span> set<span class="constructor">Timeout(<span class="params">fn</span>,<span class="params">delay</span>)</span> &#123;
+  <span class="comment">// 等待delay毫秒</span>
+  fn<span class="literal">()</span>
+&#125;</code></pre></p>
+<h3 id="显式绑定"><a href="#显式绑定" class="headerlink" title="显式绑定"></a>显式绑定</h3><p> 显式绑定无非就是用call、apply、bind函数，将this绑定到指定的上下文对象。这三个函数的第一个参数是一个对象，没错<br> 就是给this准备的，接着在调用函数将其绑定到this。<br> 先来个小栗子：</p>
+ <pre><code class="highlight delphi"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span> <span class="comment">&#123;</span></span>
+<span class="function"><span class="comment">  console.log(this.a)</span></span>
+<span class="function"><span class="comment">&#125;</span></span>
+<span class="function"></span>
+<span class="function"><span class="title">var</span> <span class="title">obj</span> =<span class="comment">&#123;</span></span>
+<span class="function"><span class="comment">  a: 2</span></span>
+<span class="function"><span class="comment">&#125;</span></span>
+<span class="function"></span>
+<span class="function"><span class="title">foo</span>.<span class="title">call</span><span class="params">( obj )</span>    <span class="comment">//2</span></span>
+<span class="function"></span>
+<span class="function"><span class="title">foo</span>.<span class="title">apply</span><span class="params">( obj )</span>  <span class="comment">//2</span></span>
+<span class="function"></span>
+<span class="function"><span class="title">var</span> <span class="title">bar</span> = <span class="title">foo</span>.<span class="title">bind</span><span class="params">(obj)</span></span>
+<span class="function"></span>
+<span class="function"><span class="title">bar</span><span class="params">()</span>            <span class="comment">//2</span></span></code></pre>
+
+<p>看到区别了吗？call和apply直接使用即可，而bind需要变量接受返回值，然后再调用。然后我就可分类讲了。</p>
+<h4 id="改变后直接调用函数"><a href="#改变后直接调用函数" class="headerlink" title="改变后直接调用函数"></a>改变后直接调用函数</h4><p> call和apply都是可以直接调用实现的，那么它们有什么区别吗？</p>
+<p> 看下面小栗子：<br> <pre><code class="highlight javascript"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a, b</span>)</span>&#123;
+  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name + <span class="string">" go "</span>+ a +<span class="string">" and "</span>+ b)
+&#125;
+
+<span class="keyword">var</span> obj = &#123;
+  name:<span class="string">'RaidomM'</span>
+&#125;
+
+foo.call(obj,<span class="string">'成都'</span>,<span class="string">'广东'</span>)     <span class="comment">// RaidomM go 成都 and 广东</span>
+foo.apply(obj,[<span class="string">'成都'</span>,<span class="string">'广东'</span>])  <span class="comment">// RaidomM go 成都 and 广东</span></code></pre></p>
+<p> 可以注意到，call与apply只是传参的方式不一样，但是函数内部获取参数的方法确实一样的！<br> 在这里先留问题，如何实现一个call或者apply呢？可以解决上面提及到了<strong>隐式丢失</strong>的问题吗？</p>
+<h4 id="改变后返回一个函数"><a href="#改变后返回一个函数" class="headerlink" title="改变后返回一个函数"></a>改变后返回一个函数</h4><p> 再看下面的一个小栗子：<br> <pre><code class="highlight javascript"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">b</span>)</span>&#123;
+  <span class="built_in">console</span>.log( <span class="keyword">this</span>.a ,b)
+  <span class="keyword">return</span> <span class="keyword">this</span>.a + b
+&#125;
+
+<span class="keyword">var</span> obj = &#123;
+  a: <span class="number">2</span>
+&#125;
+
+<span class="keyword">var</span> bar = foo.bind(obj)
+<span class="keyword">var</span> c = bar(<span class="number">3</span>) <span class="comment">// 2,3</span>
+<span class="built_in">console</span>.log( c ) <span class="comment">// 5</span></code></pre><br> 可以看到，bind会返回一个函数。这个函数可以暂时理解为foo（实际上并不是一模一样的），然后你再调用函数传参等。</p>
+<p> <strong>一个可以值得提到的点</strong>，那就是bind的绑定永远起作用的是第一个<br> <pre><code class="highlight javascript"><span class="keyword">let</span> a = &#123;&#125;
+<span class="keyword">let</span> fn = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="keyword">this</span>) &#125;
+fn.bind().bind(a)() <span class="comment">// =&gt; ?</span></code></pre><br> 如果你认为输出结果是 a，那么你就错了，其实我们可以把上述代码转换成另一种形式<br> <pre><code class="highlight javascript"> <span class="comment">// fn.bind().bind(a) 等于</span>
+<span class="keyword">let</span> fn2 = <span class="function"><span class="keyword">function</span> <span class="title">fn1</span>(<span class="params"></span>) </span>&#123;
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;
+    <span class="keyword">return</span> fn.apply()
+  &#125;.apply(a)
+&#125;
+fn2()</code></pre><br> 可以从上述代码中发现，不管我们给函数 bind 几次，fn 中的 this 永远由第一次 bind 决定，所以结果永远是 window。<br> <pre><code class="highlight javascript"><span class="keyword">let</span> a = &#123; <span class="attr">name</span>: <span class="string">'ydw'</span> &#125;
+<span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;
+  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)
+&#125;
+foo.bind(a)() <span class="comment">// =&gt; 'ydw'</span></code></pre></p>
+<h3 id="new绑定"><a href="#new绑定" class="headerlink" title="new绑定"></a>new绑定</h3><p> 如果简单说的话，可以直接看一下代码：<br> <pre><code class="highlight javascript"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;
+  <span class="keyword">this</span>.a = a
+&#125;
+
+<span class="keyword">var</span> bar = <span class="keyword">new</span> foo(<span class="number">2</span>)
+<span class="built_in">console</span>.log(bar.a) <span class="comment">// 2</span></code></pre></p>
+<p>当然，这其实没有那么简单，其中涉及到<strong>构造函数</strong>，<strong>new实现了什么的操作</strong>，<strong>原型和原型链</strong>等等。<br>但是你现在只需要知道，使用new操作的，那么this就永远绑定到创建的实例对象上面（上面的代码就是bar）</p>
+<h3 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h3><p>箭头函数是ES6新提出的一个<strong>带返回值函数的简写方式</strong>，它的this就跟词法作用域一样，一旦绑定了，那么它的this，<br>就永远绑定在那里了。上代码：</p>
+<pre><code class="highlight javascript"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;
+  <span class="keyword">return</span> <span class="function">(<span class="params">a</span>) =&gt;</span> <span class="built_in">console</span>.log(<span class="keyword">this</span>)
+&#125;
+
+<span class="keyword">var</span> obj1 = &#123;
+  a: <span class="number">2</span>
+&#125;
+
+<span class="keyword">var</span> obj2 = &#123;
+  a: <span class="number">3</span>
+&#125;
+
+<span class="keyword">var</span> bar = foo.call(obj1)
+bar.call(obj2); <span class="comment">// 2 不是3</span></code></pre>
+<p>foo()内部创建的箭头函数会捕获调用时foo()的this。由于foo()的this绑定到obj1，bar（引用箭头函数）的this也会绑定<br>到obj1，箭头函数的绑定无法被修改，就是new也是不行的。</p>
+<p>箭头函数常常用回调函数中。看下面代码：</p>
+<pre><code class="highlight javascript"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;
+  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span>&#123;
+    <span class="comment">// 这里的this在词法上继承自foo()</span>
+    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)
+  &#125;)
+&#125;
+<span class="keyword">var</span> obj = &#123;
+  a: <span class="number">2</span>
+&#125;
+foo.call(obj) <span class="comment">// 2</span></code></pre>
+
+<p>然而在ES6之前，我们解决这个问题的办法是下面的：</p>
+<pre><code class="highlight javascript"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;
+  <span class="keyword">var</span> that = <span class="keyword">this</span>
+  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;
+     <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)
+  &#125;, <span class="number">100</span>)
+&#125;
+<span class="keyword">var</span> obj = &#123;
+  a: <span class="number">2</span>
+&#125;
+foo.call(obj) <span class="comment">// 2</span></code></pre>
+<h3 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h3><p>关于优先级，我想直接引用yck的《前端面试之道》中的一张图来给大家看</p>
+<p><img data-sizes="auto" data-src="./this.jpg" alt="判断this优先级" class="lazyload"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>终于是写完了，其实后面的内容会相对的写的比较少，为什么呢？那肯定是为了之后可以再写文章啦（没错，就是水文章）</p>
+<p>开玩笑的，事实上写起来会复杂的多，而这篇文章的篇幅已经是比较多了，再多的话，你们就没心思读下去了。</p>
+<p>下面开始技术总结（<strong>其实看了优先级的那种图就可以了</strong>）：</p>
+<p>1、函数是否在new中调用（new绑定），是则this绑定到实例对象上</p>
+<p>2、函数是否通过call，apply，bind显示绑定的，如果是，this绑定的是指定的对象</p>
+<p>3、函数是否调用在上下文对象（隐式绑定），是则this绑定到那个上下文对象中</p>
+<p>4、如果都不是那么就是使用默认规则，严格模式下绑定到undefined，否则绑定到全局对象中（ 浏览器window, Node环境gobal）</p>
+<p>好了，看到这里大家也不容易，所以给大家再上一首歌吧！</p>
+
+    <div id="aplayer-FrIjKerm" class="aplayer aplayer-tag-marker meting-tag-marker"
+         data-id="722928" data-server="netease" data-type="song" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"
+    ></div>
+
+<p>如果文章有错误的地方，希望小哥哥小姐姐们在评论区指出，毕竟作者的水平确实有限。</p>
+
   </article>
 
   <div class="nexmoe-post-meta nexmoe-rainbow">
@@ -404,7 +607,7 @@ me.hello() <span class="comment">// 你好，我是RadiomM</span></code></pre>
 <script
     src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1590654842228"></script>-->
+<!--<script src="/js/app.js?v=1590687393398"></script>-->
 
 
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
