@@ -11,7 +11,6 @@ var ap = new APlayer({
             author: 'en',
             url: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/music/en - 嚣张.mp3',
             pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/xiaozhang.jpg',
-            lrc: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@1.0.2/static/lrc/en - 嚣张.lrc'
         },
         {
             title: '自己',
