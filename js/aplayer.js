@@ -10,7 +10,8 @@ var ap = new APlayer({
             title: '嚣张',
             author: 'en',
             url: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/music/en - 嚣张.mp3',
-            pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/xiaozhang.jpg'
+            pic: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/xiaozhang.jpg',
+            lrc: 'https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/lrc/嚣张.lrc'
         },
         {
             title: '自己',
