@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2020/06/11/canvas%E5%8E%8B%E7%BC%A9%E5%9B%BE%E7%89%87/</loc>
+    
+    <lastmod>2020-06-11T00:37:40.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2020/06/07/Uzi%E9%80%80%E5%BD%B9/</loc>
     
     <lastmod>2020-06-07T10:06:06.000Z</lastmod>
@@ -30,14 +37,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/about/index.html</loc>
+    <loc>http://yoursite.com/py/index.html</loc>
     
     <lastmod>2020-05-18T02:02:42.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/py/index.html</loc>
+    <loc>http://yoursite.com/about/index.html</loc>
     
     <lastmod>2020-05-18T02:02:42.000Z</lastmod>
     
