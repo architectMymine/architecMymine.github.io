@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" >
+
+<head>
+  
+  <title>vite+vue+elementplus安装过程遇到的问题 - RadiomM的博客世界</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="web前端开发的有趣学习者">
+  <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="1f8c7b61089021ddab0a2109105def2b" />
+
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
+  <meta name="description" content="因为最近忙的差不多了，而且vite据说用起来很快，所以正好现在有空闲时间，所以就来尝试一下配置一下vite+vue+elementPlus。注：本文主要是用yarn来安装包，用npm或者cnpm的同学相对应的切换即可。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vite+vue+elementplus安装过程遇到的问题">
+<meta property="og:url" content="http://yoursite.com/2021/04/06/vite-vue-elementplus%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="RadiomM的博客世界">
+<meta property="og:description" content="因为最近忙的差不多了，而且vite据说用起来很快，所以正好现在有空闲时间，所以就来尝试一下配置一下vite+vue+elementPlus。注：本文主要是用yarn来安装包，用npm或者cnpm的同学相对应的切换即可。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e34729449662421cb394daf49fc3c30e~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3cbc70c29d414d50ab33b3672c203cb0~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e84cfc6873f4421dbc84bc6b1588e42a~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bf4db9cd0d444b37b1833dbe1aed278a~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/12df47d65c0e4894a61c4e3d4b2564f9~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/735875e928ee4e24aed79268fd5afdf3~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/83b411f25b324c57af24c685ff490d73~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="article:published_time" content="2021-04-06T01:38:04.000Z">
+<meta property="article:modified_time" content="2021-04-06T01:38:04.000Z">
+<meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="那些烦人的项目搭建">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e34729449662421cb394daf49fc3c30e~tplv-k3u1fbpfcp-zoom-1.image">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css"
+    crossorigin>
+  
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
+  <!--<link rel="stylesheet" href="/css/style.css?v=1633917914751">-->
+
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="RadiomM的博客世界" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i
+            class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img
+            src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM"></a>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+    <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="RadiomM">
+            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>13</div>
+        <div><span>标签</span>10</div>
+        <div><span>分类</span>1</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about" title="个人简介">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                个人简介
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=https://architectmymine.github.io" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        
+        <a class="mdui-ripple" href="https://space.bilibili.com/86206061"
+            target="_blank" mdui-tooltip="{content: '哔哩哔哩'}"
+            style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a>
+        <a class="mdui-ripple" href="https://github.com/architectMymine"
+            target="_blank" mdui-tooltip="{content: 'GitHub'}"
+            style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+        <a class="mdui-ripple" href="tencent://message/?uin=516782176&Site=&Menu=yes"
+            target="_blank" mdui-tooltip="{content: 'QQ'}"
+            style="color: rgb(27,193,250);background-color: rgba(27,193,250, .15);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web前端/">web前端</a>
+          <span class="category-list-count">13</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/tags/VScode/" style="font-size: 10px;">VScode</a> <a href="/tags/Wx%E7%94%9F%E6%80%81%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/" style="font-size: 10px;">Wx生态的那些事</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/git/" style="font-size: 20px;">git</a> <a href="/tags/vue/" style="font-size: 20px;">vue</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E7%83%A6%E4%BA%BA%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/" style="font-size: 20px;">那些烦人的项目搭建</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E8%AE%A8%E4%BA%BA%E5%8E%8C%E7%9A%84%E9%9C%80%E6%B1%82/" style="font-size: 10px;">那些讨人厌的需求</a>
+    </div>
+    
+  </div>
+
+  
+  <!-- 
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+    </div>
+  </div>
+ -->
+
+<!-- 文件归档 -->
+  
+  <style>
+    .about-me {
+        margin: 5px 0;
+    }
+
+    .music-wrapper {
+        box-shadow: 0 0 1rem rgba(161, 177, 204, .4);
+        background-color: #fff;
+        margin: 20px;
+        overflow: hidden;
+        white-space: normal;
+    }
+    .music-wrapper .aplayer{
+        height: auto !important;
+        margin: 0 !important;
+    }
+    .music-wrapper .aplayer .aplayer-body{
+        padding-bottom: 10px;
+    }
+    .music-wrapper .aplayer.aplayer-withlrc .aplayer-pic{
+        /* width: 95px;
+        height: 95px; */
+    }
+    .music-wrapper .aplayer.aplayer-withlist .aplayer-info{
+        /* margin-left: 95px;
+        height: 95px; */
+        border: none;
+    }
+</style>
+<div class="music-wrapper">
+    <div id="player"></div>
+</div>
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 RadiomM
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+        <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
+    </div>
+</div><!-- .nexmoe-drawer -->
+
+
+
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+      <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 56.25%;"> 
+          <img data-src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/cover/2021-04-06.jpg" data-sizes="auto" alt="vite+vue+elementplus安装过程遇到的问题" class="lazyload">
+          <h1>vite+vue+elementplus安装过程遇到的问题</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年04月06日</a>
+    <a><i class="nexmoefont icon-areachart"></i>1.4k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 6 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置element-plus"><span class="toc-number">2.</span> <span class="toc-text">配置element-plus</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#一、安装element-plus"><span class="toc-number">2.0.1.</span> <span class="toc-text">一、安装element-plus</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二、全量引入"><span class="toc-number">2.0.2.</span> <span class="toc-text">二、全量引入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#三、按需引入"><span class="toc-number">2.0.3.</span> <span class="toc-text">三、按需引入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后续"><span class="toc-number">3.</span> <span class="toc-text">后续</span></a></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <p>因为最近忙的差不多了，而且vite据说用起来很快，所以正好现在有空闲时间，所以就来尝试一下配置一下vite+vue+elementPlus。<br><strong>注：本文主要是用yarn来安装包，用npm或者cnpm的同学相对应的切换即可。</strong></p>
+<a id="more"></a>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>打开vite的官方文档，你会看到下面的图。<a href="https://cn.vitejs.dev/" target="_blank" rel="noopener">vite中文官网</a><br><img data-sizes="auto" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e34729449662421cb394daf49fc3c30e~tplv-k3u1fbpfcp-zoom-1.image" alt="在这里插入图片描述" class="lazyload"></p>
+<pre><code class="highlight JavaScript">NPM：
+npm init @vitejs/app
+YARN：
+yarn create @vitejs/app</code></pre>
+<p>心念念的直接使用<strong>yarn create @vitejs/app</strong>命令开始创建，结果报错了！<br><img data-sizes="auto" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3cbc70c29d414d50ab33b3672c203cb0~tplv-k3u1fbpfcp-zoom-1.image" alt="在这里插入图片描述" class="lazyload"><br>究其原因是因为yarn的安装包默认是在<strong>c盘的</strong>而我yarn安装在<strong>D盘的</strong>，说白了就是没有权限去创建下载包。</p>
+<p><img data-sizes="auto" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e84cfc6873f4421dbc84bc6b1588e42a~tplv-k3u1fbpfcp-zoom-1.image" alt="在这里插入图片描述" class="lazyload"></p>
+<pre><code class="highlight stata">yarn <span class="keyword">global</span> <span class="keyword">dir</span></code></pre>
+<p>解决办法也很简单，就是将yarn的全局路径改一下到D盘就行了，在D盘创建<strong>yarn文件夹</strong>在文件下创建<strong>一个golbal和cache文件夹</strong>，现在我们就可以开始调整yarn的全局安装路径。<br><img data-sizes="auto" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bf4db9cd0d444b37b1833dbe1aed278a~tplv-k3u1fbpfcp-zoom-1.image" alt="在这里插入图片描述" class="lazyload"></p>
+<pre><code class="highlight routeros">yarn<span class="built_in"> config </span><span class="builtin-name">set</span> global-folder <span class="string">"D:\yarn\global"</span>
+yarn<span class="built_in"> config </span><span class="builtin-name">set</span> cache-folder <span class="string">"D:\yarn\cache"</span></code></pre>
+<p>当然这个可以根据大家的安装的不同来改变。接着就可以开始用官方的命令了。<br><img data-sizes="auto" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/12df47d65c0e4894a61c4e3d4b2564f9~tplv-k3u1fbpfcp-zoom-1.image" alt="在这里插入图片描述" class="lazyload"><br>选择你自己需要的模板，就可以了，至此一个步骤就完成了。<br>如果你是最早一批使用vue3的人，你会发现有新惊喜！<br><img data-sizes="auto" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/735875e928ee4e24aed79268fd5afdf3~tplv-k3u1fbpfcp-zoom-1.image" alt="在这里插入图片描述" class="lazyload"><br>没错！这是之前提案要增加的东西，不用写setup函数，也不用导出变量！瞬间感觉好爽有没有。<a href="https://github.com/vuejs/rfcs/pull/182" target="_blank" rel="noopener">提案Github地址</a><br>在控制台也可以发现warning。<br><img data-sizes="auto" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/83b411f25b324c57af24c685ff490d73~tplv-k3u1fbpfcp-zoom-1.image" alt="在这里插入图片描述" class="lazyload"></p>
+<h2 id="配置element-plus"><a href="#配置element-plus" class="headerlink" title="配置element-plus"></a>配置element-plus</h2><p>配置其实可以参考<a href="https://element-plus.org/#/zh-CN/component/quickstart" target="_blank" rel="noopener">官网</a>来进行，但是众所周知官网的东西也会有不少的坑，所以我还是奉上我的踩坑提醒。</p>
+<h4 id="一、安装element-plus"><a href="#一、安装element-plus" class="headerlink" title="一、安装element-plus"></a>一、安装element-plus</h4><pre><code class="highlight sql">NPM：
+npm <span class="keyword">install</span> <span class="keyword">element</span>-plus <span class="comment">--save</span>
+YARN：
+npm <span class="keyword">add</span> <span class="keyword">element</span>-plus</code></pre>
+<p>接下来就是看你自己的需求了，分别可以进行全量引入或者是按需引入。</p>
+<h4 id="二、全量引入"><a href="#二、全量引入" class="headerlink" title="二、全量引入"></a>二、全量引入</h4><p>你需要在main.js文件中写入以下内容：</p>
+<pre><code class="highlight javascript"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">'vue'</span>
+<span class="keyword">import</span> ElementPlus <span class="keyword">from</span> <span class="string">'element-plus'</span>;
+<span class="keyword">import</span> <span class="string">'element-plus/lib/theme-chalk/index.css'</span>;
+<span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span>;
+
+<span class="keyword">const</span> app = createApp(App)
+app.use(ElementPlus)
+app.mount(<span class="string">'#app'</span>)</code></pre>
+<p>即可完成全量引入。</p>
+<h4 id="三、按需引入"><a href="#三、按需引入" class="headerlink" title="三、按需引入"></a>三、按需引入</h4><p>都知道全量引入会导致项目过大，如果不是所有组件都使用的上的话，还是使用按需引入比较好。<strong>（注：本来主要讲的是vite，按需引入是vite的方式，cli的方式可以参照官网）</strong>，首先我们需要安装一个插件：** vite-plugin-style-import**</p>
+<pre><code class="highlight armasm"><span class="symbol">yarn</span> <span class="keyword">add </span>vite-plugin-style-<span class="meta">import</span> -D</code></pre>
+
+<p>因为element-plus提供<strong>Sass预编译</strong>的方式，接着我们需要在项目安装下面两个：</p>
+<pre><code class="highlight dockerfile">yarn <span class="keyword">add</span><span class="bash"> sass sass-loader</span></code></pre>
+<p>接着我们在 vite.config.js 文件修改成下面内容：</p>
+<pre><code class="highlight javascript"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">'vite'</span>
+<span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">'@vitejs/plugin-vue'</span>
+<span class="keyword">import</span> styleImport <span class="keyword">from</span> <span class="string">'vite-plugin-style-import'</span>
+
+<span class="keyword">export</span> <span class="keyword">default</span> defineConfig(&#123;
+  plugins: [
+    vue(),
+    styleImport(&#123;
+      libs: [&#123;
+        libraryName: <span class="string">'element-plus'</span>,
+        resolveStyle: <span class="function">(<span class="params">name</span>) =&gt;</span> &#123;
+          name = name.slice(<span class="number">3</span>)   <span class="comment">// 这里有个彩蛋，官网居然是用splice的，没错用的是数组方法。</span>
+          <span class="keyword">return</span> <span class="string">`element-plus/packages/theme-chalk/src/<span class="subst">$&#123;name&#125;</span>.scss`</span>;
+        &#125;,
+        resolveComponent: <span class="function">(<span class="params">name</span>) =&gt;</span> &#123;
+          <span class="keyword">return</span> <span class="string">`element-plus/lib/<span class="subst">$&#123;name&#125;</span>`</span>;
+        &#125;,
+      &#125;]
+    &#125;)
+  ]
+&#125;)</code></pre>
+<p>同时，你需要在main.js中引入下面</p>
+<pre><code class="highlight xl"><span class="keyword">import</span> 'element-plus/packages/<span class="built_in">theme</span>-chalk/src/base.scss'</code></pre>
+
+<p>如果你项目不适用<strong>Sass</strong>的话，那就相对简单了，直接在vite.config.js修改为：</p>
+<pre><code class="highlight javascript"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">'vite'</span>
+<span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">'@vitejs/plugin-vue'</span>
+<span class="keyword">import</span> styleImport <span class="keyword">from</span> <span class="string">'vite-plugin-style-import'</span>
+
+<span class="keyword">export</span> <span class="keyword">default</span> defineConfig(&#123;
+  plugins: [
+    vue(),
+    styleImport(&#123;
+      libs: [
+        &#123;
+          libraryName: <span class="string">'element-plus'</span>,
+          resolveStyle: <span class="function">(<span class="params">name</span>) =&gt;</span> &#123;
+            <span class="keyword">return</span> <span class="string">`element-plus/lib/theme-chalk/<span class="subst">$&#123;name&#125;</span>.css`</span>;
+          &#125;,
+          resolveComponent: <span class="function">(<span class="params">name</span>) =&gt;</span> &#123;
+            <span class="keyword">return</span> <span class="string">`element-plus/lib/<span class="subst">$&#123;name&#125;</span>`</span>;
+          &#125;,
+        &#125;
+      ]
+    &#125;)
+  ]
+&#125;)</code></pre>
+<p><strong>不知道你有没有注意到，在Sass的方式引入需要将name切掉前三个的方式引入sass文件，其实直接去node_modules中查看相关目录可以发现，sass文件是没有以el-开头的，而css文件是以el-开头的，所以需要切掉前三个。</strong></p>
+<p>然后我在src的目录下创建了一个文件夹叫<strong>plugins</strong>，在文件夹下创建了<strong>elementPlus.js</strong>文件，接着文件内容如下：</p>
+<pre><code class="highlight autohotkey">import &#123;
+<span class="built_in">  ElAlert,</span>
+<span class="built_in">  ElAside,</span>
+<span class="built_in">  ElAutocomplete,</span>
+<span class="built_in">  ElAvatar,</span>
+<span class="built_in">  ElBacktop,</span>
+<span class="built_in">  ElBadge,</span>
+<span class="built_in">  ElBreadcrumb,</span>
+<span class="built_in">  ElBreadcrumbItem,</span>
+<span class="built_in">  ElButton,</span>
+<span class="built_in">  ElButtonGroup,</span>
+<span class="built_in">  ElCalendar,</span>
+<span class="built_in">  ElCard,</span>
+<span class="built_in">  ElCarousel,</span>
+<span class="built_in">  ElCarouselItem,</span>
+<span class="built_in">  ElCascader,</span>
+<span class="built_in">  ElCascaderPanel,</span>
+<span class="built_in">  ElCheckbox,</span>
+<span class="built_in">  ElCheckboxButton,</span>
+<span class="built_in">  ElCheckboxGroup,</span>
+<span class="built_in">  ElCol,</span>
+<span class="built_in">  ElCollapse,</span>
+<span class="built_in">  ElCollapseItem,</span>
+<span class="built_in">  ElCollapseTransition,</span>
+<span class="built_in">  ElColorPicker,</span>
+<span class="built_in">  ElContainer,</span>
+<span class="built_in">  ElDatePicker,</span>
+<span class="built_in">  ElDialog,</span>
+<span class="built_in">  ElDivider,</span>
+<span class="built_in">  ElDrawer,</span>
+<span class="built_in">  ElDropdown,</span>
+<span class="built_in">  ElDropdownItem,</span>
+<span class="built_in">  ElDropdownMenu,</span>
+<span class="built_in">  ElFooter,</span>
+<span class="built_in">  ElForm,</span>
+<span class="built_in">  ElFormItem,</span>
+<span class="built_in">  ElHeader,</span>
+<span class="built_in">  ElIcon,</span>
+<span class="built_in">  ElImage,</span>
+<span class="built_in">  ElInput,</span>
+<span class="built_in">  ElInputNumber,</span>
+<span class="built_in">  ElLink,</span>
+<span class="built_in">  ElMain,</span>
+<span class="built_in">  ElMenu,</span>
+<span class="built_in">  ElMenuItem,</span>
+<span class="built_in">  ElMenuItemGroup,</span>
+<span class="built_in">  ElOption,</span>
+<span class="built_in">  ElOptionGroup,</span>
+<span class="built_in">  ElPageHeader,</span>
+<span class="built_in">  ElPagination,</span>
+<span class="built_in">  ElPopconfirm,</span>
+<span class="built_in">  ElPopover,</span>
+<span class="built_in">  ElPopper,</span>
+<span class="built_in">  ElProgress,</span>
+<span class="built_in">  ElRadio,</span>
+<span class="built_in">  ElRadioButton,</span>
+<span class="built_in">  ElRadioGroup,</span>
+<span class="built_in">  ElRate,</span>
+<span class="built_in">  ElRow,</span>
+<span class="built_in">  ElScrollbar,</span>
+<span class="built_in">  ElSelect,</span>
+<span class="built_in">  ElSlider,</span>
+<span class="built_in">  ElStep,</span>
+<span class="built_in">  ElSteps,</span>
+<span class="built_in">  ElSubmenu,</span>
+<span class="built_in">  ElSwitch,</span>
+<span class="built_in">  ElTabPane,</span>
+<span class="built_in">  ElTable,</span>
+<span class="built_in">  ElTableColumn,</span>
+<span class="built_in">  ElTabs,</span>
+<span class="built_in">  ElTag,</span>
+<span class="built_in">  ElTimePicker,</span>
+<span class="built_in">  ElTimeSelect,</span>
+<span class="built_in">  ElTimeline,</span>
+<span class="built_in">  ElTimelineItem,</span>
+<span class="built_in">  ElTooltip,</span>
+<span class="built_in">  ElTransfer,</span>
+<span class="built_in">  ElTree,</span>
+<span class="built_in">  ElUpload,</span>
+<span class="built_in">  ElInfiniteScroll,</span>
+<span class="built_in">  ElLoading,</span>
+<span class="built_in">  ElMessage,</span>
+<span class="built_in">  ElMessageBox,</span>
+<span class="built_in">  ElNotification,</span>
+&#125; from 'element-plus'
+
+const components = [
+<span class="built_in">  ElAlert,</span>
+<span class="built_in">  ElAside,</span>
+<span class="built_in">  ElAutocomplete,</span>
+<span class="built_in">  ElAvatar,</span>
+<span class="built_in">  ElBacktop,</span>
+<span class="built_in">  ElBadge,</span>
+<span class="built_in">  ElBreadcrumb,</span>
+<span class="built_in">  ElBreadcrumbItem,</span>
+<span class="built_in">  ElButton,</span>
+<span class="built_in">  ElButtonGroup,</span>
+<span class="built_in">  ElCalendar,</span>
+<span class="built_in">  ElCard,</span>
+<span class="built_in">  ElCarousel,</span>
+<span class="built_in">  ElCarouselItem,</span>
+<span class="built_in">  ElCascader,</span>
+<span class="built_in">  ElCascaderPanel,</span>
+<span class="built_in">  ElCheckbox,</span>
+<span class="built_in">  ElCheckboxButton,</span>
+<span class="built_in">  ElCheckboxGroup,</span>
+<span class="built_in">  ElCol,</span>
+<span class="built_in">  ElCollapse,</span>
+<span class="built_in">  ElCollapseItem,</span>
+<span class="built_in">  ElCollapseTransition,</span>
+<span class="built_in">  ElColorPicker,</span>
+<span class="built_in">  ElContainer,</span>
+<span class="built_in">  ElDatePicker,</span>
+<span class="built_in">  ElDialog,</span>
+<span class="built_in">  ElDivider,</span>
+<span class="built_in">  ElDrawer,</span>
+<span class="built_in">  ElDropdown,</span>
+<span class="built_in">  ElDropdownItem,</span>
+<span class="built_in">  ElDropdownMenu,</span>
+<span class="built_in">  ElFooter,</span>
+<span class="built_in">  ElForm,</span>
+<span class="built_in">  ElFormItem,</span>
+<span class="built_in">  ElHeader,</span>
+<span class="built_in">  ElIcon,</span>
+<span class="built_in">  ElImage,</span>
+<span class="built_in">  ElInput,</span>
+<span class="built_in">  ElInputNumber,</span>
+<span class="built_in">  ElLink,</span>
+<span class="built_in">  ElMain,</span>
+<span class="built_in">  ElMenu,</span>
+<span class="built_in">  ElMenuItem,</span>
+<span class="built_in">  ElMenuItemGroup,</span>
+<span class="built_in">  ElOption,</span>
+<span class="built_in">  ElOptionGroup,</span>
+<span class="built_in">  ElPageHeader,</span>
+<span class="built_in">  ElPagination,</span>
+<span class="built_in">  ElPopconfirm,</span>
+<span class="built_in">  ElPopover,</span>
+<span class="built_in">  ElPopper,</span>
+<span class="built_in">  ElProgress,</span>
+<span class="built_in">  ElRadio,</span>
+<span class="built_in">  ElRadioButton,</span>
+<span class="built_in">  ElRadioGroup,</span>
+<span class="built_in">  ElRate,</span>
+<span class="built_in">  ElRow,</span>
+<span class="built_in">  ElScrollbar,</span>
+<span class="built_in">  ElSelect,</span>
+<span class="built_in">  ElSlider,</span>
+<span class="built_in">  ElStep,</span>
+<span class="built_in">  ElSteps,</span>
+<span class="built_in">  ElSubmenu,</span>
+<span class="built_in">  ElSwitch,</span>
+<span class="built_in">  ElTabPane,</span>
+<span class="built_in">  ElTable,</span>
+<span class="built_in">  ElTableColumn,</span>
+<span class="built_in">  ElTabs,</span>
+<span class="built_in">  ElTag,</span>
+<span class="built_in">  ElTimePicker,</span>
+<span class="built_in">  ElTimeSelect,</span>
+<span class="built_in">  ElTimeline,</span>
+<span class="built_in">  ElTimelineItem,</span>
+<span class="built_in">  ElTooltip,</span>
+<span class="built_in">  ElTransfer,</span>
+<span class="built_in">  ElTree,</span>
+<span class="built_in">  ElUpload,</span>
+]
+
+const plugins = [
+<span class="built_in">  ElInfiniteScroll,</span>
+<span class="built_in">  ElLoading,</span>
+<span class="built_in">  ElMessage,</span>
+<span class="built_in">  ElMessageBox,</span>
+<span class="built_in">  ElNotification,</span>
+]
+
+<span class="title">const option = &#123; size: 'small', zIndex:</span> <span class="number">3000</span> &#125;
+
+export const useElementPlus = (app) =&gt; &#123;
+  // element全局配置
+  app.config.globalProperties.$ELEMENT = option
+  // 组件注册
+  components.forEach((component) =&gt; &#123;
+    app.component(component.name, component)
+  &#125;)
+  // 插件注册
+  plugins.forEach((plugin) =&gt; &#123;
+    app.use(plugin)
+  &#125;)
+&#125;</code></pre>
+<p>注意，我这个文件其实全量引入的，自己按照自己的需求修改。同时值得说的是，在这个文件我导出了一个useElementPlus的方法。然后回到main.js中，内容如下：</p>
+<pre><code class="highlight javascript"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">'vue'</span>
+<span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span>
+<span class="keyword">import</span> <span class="string">'element-plus/packages/theme-chalk/src/base.scss'</span>
+<span class="keyword">import</span> &#123; useElementPlus &#125; <span class="keyword">from</span> <span class="string">'./plugins/elementPlus.js'</span>
+<span class="keyword">const</span> app = createApp(App)
+useElementPlus(app)
+app.mount(<span class="string">'#app'</span>)</code></pre>
+<p>应该不难理解，就是将vue实例放到useElementPlus方法中，然后在elementPlus文件中完成相关组件以及插件的注册。这样，我们的main.js文件会更加清晰。至此就完成了所有element-plus的配置。</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>后面会完善加入<strong>vuex</strong>和<strong>vue-router</strong>。本文的完整配置将放在<a href="https://gitee.com/radiomm/vue-vite-element-plus" target="_blank" rel="noopener">这里</a>。</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/%E9%82%A3%E4%BA%9B%E7%83%A6%E4%BA%BA%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/" rel="tag">那些烦人的项目搭建</a>
+    
+</div>
+
+  <!-- 开启评论和文章版权声明 -->
+  <div class="nexmoe-post-footer">
+    <!-- 
+      
+  <div class="nexmoe-post-copyright">
+    
+    <strong>本文作者：</strong>RadiomM<br>
+    <strong>本文链接：</strong><a href="http://yoursite.com/2021/04/06/vite-vue-elementplus%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2021&#x2F;04&#x2F;06&#x2F;vite-vue-elementplus%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2021&#x2F;04&#x2F;06&#x2F;vite-vue-elementplus%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+     -->
+    <!-- comment开启文章评论 -->
+     
+  </div>
+</div>
+    </div>
+  </div>
+  <div id="music-wrapper"></div>
+<script
+    src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1633917914753"></script>-->
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/aplayer.js"></script>
+
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?1f8c7b61089021ddab0a2109105def2b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
