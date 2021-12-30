@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" >
+
+<head>
+  
+  <title>手动实现一个v-model的不同做法(含封装组件用法) - RadiomM的博客世界</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="web前端开发的有趣学习者">
+  <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="1f8c7b61089021ddab0a2109105def2b" />
+
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
+  <meta name="description" content="由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了一个如何手动一个v-model的问题，由此展开了学习。在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手动实现一个v-model的不同做法(含封装组件用法)">
+<meta property="og:url" content="http://example.com/2020/03/08/model/index.html">
+<meta property="og:site_name" content="RadiomM的博客世界">
+<meta property="og:description" content="由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了一个如何手动一个v-model的问题，由此展开了学习。在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2020/03/08/model/model.png">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2806247738c34c798d679ca4ad7c527d~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="article:published_time" content="2020-03-08T02:02:42.000Z">
+<meta property="article:modified_time" content="2021-10-11T02:36:13.263Z">
+<meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/03/08/model/model.png">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css"
+    crossorigin>
+  
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
+  <!--<link rel="stylesheet" href="/css/style.css?v=1640828886028">-->
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i
+            class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img
+            src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM"></a>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+    <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="RadiomM">
+            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>15</div>
+        <div><span>标签</span>10</div>
+        <div><span>分类</span>1</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about" title="个人简介">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                个人简介
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=https://architectmymine.github.io" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        
+        <a class="mdui-ripple" href="https://space.bilibili.com/86206061"
+            target="_blank" mdui-tooltip="{content: '哔哩哔哩'}"
+            style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a>
+        <a class="mdui-ripple" href="https://github.com/architectMymine"
+            target="_blank" mdui-tooltip="{content: 'GitHub'}"
+            style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+        <a class="mdui-ripple" href="tencent://message/?uin=516782176&Site=&Menu=yes"
+            target="_blank" mdui-tooltip="{content: 'QQ'}"
+            style="color: rgb(27,193,250);background-color: rgba(27,193,250, .15);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web前端/">web前端</a>
+          <span class="category-list-count">15</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/tags/VScode/" style="font-size: 10px;">VScode</a> <a href="/tags/Wx%E7%94%9F%E6%80%81%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/" style="font-size: 10px;">Wx生态的那些事</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/git/" style="font-size: 15px;">git</a> <a href="/tags/vue/" style="font-size: 15px;">vue</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E7%83%A6%E4%BA%BA%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/" style="font-size: 15px;">那些烦人的项目搭建</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E8%AE%A8%E4%BA%BA%E5%8E%8C%E7%9A%84%E9%9C%80%E6%B1%82/" style="font-size: 10px;">那些讨人厌的需求</a>
+    </div>
+    
+  </div>
+
+  
+  <!-- 
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+    </div>
+  </div>
+ -->
+
+<!-- 文件归档 -->
+  
+  <style>
+    .about-me {
+        margin: 5px 0;
+    }
+
+    .music-wrapper {
+        box-shadow: 0 0 1rem rgba(161, 177, 204, .4);
+        background-color: #fff;
+        margin: 20px;
+        overflow: hidden;
+        white-space: normal;
+    }
+    .music-wrapper .aplayer{
+        height: auto !important;
+        margin: 0 !important;
+    }
+    .music-wrapper .aplayer .aplayer-body{
+        padding-bottom: 10px;
+    }
+    .music-wrapper .aplayer.aplayer-withlrc .aplayer-pic{
+        /* width: 95px;
+        height: 95px; */
+    }
+    .music-wrapper .aplayer.aplayer-withlist .aplayer-info{
+        /* margin-left: 95px;
+        height: 95px; */
+        border: none;
+    }
+</style>
+<div class="music-wrapper">
+    <div id="player"></div>
+</div>
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 RadiomM
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+        <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
+    </div>
+</div><!-- .nexmoe-drawer -->
+
+
+
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+      <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 56.25%;"> 
+          <img data-src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/cover/2020-03-08.jpg" data-sizes="auto" alt="手动实现一个v-model的不同做法(含封装组件用法)" class="lazyload">
+          <h1>手动实现一个v-model的不同做法(含封装组件用法)</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年03月08日</a>
+    <a><i class="nexmoefont icon-areachart"></i>2k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 10 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">一、最简单的实现方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BD%BF%E7%94%A8watch%E5%92%8C-emit%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">二、使用watch和$emit实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BD%BF%E7%94%A8%E6%9C%80%E6%96%B0%E7%9A%84%E8%AF%AD%E6%B3%95%EF%BC%8Cmodel%E5%B1%9E%E6%80%A7%E3%80%82"><span class="toc-number">3.</span> <span class="toc-text">三、使用最新的语法，model属性。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%A0%B7%E7%9A%84%EF%BC%8C%E8%BF%99%E9%87%8C%E4%B9%9F%E8%B4%B4%E5%87%BA%E4%BD%BF%E7%94%A8%E6%96%B0%E5%B1%9E%E6%80%A7%E5%90%8E%EF%BC%8C%E5%9C%A8%E4%BD%BF%E7%94%A8wacth%E6%98%AF%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%EF%BC%8C%E4%B9%9F%E6%98%AF%E5%8F%AA%E6%98%AF%E4%BF%AE%E6%94%B9%E4%BA%86son%E7%BB%84%E4%BB%B6"><span class="toc-number">3.1.</span> <span class="toc-text">同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%89%B2%E7%BA%BF"><span class="toc-number">4.</span> <span class="toc-text">分割线</span></a></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <p>由于疫情的原因啊，我猜大多数人都跟我一样，在家里度过，偶尔学习学习。这不，我遇到了<strong>一个如何手动一个v-model</strong>的问题，由此展开了学习。<br>在开始之前我们先需要知道一些知识，v-model是一个语法糖，如下：</p>
+<span id="more"></span>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=&quot;text&quot; v-model=&quot;name&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>实则是等于下面的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=&quot;text&quot; :value=&quot;name&quot; @input=&quot;name=$event.target.value&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>也就是说，v-model就是<strong>绑定了一个名为value的props和一个事件input</strong><br>            注意：所以在子组件中可以通过props中定义value接受值，然后通过$emit触发input事件传新值并修改。 </p>
+<p>知道了这个知识之后啊，那么我们就开始实现一个自定义的v-model啦~~~~~~</p>
+<h2 id="一、最简单的实现方法"><a href="#一、最简单的实现方法" class="headerlink" title="一、最简单的实现方法"></a>一、最简单的实现方法</h2><p>首先是父组件的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;&quot;&gt;</span><br><span class="line">      &lt;p&gt;&#123;&#123;name&#125;&#125;&lt;/p&gt;</span><br><span class="line">      &lt;son v-model=&quot;name&quot;&gt;&lt;/son&gt;</span><br><span class="line">      &lt;!-- 等同于下面 --&gt;</span><br><span class="line">      &lt;!-- &lt;son type=&quot;text&quot; :value=&quot;name&quot; @input=&quot;name=子组件传回来的值&quot;&gt; --&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">import Son from &#x27;./son&#x27;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;&quot;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">        name:&#x27;ydw&#x27;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  components: &#123;</span><br><span class="line">      Son</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后是子组件的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class&gt;</span><br><span class="line">      &lt;input type=&quot;text&quot; :value=&quot;value&quot; @input=&quot;$emit(&#x27;input&#x27;,$event.target.value)&quot;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;&quot;,</span><br><span class="line">  props:&#123;</span><br><span class="line">      value:&#123;</span><br><span class="line">          type: String,</span><br><span class="line">          defalut () </span><br><span class="line">              return &#x27;&#x27;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  components: &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>父组件中我加了一个注释的代码行，其实是帮助我自己理解的，不知道有没有小伙伴跟我一样，第一次看的时候压根不知道它在做什么的？哭唧唧。</p>
+<h2 id="二、使用watch和-emit实现"><a href="#二、使用watch和-emit实现" class="headerlink" title="二、使用watch和$emit实现"></a>二、使用watch和$emit实现</h2><p>跟上面的一个有些类似，只不过上面是用本身input事件的作用，通过input事件的频发触发传递值给父组件，这里只是将这个过程换成了通过watch监听值得变化，然后通过input事件触发函数事件，函数事件里提交变化的值给父组件。好了，我只需要修改子组件，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; :value=&quot;sonVal&quot; @input=&quot;handleModel&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;&quot;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    value: &#123;</span><br><span class="line">      type: String,</span><br><span class="line">      defalut() &#123;</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      sonVal:this.value</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    value(newval) &#123;</span><br><span class="line">      this.sonVal = newval</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods:&#123;</span><br><span class="line">    handleModel(e)&#123;</span><br><span class="line">        this.sonVal = e.target.value</span><br><span class="line">        this.$emit(&#x27;input&#x27;,this.sonVal)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>通过watch监听props值得变化，赋值给子组件本身定义的sonVal，绑定在input里。然后利用input事件触发函数，提交到父组件。</p>
+<h2 id="三、使用最新的语法，model属性。"><a href="#三、使用最新的语法，model属性。" class="headerlink" title="三、使用最新的语法，model属性。"></a>三、使用最新的语法，model属性。</h2><p>本来我是不知道有这个属性的，就是在网上搜索关于v-model实现方法的时候，就不知不觉的查到这个属性，查看官方文档如下：<br><img data-sizes="auto" data-src="./model.png" alt="avatar" class="lazyload"></p>
+<p>也就是说这个属性是为了回避props定义的value这个名字的。</p>
+<p>下面看看它的用法，我们先看子组件怎么修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; :value=&quot;val&quot; @input=&quot;$emit(&#x27;change&#x27;,$event.target.value)&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;&quot;,</span><br><span class="line">  model:&#123;</span><br><span class="line">    prop:&#x27;val&#x27;,</span><br><span class="line">    event:&#x27;change&#x27;</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    val: &#123;</span><br><span class="line">      type: String,</span><br><span class="line">      defalut() &#123;</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>model属性中prop是重新命名传值的名字，而event则是重新命名事件的名字，但是同样的，props中的传值名字必须与model属性中的prop的名字一样。其实只要对比一下第一种方法就知道，vue多出一个model属性是为了value这个名字可以使用。</p>
+<h3 id="同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件"><a href="#同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件" class="headerlink" title="同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件"></a>同样的，这里也贴出使用新属性后，在使用wacth是什么样的，也是只是修改了son组件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; :value=&quot;sonVal&quot; @input=&quot;handleModel&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;&quot;,</span><br><span class="line">  model:&#123;</span><br><span class="line">    prop:&#x27;val&#x27;,</span><br><span class="line">    event:&#x27;change&#x27;</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    val: &#123;</span><br><span class="line">      type: String,</span><br><span class="line">      defalut() &#123;</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      sonVal:this.val</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    value(newval) &#123;</span><br><span class="line">      this.sonVal = newval</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods:&#123;</span><br><span class="line">    handleModel(e)&#123;</span><br><span class="line">        this.sonVal = e.target.value</span><br><span class="line">        this.$emit(&#x27;change&#x27;,this.sonVal)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h2><p>距离文章发布已经有半年多的时间了，最近用vue2.0封装elementUI，在封装form表单的时候恰巧用上了这个吃灰许久的东西记录一下。</p>
+<p>首先讲我简单的封装代码上来：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;form-container&quot;&gt;</span><br><span class="line">    &lt;el-form</span><br><span class="line">      :model=&quot;filterObject&quot;</span><br><span class="line">      label-position=&quot;left&quot;</span><br><span class="line">      :label-width=&quot;labelWidth&quot;</span><br><span class="line">    &gt;</span><br><span class="line">      &lt;el-row :gutter=&quot;10&quot;&gt;</span><br><span class="line">        &lt;el-col</span><br><span class="line">          v-for=&quot;item in formData&quot;</span><br><span class="line">          :key=&quot;item.prop&quot;</span><br><span class="line">          :span=&quot;item.span || 8&quot;</span><br><span class="line">        &gt;</span><br><span class="line">          &lt;el-form-item :label=&quot;item.label&quot;&gt;</span><br><span class="line">            &lt;el-input</span><br><span class="line">              v-if=&quot;item.type === &#x27;text&#x27;&quot;</span><br><span class="line">              v-model=&quot;filterObject[item.prop]&quot;</span><br><span class="line">              clearable</span><br><span class="line">              :disabled=&quot;item.disabled || false&quot;</span><br><span class="line">              :placeholder=&quot;item.placeholder&quot;</span><br><span class="line">            &gt;&lt;/el-input&gt;</span><br><span class="line"></span><br><span class="line">            &lt;el-select</span><br><span class="line">              v-if=&quot;item.type === &#x27;select&#x27;&quot;</span><br><span class="line">              v-model=&quot;filterObject[item.prop]&quot;</span><br><span class="line">              clearable</span><br><span class="line">              :placeholder=&quot;item.placeholder&quot;</span><br><span class="line">              @change=&quot;handleChange&quot;</span><br><span class="line">            &gt;</span><br><span class="line">              &lt;el-option</span><br><span class="line">                v-for=&quot;sub in item.arr&quot;</span><br><span class="line">                :key=&quot;sub.value&quot;</span><br><span class="line">                :label=&quot;sub.label&quot;</span><br><span class="line">                :value=&quot;sub.value&quot;</span><br><span class="line">              &gt;&lt;/el-option&gt;</span><br><span class="line">            &lt;/el-select&gt;</span><br><span class="line">          &lt;/el-form-item&gt;</span><br><span class="line">        &lt;/el-col&gt;</span><br><span class="line">      &lt;/el-row&gt;</span><br><span class="line">    &lt;/el-form&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  model: &#123;</span><br><span class="line">    prop: &#x27;filterObject&#x27;,</span><br><span class="line">    event: &#x27;change&#x27;,</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    filterObject: &#123;</span><br><span class="line">      type: Object,</span><br><span class="line">      default() &#123;</span><br><span class="line">        return &#123;&#125;</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    labelWidth: &#123;</span><br><span class="line">      type: String,</span><br><span class="line">      default: &#x27;80px&#x27;,</span><br><span class="line">    &#125;,</span><br><span class="line">    formData: &#123;</span><br><span class="line">      type: Array,</span><br><span class="line">      default() &#123;</span><br><span class="line">        return []</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    handleChange() &#123;</span><br><span class="line">      console.log(this.filterObject)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>其中的filterObject就是今天的主角了，我的想法是在父组件直接传递一个对象进来，在进行相关操作的时候，父组件直接可以在外面用到这些值，而不是通过子组件暴露方法获取这些值。(ps:在封装search组件的时候可以这么做，向外暴露search，reset方法可以暴露子组件里面的值。其实封装search跟这个form有点相似，都是用elementUI的form表单来封装的。)</p>
+<p>接下来是父组件的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;home&quot;&gt;</span><br><span class="line">    &lt;HHform</span><br><span class="line">      :formData=&quot;searchOptions&quot;</span><br><span class="line">      labelWidth=&quot;120px&quot;</span><br><span class="line">      v-model=&quot;filterObject&quot;</span><br><span class="line">    &gt;&lt;/HHform&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import HHform from &#x27;@/components/HH-form&#x27;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &#x27;Home&#x27;,</span><br><span class="line">  components: &#123;</span><br><span class="line">    HHform,</span><br><span class="line">  &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      searchOptions: [</span><br><span class="line">        &#123;</span><br><span class="line">          type: &#x27;select&#x27;,</span><br><span class="line">          prop: &#x27;status&#x27;,</span><br><span class="line">          label: &#x27;状态：&#x27;,</span><br><span class="line">          span: 5,</span><br><span class="line">          placeholder: &#x27;请选择&#x27;,</span><br><span class="line">          arr: [</span><br><span class="line">            &#123;</span><br><span class="line">              value: &#x27;&#x27;,</span><br><span class="line">              label: &#x27;全部招生顾问&#x27;,</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">              value: 1,</span><br><span class="line">              label: &#x27;正常招顾&#x27;,</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">              value: 2,</span><br><span class="line">              label: &#x27;冻结招顾&#x27;,</span><br><span class="line">            &#125;,</span><br><span class="line">          ],</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          type: &#x27;select&#x27;,</span><br><span class="line">          prop: &#x27;region&#x27;,</span><br><span class="line">          label: &#x27;地区：&#x27;,</span><br><span class="line">          span: 5,</span><br><span class="line">          placeholder: &#x27;请选择&#x27;,</span><br><span class="line">          arr: [],</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          type: &#x27;text&#x27;,</span><br><span class="line">          prop: &#x27;userName&#x27;,</span><br><span class="line">          span: 8,</span><br><span class="line">          label: &#x27;招生顾问名称：&#x27;,</span><br><span class="line">          placeholder: &#x27;选择或输入搜索&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          type: &#x27;text&#x27;,</span><br><span class="line">          prop: &#x27;phone&#x27;,</span><br><span class="line">          label: &#x27;手机号：&#x27;,</span><br><span class="line">          span: 5,</span><br><span class="line">          placeholder: &#x27;选择或输入搜索&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">      ],</span><br><span class="line">      filterObject: &#123;&#125;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;&#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>父组件的代码比较简单，直接通过v-model传值过去就行了。下面是演示效果。</p>
+<p><img data-sizes="auto" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2806247738c34c798d679ca4ad7c527d~tplv-k3u1fbpfcp-zoom-1.image" alt="gif" class="lazyload"></p>
+<p>目前封装form组件的时候是使用这种方法，父组件直接传值的话，不需要子组件提供方法返回值。在封装search组件的时候则是使用子组件暴露方法的方式拿到值的，为什么这么做呢？因为在进行搜索的时候一定会暴露search跟reset方法，这时候带出去就行了。时隔多个月终于是用上的东西，特地记录下来，希望可以帮助正在封装组件的你。喜欢的可以点个赞或者收藏呗。</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/vue/" rel="tag">vue</a>
+    
+</div>
+
+  <!-- 开启评论和文章版权声明 -->
+  <div class="nexmoe-post-footer">
+    <!-- 
+      
+  <div class="nexmoe-post-copyright">
+    
+    <strong>本文作者：</strong>RadiomM<br>
+    <strong>本文链接：</strong><a href="http://example.com/2020/03/08/model/" title="http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;03&#x2F;08&#x2F;model&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;03&#x2F;08&#x2F;model&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+     -->
+    <!-- comment开启文章评论 -->
+     
+  </div>
+</div>
+    </div>
+  </div>
+  <div id="music-wrapper"></div>
+<script
+    src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1640828886029"></script>-->
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/aplayer.js"></script>
+
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?1f8c7b61089021ddab0a2109105def2b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>

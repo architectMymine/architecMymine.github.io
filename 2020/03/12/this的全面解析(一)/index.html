@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" >
+
+<head>
+  
+  <title>建议改成：this的全面解析(一) - RadiomM的博客世界</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="web前端开发的有趣学习者">
+  <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="1f8c7b61089021ddab0a2109105def2b" />
+
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
+  <meta name="description" content="article p{     font-size:16px;     line-height:28px; }    嗨，大家好！过了那么几天我又开始写文章了，这次给大家带来的是this的全面解析。会不会有人会问，怎么突然就这么高产了？其实是这样的，因为这次疫情的出现，让我原本的计划出现了变动，当然也让我认清了我小公司的老板是多么的抠门。所以接下来的文章，基本都是会写一些面试多次会考的问题。当然，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="建议改成：this的全面解析(一)">
+<meta property="og:url" content="http://example.com/2020/03/12/this%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="RadiomM的博客世界">
+<meta property="og:description" content="article p{     font-size:16px;     line-height:28px; }    嗨，大家好！过了那么几天我又开始写文章了，这次给大家带来的是this的全面解析。会不会有人会问，怎么突然就这么高产了？其实是这样的，因为这次疫情的出现，让我原本的计划出现了变动，当然也让我认清了我小公司的老板是多么的抠门。所以接下来的文章，基本都是会写一些面试多次会考的问题。当然，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-12T05:27:24.000Z">
+<meta property="article:modified_time" content="2021-10-11T02:36:13.263Z">
+<meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css"
+    crossorigin>
+  
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
+  <!--<link rel="stylesheet" href="/css/style.css?v=1640828886025">-->
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i
+            class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img
+            src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM"></a>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+    <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="RadiomM">
+            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>15</div>
+        <div><span>标签</span>10</div>
+        <div><span>分类</span>1</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about" title="个人简介">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                个人简介
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=https://architectmymine.github.io" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        
+        <a class="mdui-ripple" href="https://space.bilibili.com/86206061"
+            target="_blank" mdui-tooltip="{content: '哔哩哔哩'}"
+            style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a>
+        <a class="mdui-ripple" href="https://github.com/architectMymine"
+            target="_blank" mdui-tooltip="{content: 'GitHub'}"
+            style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+        <a class="mdui-ripple" href="tencent://message/?uin=516782176&Site=&Menu=yes"
+            target="_blank" mdui-tooltip="{content: 'QQ'}"
+            style="color: rgb(27,193,250);background-color: rgba(27,193,250, .15);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web前端/">web前端</a>
+          <span class="category-list-count">15</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/tags/VScode/" style="font-size: 10px;">VScode</a> <a href="/tags/Wx%E7%94%9F%E6%80%81%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/" style="font-size: 10px;">Wx生态的那些事</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/git/" style="font-size: 15px;">git</a> <a href="/tags/vue/" style="font-size: 15px;">vue</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E7%83%A6%E4%BA%BA%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/" style="font-size: 15px;">那些烦人的项目搭建</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E8%AE%A8%E4%BA%BA%E5%8E%8C%E7%9A%84%E9%9C%80%E6%B1%82/" style="font-size: 10px;">那些讨人厌的需求</a>
+    </div>
+    
+  </div>
+
+  
+  <!-- 
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+    </div>
+  </div>
+ -->
+
+<!-- 文件归档 -->
+  
+  <style>
+    .about-me {
+        margin: 5px 0;
+    }
+
+    .music-wrapper {
+        box-shadow: 0 0 1rem rgba(161, 177, 204, .4);
+        background-color: #fff;
+        margin: 20px;
+        overflow: hidden;
+        white-space: normal;
+    }
+    .music-wrapper .aplayer{
+        height: auto !important;
+        margin: 0 !important;
+    }
+    .music-wrapper .aplayer .aplayer-body{
+        padding-bottom: 10px;
+    }
+    .music-wrapper .aplayer.aplayer-withlrc .aplayer-pic{
+        /* width: 95px;
+        height: 95px; */
+    }
+    .music-wrapper .aplayer.aplayer-withlist .aplayer-info{
+        /* margin-left: 95px;
+        height: 95px; */
+        border: none;
+    }
+</style>
+<div class="music-wrapper">
+    <div id="player"></div>
+</div>
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 RadiomM
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+        <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
+    </div>
+</div><!-- .nexmoe-drawer -->
+
+
+
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+      <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 56.25%;"> 
+          <img data-src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/cover/2020-03-12.jpg" data-sizes="auto" alt="建议改成：this的全面解析(一)" class="lazyload">
+          <h1>建议改成：this的全面解析(一)</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年03月12日</a>
+    <a><i class="nexmoefont icon-areachart"></i>1k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 4 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#this%E6%98%AF%E6%8C%87%E5%90%91%E7%9A%84%E6%98%AF%E8%B0%81%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">this是指向的是谁？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#this%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8C%87%E5%90%91%E5%93%AA%E9%87%8C%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">this的作用域指向哪里？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E"><span class="toc-number">2.1.</span> <span class="toc-text">声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">2.3.</span> <span class="toc-text">分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <style>
+article p{
+    font-size:16px;
+    line-height:28px;
+}
+</style>
+
+
+<p>嗨，大家好！过了那么几天我又开始写文章了，这次给大家带来的是this的全面解析。会不会有人会问，怎么突然就这么高产了？其实是这样的，因为这次疫情的出现，让我原本的计划出现了变动，当然也让我认清了我小公司的老板是多么的抠门。所以接下来的文章，基本都是会写一些面试多次会考的问题。当然，作为前端工程师，那么我们的基本功除了HTML，CSS意外，最重要的就是这个JS中的this。废话说完，那么接下来我们就开始了。</p>
+<span id="more"></span>
+
+<h2 id="this是指向的是谁？"><a href="#this是指向的是谁？" class="headerlink" title="this是指向的是谁？"></a>this是指向的是谁？</h2><p>在多数的情况下，this指向的是调用方法的那个对象。<strong>简单的说就是谁调用函数，那么this就是指向这个对象。</strong><br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var a = 1</span><br><span class="line">function foo() &#123;</span><br><span class="line">    console.log(this.a)</span><br><span class="line">&#125;</span><br><span class="line">foo() // 输出 1</span><br><span class="line"></span><br><span class="line">let obj = &#123;</span><br><span class="line">    a: 2,</span><br><span class="line">    foo:foo</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj.foo() // 输出2</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码对于老手来说应该没有什么问题。这里我对新手提点注意的点，那就是foo()的调用其实相当于window.foo()，又因为var定义的变量在<strong>非严格模式下</strong>会自动挂载到全局对象中，<strong>在浏览器中，指向 window；在 Node 中，指向 Global。（严格模式下，指向 undefined）</strong></p>
+<h2 id="this的作用域指向哪里？"><a href="#this的作用域指向哪里？" class="headerlink" title="this的作用域指向哪里？"></a>this的作用域指向哪里？</h2><p>很多新手学习JavaScript的同学来说，都会认为this指向的是函数的作用域，实际上并不是这样的，实际上你看了上面的两个例子之后，<br>你就会发现，第一个符合，而第二个却是不符合的。再看下面一个经典的题目，你可能就有点意思了。（不懂作用域的同学，之后我也会出一篇的。）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var name = &quot;zhangsan&quot;;</span><br><span class="line"></span><br><span class="line">var obj = &#123;</span><br><span class="line"></span><br><span class="line">    name:&quot;RadiomM&quot;,</span><br><span class="line"></span><br><span class="line">    fn:function() &#123; </span><br><span class="line"></span><br><span class="line">        var x = function() &#123; console.log(this.name) &#125;;</span><br><span class="line"></span><br><span class="line">        x();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj.fn() // zhangsan</span><br></pre></td></tr></table></figure>
+<p>是不是答案有点出乎了意料，这大多是因为觉得this指向函数作用域的关系，看x函数在obj对象的属性方法中定义，想当然的以为这时候调用函数x的就是这个obj对象，事实上这是大错特错的，有必要简单的说说，什么是声明，什么是调用。</p>
+<h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>看下面的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var a = 1</span><br><span class="line"></span><br><span class="line">funciton foo() &#123;</span><br><span class="line">    console.log(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>没错，就是这么简单，这就是声明函数foo。</p>
+<h3 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h3><p>看下面的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var a = 1</span><br><span class="line"></span><br><span class="line">funciton foo() &#123;</span><br><span class="line">    console.log(a)</span><br><span class="line">&#125;</span><br><span class="line">// 这就是调用</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>重要的事情说三遍，建议你大声跟着读下面的字：<br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br><strong>this的作用域是在调用时指向的，而不是声明指向的！！！！！</strong><br>实际上，你读完上面的字，你还是会疑惑，那么为什么输出的就是这个zhangsan呢？其实，我在第一个例子中<br>已经给了提示了，实际上这个x()就相当于window.x()，那么这道题就相当的明了了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>话不多说，直接抬总结上来：</p>
+<p>1、this绑定实际上是在函数被调用时发生的绑定，它的指向取决于函数在哪里被调用。</p>
+<p>2、this的作用域并不是指向函数的作用域。</p>
+<p>其实这篇文章仅仅是入门this的基础，下一篇文章我将会全面解析this的绑定规则。<br>看到这里你可能会问什么会是下一篇呢？因为我写累了啊，哈哈。<br>给大兄弟来首歌轻松轻松。（这篇文章就是在快乐气氛下写完的。学习可别忘了快乐，hasaki！）</p>
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Meting support is disabled, cannot resolve the meting tags properly.");
+			</script>
+
+<p>如果文章有错误的地方，希望小哥哥小姐姐们在评论区指出，毕竟作者的水平确实有限。</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/JavaScript/" rel="tag">JavaScript</a>
+    
+</div>
+
+  <!-- 开启评论和文章版权声明 -->
+  <div class="nexmoe-post-footer">
+    <!-- 
+      
+  <div class="nexmoe-post-copyright">
+    
+    <strong>本文作者：</strong>RadiomM<br>
+    <strong>本文链接：</strong><a href="http://example.com/2020/03/12/this%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90(%E4%B8%80)/" title="http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;03&#x2F;12&#x2F;this%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90(%E4%B8%80)&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;03&#x2F;12&#x2F;this%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90(%E4%B8%80)&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+     -->
+    <!-- comment开启文章评论 -->
+     
+  </div>
+</div>
+    </div>
+  </div>
+  <div id="music-wrapper"></div>
+<script
+    src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1640828886027"></script>-->
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/aplayer.js"></script>
+
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?1f8c7b61089021ddab0a2109105def2b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
