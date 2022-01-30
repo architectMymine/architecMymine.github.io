@@ -34,7 +34,7 @@
   
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
-  <!--<link rel="stylesheet" href="/css/style.css?v=1640829499193">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1643544244735">-->
 
   
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -62,7 +62,7 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>15</div>
+        <div><span>文章</span>16</div>
         <div><span>标签</span>10</div>
         <div><span>分类</span>1</div>
     </div>
@@ -138,7 +138,7 @@
 
         <li class="category-list-item">
           <a class="category-list-link" href="/categories/web前端/">web前端</a>
-          <span class="category-list-count">15</span>
+          <span class="category-list-count">16</span>
         </li>
 
         
@@ -163,7 +163,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">文章归档</h3>
     <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
     </div>
   </div>
  -->
@@ -205,7 +205,7 @@
   
 </aside>
     <div class="nexmoe-copyright">
-        &copy; 2021 RadiomM
+        &copy; 2022 RadiomM
         Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
         & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
         <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
@@ -246,16 +246,16 @@
   <article>
     <p>在用jquery绑定事件的时候，一般来说习惯性都是喜欢绑定匿名事件。比如下面的</p>
 <span id="more"></span>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">&lt;input type=&quot;button&quot; class=&quot;dv&quot; value=&quot;按钮&quot;&gt;</span><br><span class="line">&lt;script src=&quot;js/jquery-3.3.1.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">    $(function () &#123;</span><br><span class="line">        $(&quot;.dv&quot;).click(function () &#123;// 第一种</span><br><span class="line">            alert(&quot;Hello World&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        $(&quot;.dv&quot;).on(&quot;click&quot;,function () &#123; //第二种</span><br><span class="line">            alert(&quot;Hello World&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        $(&quot;.dv&quot;).bind(&quot;click&quot;,function () &#123;  //第三种</span><br><span class="line">            alert(&quot;Hello World&quot;);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;body&gt;<br>&lt;input type=&quot;button&quot; class=&quot;dv&quot; value=&quot;按钮&quot;&gt;<br>&lt;script src=&quot;js/jquery-3.3.1.js&quot;&gt;&lt;/script&gt;<br>&lt;script type=&quot;text/javascript&quot;&gt;<br>    $(function () &#123;<br>        $(&quot;.dv&quot;).click(function () &#123;// 第一种<br>            alert(&quot;Hello World&quot;);<br>        &#125;);<br><br>        $(&quot;.dv&quot;).on(&quot;click&quot;,function () &#123; //第二种<br>            alert(&quot;Hello World&quot;);<br>        &#125;);<br><br>        $(&quot;.dv&quot;).bind(&quot;click&quot;,function () &#123;  //第三种<br>            alert(&quot;Hello World&quot;);<br>        &#125;)<br>    &#125;)<br><br>&lt;/script&gt;<br>&lt;/body&gt;<br></code></pre></td></tr></table></figure>
 <p>由于是匿名事件，所以假如你这个事件是放在<strong>一个for循环</strong>里面的话，这样的匿名事件是会重复的叠加叠加上去，<br>之所以会叠加，<strong>是因为是匿名事件，会重复的创建空间给这个匿名事件，所以才会导致叠加，这个问题可以后面解决。</strong></p>
 <h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><h4 id="第一种"><a href="#第一种" class="headerlink" title="第一种"></a>第一种</h4><p>如果这个事件的挂载元素是一个动态创建的元素的话，就可以避免这样的事件叠加。就是说用的时候创建出来，不用的时候就删除掉这个元素，明显这样的方法会比较的麻烦，我个人也不推荐使用。</p>
 <h4 id="第二种"><a href="#第二种" class="headerlink" title="第二种"></a>第二种</h4><p>就是在绑定这个事件之前，我们先解绑之前绑定的事件，这样就可以保证每次操作的时候都是只有一个时间，具体的操作就是，如果用on绑定的事件，你就用off取消绑定，再用on绑定事件。代码如下</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;.dv&quot;).off(&quot;click&quot;).on(&quot;click&quot;,function () &#123; //第二种</span><br><span class="line">            alert(&quot;Hello World&quot;);</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">$(&quot;.dv&quot;).off(&quot;click&quot;).on(&quot;click&quot;,function () &#123; //第二种<br>            alert(&quot;Hello World&quot;);<br>        &#125;);<br></code></pre></td></tr></table></figure>
 <p>如果你用的是bind绑定的话就用unbind取消绑定，这样就可以避免使用匿名事件的时候事件会重复叠加到挂载元素中。</p>
 <h4 id="第三种"><a href="#第三种" class="headerlink" title="第三种"></a>第三种</h4><p>就是使用one来绑定事件，这样绑定的事件只会触发一次，但是如果这个事件放在循环里面的话，还是会出现问题，这是我自己遇到过的错误，具体怎么绑定事件，代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;.dv&quot;).one(&quot;click&quot;,function () &#123;  </span><br><span class="line">alert(&quot;Hello World&quot;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">$(&quot;.dv&quot;).one(&quot;click&quot;,function () &#123;  <br>alert(&quot;Hello World&quot;);<br>&#125;)<br></code></pre></td></tr></table></figure>
 <p>最后一个办法就是从根本去解决，前面说到之所以会重复绑定到这个事件，是因为匿名函数，所以你可以把这个事件放到外面来，这样在循环的过程中，指针会一直指向这个已经创建的命名函数，不会重复创建空间。具体操作如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;.dv&quot;).on(&quot;click&quot;,btn);</span><br><span class="line">       </span><br><span class="line">       function btn() &#123;</span><br><span class="line">           alert(&quot;Hello World&quot;);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">$(&quot;.dv&quot;).on(&quot;click&quot;,btn);<br>       <br>       function btn() &#123;<br>           alert(&quot;Hello World&quot;);<br>       &#125;<br></code></pre></td></tr></table></figure>
 <p>可能刚接触的萌新们会问，为什么btn后面不加括号。<strong>这里简单的说，如果加了括号就是调用这个函数的返回值，不加括号才是调用这个函数。只要这么记就没有问题了</strong>。好了，希望能帮助到正在学习开发的你。</p>
 
   </article>
@@ -294,7 +294,7 @@
 <script
     src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1640829499195"></script>-->
+<!--<script src="/js/app.js?v=1643544244737"></script>-->
 
 
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>

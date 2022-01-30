@@ -39,7 +39,7 @@
   
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
-  <!--<link rel="stylesheet" href="/css/style.css?v=1640829499167">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1643544244715">-->
 
   
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -67,7 +67,7 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>15</div>
+        <div><span>文章</span>16</div>
         <div><span>标签</span>10</div>
         <div><span>分类</span>1</div>
     </div>
@@ -143,7 +143,7 @@
 
         <li class="category-list-item">
           <a class="category-list-link" href="/categories/web前端/">web前端</a>
-          <span class="category-list-count">15</span>
+          <span class="category-list-count">16</span>
         </li>
 
         
@@ -168,7 +168,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">文章归档</h3>
     <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
     </div>
   </div>
  -->
@@ -210,7 +210,7 @@
   
 </aside>
     <div class="nexmoe-copyright">
-        &copy; 2021 RadiomM
+        &copy; 2022 RadiomM
         Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
         & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
         <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
@@ -255,10 +255,10 @@
 <p><img data-sizes="auto" data-src="https://img-blog.csdnimg.cn/20201214155619944.gif#pic" alt="在这里插入图片描述" class="lazyload"></p>
 <p>但是没办法啊，后端他们不打算改，只能前端苦逼的寻找问题的解决办法。经过多次的尝试(掉了很多的头发），终于发现了如何去处理这个问题了。下面介绍主角：<br><img data-sizes="auto" data-src="https://img-blog.csdnimg.cn/20201214155928214.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNTU5MjI5,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" class="lazyload"></p>
 <h2 id="上传图片使用文件流形式"><a href="#上传图片使用文件流形式" class="headerlink" title="上传图片使用文件流形式"></a>上传图片使用文件流形式</h2><p>下面的代码参考：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-upload</span><br><span class="line">  class=&quot;avatar-uploader&quot;</span><br><span class="line">  action=&quot;#&quot;</span><br><span class="line">  list-type=&quot;picture-card&quot;</span><br><span class="line">  :file-list=&quot;form.codeArray&quot;</span><br><span class="line">  :limit=&quot;1&quot;</span><br><span class="line">  accept=&quot;image/jpg, image/jpeg,image/png&quot;</span><br><span class="line">  :auto-upload=&quot;false&quot;</span><br><span class="line">  :on-exceed=&quot;handleExceed&quot;</span><br><span class="line">  :on-change=&quot;handleChange&quot;</span><br><span class="line">  :on-remove=&quot;handleRemove&quot;</span><br><span class="line">&gt;</span><br><span class="line">  &lt;i class=&quot;el-icon-plus&quot;&gt;&lt;/i&gt;</span><br><span class="line">  &lt;div slot=&quot;tip&quot; class=&quot;el-upload__tip&quot;&gt;</span><br><span class="line">    建议上传1:1尺寸图片，避免显示不全</span><br><span class="line">    &lt;strong style=&quot;color: red&quot;&gt;(只能上传一张图片)&lt;/strong&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/el-upload&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;el-upload<br>  class=&quot;avatar-uploader&quot;<br>  action=&quot;#&quot;<br>  list-type=&quot;picture-card&quot;<br>  :file-list=&quot;form.codeArray&quot;<br>  :limit=&quot;1&quot;<br>  accept=&quot;image/jpg, image/jpeg,image/png&quot;<br>  :auto-upload=&quot;false&quot;<br>  :on-exceed=&quot;handleExceed&quot;<br>  :on-change=&quot;handleChange&quot;<br>  :on-remove=&quot;handleRemove&quot;<br>&gt;<br>  &lt;i class=&quot;el-icon-plus&quot;&gt;&lt;/i&gt;<br>  &lt;div slot=&quot;tip&quot; class=&quot;el-upload__tip&quot;&gt;<br>    建议上传1:1尺寸图片，避免显示不全<br>    &lt;strong style=&quot;color: red&quot;&gt;(只能上传一张图片)&lt;/strong&gt;<br>  &lt;/div&gt;<br>&lt;/el-upload&gt;<br></code></pre></td></tr></table></figure>
 <p>参数不做说明，详情可以参考<a target="_blank" rel="noopener" href="https://element.eleme.cn/#/zh-CN/component/upload">这里</a>。<br>将<strong>auto-upload</strong>设置为false的时候，你会发现你之前使用的钩子很多都没有用，唯独有一个钩子会触发的，可以让你获取到文件的，那就是<strong>on-change</strong>事件。来看看官方文档的介绍：<br><img data-sizes="auto" data-src="https://img-blog.csdnimg.cn/20201214160739849.png#pic_center" alt="在这里插入图片描述" class="lazyload"><br>当我们添加图片的时候onchange事件会有下面的输出<br><img data-sizes="auto" data-src="https://img-blog.csdnimg.cn/20201214161021678.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNTU5MjI5,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" class="lazyload"><br>还记的我的需求吗？没错，就是上传的时候把文件流赋值给参数，上面参数中<strong>raw</strong>就是我们需要的，我们只要把这些东西给赋值变量就可以了。</p>
 <h2 id="回显使用图片地址"><a href="#回显使用图片地址" class="headerlink" title="回显使用图片地址"></a>回显使用图片地址</h2><p>回显的时候就相对简单了，就是直接按照官网的格式放进去数组就完事了</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   title: &#x27;aaa&#x27;,</span><br><span class="line">   url: &#x27;aaa.jpg&#x27;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&#123;<br>   title: &#x27;aaa&#x27;,<br>   url: &#x27;aaa.jpg&#x27;<br> &#125;<br></code></pre></td></tr></table></figure>
 <p>移除的时候就相对应的是用on-remove的事件去移除数组中的元素就可以了。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总体的步骤不算难，难点就可能是在发现的过程吧，第一就是这个<strong>auto-upload</strong>，文档中只是简单的说不会立即上传，但是说明实际有什么用途，再就是设置这个属性值为false的时候会触发那些钩子也没有说明，最后是我一个个钩子的去尝试，查看有什么使用区别。（当然你也可以说博主的理解能力差吧，这个我不会否认的。）</p>
 
@@ -298,7 +298,7 @@
 <script
     src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1640829499168"></script>-->
+<!--<script src="/js/app.js?v=1643544244717"></script>-->
 
 
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>

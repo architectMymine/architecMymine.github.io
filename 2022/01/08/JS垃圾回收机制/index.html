@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" >
+
+<head>
+  
+  <title>JS垃圾回收机制 - RadiomM的博客世界</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="web前端开发的有趣学习者">
+  <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="1f8c7b61089021ddab0a2109105def2b" />
+
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
+  <meta name="description" content="这次要说的是我们开发过程中基本很少用到的东西—JavaScript的垃圾回收机制。作为博主在JavaScript中为数不多可以写到简历的东西，那必须要给大伙整个明明白白的。作为动态弱类型语言，JavaScript的垃圾回收是属于自动执行，可以帮助我们开发少操心很多内存问题，当然，人无完人，垃圾回收机制也是一样的，那么我们来开始慢慢的了解它的发展。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS垃圾回收机制">
+<meta property="og:url" content="http://example.com/2022/01/08/JS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="RadiomM的博客世界">
+<meta property="og:description" content="这次要说的是我们开发过程中基本很少用到的东西—JavaScript的垃圾回收机制。作为博主在JavaScript中为数不多可以写到简历的东西，那必须要给大伙整个明明白白的。作为动态弱类型语言，JavaScript的垃圾回收是属于自动执行，可以帮助我们开发少操心很多内存问题，当然，人无完人，垃圾回收机制也是一样的，那么我们来开始慢慢的了解它的发展。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/01/08/JS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B61.webp">
+<meta property="og:image" content="http://example.com/2022/01/08/JS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B62.png">
+<meta property="og:image" content="http://example.com/2022/01/08/JS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B63.png">
+<meta property="og:image" content="http://example.com/2022/01/08/JS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B65.png">
+<meta property="og:image" content="http://example.com/2022/01/08/JS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B64.png">
+<meta property="article:published_time" content="2022-01-08T14:00:00.000Z">
+<meta property="article:modified_time" content="2022-01-30T12:03:07.184Z">
+<meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/01/08/JS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B61.webp">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css"
+    crossorigin>
+  
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
+  <!--<link rel="stylesheet" href="/css/style.css?v=1643544244706">-->
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i
+            class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img
+            src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM"></a>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+    <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="RadiomM">
+            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>16</div>
+        <div><span>标签</span>10</div>
+        <div><span>分类</span>1</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about" title="个人简介">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                个人简介
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=https://architectmymine.github.io" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        
+        <a class="mdui-ripple" href="https://space.bilibili.com/86206061"
+            target="_blank" mdui-tooltip="{content: '哔哩哔哩'}"
+            style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a>
+        <a class="mdui-ripple" href="https://github.com/architectMymine"
+            target="_blank" mdui-tooltip="{content: 'GitHub'}"
+            style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+        <a class="mdui-ripple" href="tencent://message/?uin=516782176&Site=&Menu=yes"
+            target="_blank" mdui-tooltip="{content: 'QQ'}"
+            style="color: rgb(27,193,250);background-color: rgba(27,193,250, .15);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web前端/">web前端</a>
+          <span class="category-list-count">16</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/tags/VScode/" style="font-size: 10px;">VScode</a> <a href="/tags/Wx%E7%94%9F%E6%80%81%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/" style="font-size: 10px;">Wx生态的那些事</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/git/" style="font-size: 15px;">git</a> <a href="/tags/vue/" style="font-size: 15px;">vue</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E7%83%A6%E4%BA%BA%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/" style="font-size: 15px;">那些烦人的项目搭建</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E8%AE%A8%E4%BA%BA%E5%8E%8C%E7%9A%84%E9%9C%80%E6%B1%82/" style="font-size: 10px;">那些讨人厌的需求</a>
+    </div>
+    
+  </div>
+
+  
+  <!-- 
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+    </div>
+  </div>
+ -->
+
+<!-- 文件归档 -->
+  
+  <style>
+    .about-me {
+        margin: 5px 0;
+    }
+
+    .music-wrapper {
+        box-shadow: 0 0 1rem rgba(161, 177, 204, .4);
+        background-color: #fff;
+        margin: 20px;
+        overflow: hidden;
+        white-space: normal;
+    }
+    .music-wrapper .aplayer{
+        height: auto !important;
+        margin: 0 !important;
+    }
+    .music-wrapper .aplayer .aplayer-body{
+        padding-bottom: 10px;
+    }
+    .music-wrapper .aplayer.aplayer-withlrc .aplayer-pic{
+        /* width: 95px;
+        height: 95px; */
+    }
+    .music-wrapper .aplayer.aplayer-withlist .aplayer-info{
+        /* margin-left: 95px;
+        height: 95px; */
+        border: none;
+    }
+</style>
+<div class="music-wrapper">
+    <div id="player"></div>
+</div>
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 RadiomM
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+        <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
+    </div>
+</div><!-- .nexmoe-drawer -->
+
+
+
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+      <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 56.25%;"> 
+          <img data-src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/cover/2022-01-08.jpg" data-sizes="auto" alt="JS垃圾回收机制" class="lazyload">
+          <h1>JS垃圾回收机制</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年01月08日</a>
+    <a><i class="nexmoefont icon-areachart"></i>2.7k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 11 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%88%E7%A9%BA%E9%97%B4%E4%B8%8E%E5%A0%86%E7%A9%BA%E9%97%B4"><span class="toc-number">1.</span> <span class="toc-text">栈空间与堆空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-number">2.</span> <span class="toc-text">什么是垃圾回收</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%9A%84%E8%BF%9B%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">垃圾回收的进化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0%E6%B8%85%E7%90%86"><span class="toc-number">3.0.1.</span> <span class="toc-text">标记清理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0"><span class="toc-number">3.0.2.</span> <span class="toc-text">引用计数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%9A%84%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87"><span class="toc-number">4.</span> <span class="toc-text">垃圾回收的性能提升</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <p>这次要说的是我们开发过程中基本很少用到的东西—JavaScript的垃圾回收机制。作为博主在JavaScript中为数不多可以写到简历的东西，那必须要给大伙整个明明白白的。作为动态弱类型语言，JavaScript的垃圾回收是属于自动执行，可以帮助我们开发少操心很多内存问题，当然，人无完人，垃圾回收机制也是一样的，那么我们来开始慢慢的了解它的发展。<span id="more"></span></p>
+<p>在开始垃圾回收器学习之前，我觉得大家有必要知道javaScript的数据是怎么存储的。</p>
+<h2 id="栈空间与堆空间"><a href="#栈空间与堆空间" class="headerlink" title="栈空间与堆空间"></a>栈空间与堆空间</h2><p>其实我们都知道，对于JS来说，数据的类型主要分为两个大类，分别为<strong>基础数据类型</strong>以及<strong>引用数据类型</strong>。为了方便读者们在阅读时的观感不受影响，这里简单的列出这个两个分类。</p>
+<p>基础数据类型：</p>
+<ul>
+<li>String</li>
+<li>Number</li>
+<li>Boolean</li>
+<li>Null</li>
+<li>Undefined</li>
+<li>Bigint</li>
+<li>Symbol</li>
+</ul>
+<p>引用数据类型：</p>
+<ul>
+<li>Object</li>
+<li>Array</li>
+</ul>
+<p>要区分这两种类型其实很简单，使用typeof即可，对于基础数据类型来说，除了null这个早期的bug以外，这几种数据类型都会出现对应的名称，看看下面代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">const a = &#x27;Raidom&#x27;<br><br>const b = 1<br><br>const c = true<br><br>const d = false<br><br>const e = Symbol(&#x27;foo&#x27;)<br><br>const f = null<br><br>const g = &#123;name: &#x27;Radiom&#x27;&#125;<br><br>const h = [1,2,3]<br><br>const i = function()&#123; console.log(&#x27;function&#x27;)&#125;<br><br><br>console.log(typeof a)  // string<br>console.log(typeof b)  // number<br>console.log(typeof c)  // boolean<br>console.log(typeof d)  // boolean<br>console.log(typeof e)  // symbol<br>console.log(typeof f)  // object<br>console.log(typeof g)  // object<br>console.log(typeof g)  // object<br>console.log(typeof i)  // function<br><br></code></pre></td></tr></table></figure>
+<p>至于为什么null为什么会是object，早期JS的数据以32字节来储存，由标志位（1~3个字节）和数值组成。这里有五种标志位：</p>
+<ul>
+<li>000：对象，数据是对象的应用。</li>
+<li>1：整型，数据是31位带符号整数。</li>
+<li>010：双精度类型，数据是双精度数字。</li>
+<li>100：字符串，数据是字符串。</li>
+<li>110：布尔类型，数据是布尔值。</li>
+</ul>
+<p>对于特殊值则是：</p>
+<ul>
+<li>undefined(JSVAL_VOID)是-2^30（一个超出整数范围的数字）</li>
+<li>null(JSVAL_NULL)是机器代码的空指针，一个对象类型的引用，值是零。</li>
+</ul>
+<p>对于一个值全零的null来说，自然在判断的时候，会变成object.</p>
+<p>上面是使用JS中的一个内置方法来很明显的判断出这两种类型，从储存空间来说的来判断的话，对应的就是两种不能的空间，就是<strong>栈空间</strong>以及是<strong>堆空间</strong>。在开始说这两种空间之前，有必要了解一下JavaScript中的内存空间，看下图：<br><img data-sizes="auto" data-src="%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B61.webp" alt="1" class="lazyload"></p>
+<p>而对于JavaScript来说，基础类型都是存储在<strong>栈空间</strong>，引用类型则存储在<strong>堆空间</strong>。先看代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">function foo() &#123;<br>  let a = 10<br>  let b = a<br>  let c = &#123;name:&#x27;&#x27;Radiom&#125;<br>  let d = c<br><br>  c.name = &#x27;RadiomM&#x27;<br>  console.log(c)<br>  console.log(d)<br>&#125;<br><br>foo()<br></code></pre></td></tr></table></figure>
+
+<p>我们知道，在js执行过程中会先编译，并创建执行上下文，然后才开始执行代码。那么我们看看上述代码执行到第三行的状态图：</p>
+<p><img data-sizes="auto" data-src="%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B62.png" alt="2" class="lazyload"></p>
+<p>但是执行到第四行的时候，JavaScript判断到这个变量c是一个引用类型，那么引用类型的数据就会存到堆空间里面，如下图若所示：</p>
+<p><img data-sizes="auto" data-src="%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B63.png" alt="3" class="lazyload"></p>
+<p>从上图你可以清晰地观察到，对象类型是存放在堆空间的，在栈空间中只是保留了对象的引用地址，当 JavaScript 需要访问该数据的时候，是通过栈中的引用地址来访问的，相当于多了一道转手流程。那么为什么JavaScript要设置<strong>栈空间</strong>以及<strong>堆空间</strong>呢？不能所有的数据都存储在<strong>栈空间</strong>吗？答案肯定是不可以的，参考下图。</p>
+<p><img data-sizes="auto" data-src="%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B65.png" alt="调用栈上下文切换状态" class="lazyload"></p>
+<p>所以<strong>通常情况下，栈空间都不会设置太大，主要用来存放一些原始类型的小数据</strong>。而引用类型的数据占用的空间都比较大，所以这一类数据会被存放到堆中，<strong>堆空间很大，能存放很多大的数据</strong>，不过缺点是分配内存和回收内存都会占用一定的时间。</p>
+<p>解释了程序在执行过程中为什么需要堆和栈两种数据结构后，我们还是回到示例代码那里，看看它最后一步将变量 c 赋值给变量 d 是怎么执行的？</p>
+<p>在 JavaScript 中，赋值操作和其他语言有很大的不同，<strong>原始类型的赋值会完整复制变量值，而引用类型的赋值是复制引用地址</strong>。</p>
+<p>所以d=c的操作就是把 c 的引用地址赋值给 d，你可以参考下图：</p>
+<p><img data-sizes="auto" data-src="%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B64.png" alt="4" class="lazyload"></p>
+<p>从图中你可以看到，变量 c 和变量 d 都指向了同一个堆中的对象，通过 c 修改 name 的值，变量 d 的值也跟着改变，归根结底它们是同一个对象。</p>
+<p>那么至此，对于JavaScript的数据存储就结束了。</p>
+<h2 id="什么是垃圾回收"><a href="#什么是垃圾回收" class="headerlink" title="什么是垃圾回收"></a>什么是垃圾回收</h2><p>看完JavaScript的数据存储，其实垃圾回收就很明显了，就是回收无用变量的内存空间，那么垃圾数据是怎么产生的呢？看下面代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">function foo() &#123;<br>  let a = 10<br>  let b = a<br>&#125;<br><br>foo()<br><br></code></pre></td></tr></table></figure>
+
+<p>函数编译并创建执行上下文，在函数foo活动对象中有变量a以及变量b，在函数foo执行完毕后，执行上下文指针就会指向全局执行上下文，这个时候对于JavaScript来说函数foo就属于垃圾数据，会将foo函数内的活动对象摧毁，并回收其占用的内存。</p>
+<p>除此以外，还有下面一种情况：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext"><br>window.test = new Object()<br>window.test.a = new Array(2)<br><br></code></pre></td></tr></table></figure>
+
+<p>在全局对象window中新增一个test属性赋值为对象，然后在其新增属性a赋值为一个长度为2的空数组。从JavaScript数据存储我们知道，这时候不论是对象window，test，a都是存在<strong>堆空间</strong>的。这时候执行下面代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">window.test.a = new Object()<br></code></pre></td></tr></table></figure>
+
+<p>可以看到，我们将a属性的值改变了，准确的来说，我们改变了属性a的值地址，那么原来的值就会变成没有被使用的状态，那么这个内存空间就可以看作是垃圾数据空间，JavaScript就会自动回收到这样的数据。那么JavaScript到底是怎么找到这些垃圾数据，然后自己回收的呢？</p>
+<h2 id="垃圾回收的进化"><a href="#垃圾回收的进化" class="headerlink" title="垃圾回收的进化"></a>垃圾回收的进化</h2><p>在JS的进化中，用到过两种主要的标记策略：标记清理和引用计数。</p>
+<h4 id="标记清理"><a href="#标记清理" class="headerlink" title="标记清理"></a>标记清理</h4><p>当变量进入上下文，比如在函数内容部声明一个变量时，这个变量会被加上存在于上下文中的标记。而不在上下文中的变量，逻辑上讲，永远不应该释放它们的内存，因为上下文中的代码在运行，就有可能用到它们。当变量离开上下文时，也会被加上离开上下文的标记。当然，怎么样去标记是不重要的，关键的是什么时候去回收这个变量占用的内存。以一个非常经典的题目来作为示例—闭包，看下面代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">function foo() &#123;<br>  var a = 10<br>  return function () &#123;<br>    return a<br>  &#125;<br>&#125;<br><br>foo()<br><br>fucntion bar() &#123;<br>  var b = 10 <br>  b = 20<br>&#125;<br><br>bar() <br></code></pre></td></tr></table></figure>
+<p>我们知道，在函数活动对象里的代码执行完以后，那么垃圾回收就会触发作用，回收到这个活动对象里所有占用的内存，也就是说，按照这个思路来操作的话，那么我们每次触发垃圾回收的时机就可以认为是<strong>每一个函数执行完以后，就会触发一下垃圾回收，然后回收到被占用的内存。</strong>，如果只看普通的方法好像并没有问题。 如果是闭包的话，再按照这个逻辑就不对了，如上述的函数foo，那么变量a是不可能被外部所能访问的，但是实际上是可以被访问的。实际上，垃圾回收也是在全局代码运行完以后，可以有一个池子，记录到所有已经去掉标记的变量，然后统一进行回收（注意，这是方式的一种），那么对于闭包这样的情况就可以完美执行了。</p>
+<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><p>这个方式其实很简单，就是统一每个变量被使用的次数，变量被声明并复制的话，那么计数就会加一，如果是复制到其他值，那么相应的就会计数减一。（针对引用类型）当计数为0的时候，说明这个变量就没有价值了，那么就会相应的进行回收内存，但是很快就遇到了一个严重的问题：循环引用。就是A对象对B对象有引用，而B对象对A对象也有相应的引用。如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">let objA = &#123;&#125;<br>let objB = &#123;&#125;<br><br>objA.target = objB<br>objB.target = objA<br></code></pre></td></tr></table></figure>
+<p>在引用计数策略下，他们互相的引用计数是2，是两个永远不会被清理的变量。但是在标记清理策略下，代码运行完后依然是可以清理到。</p>
+<h2 id="垃圾回收的性能提升"><a href="#垃圾回收的性能提升" class="headerlink" title="垃圾回收的性能提升"></a>垃圾回收的性能提升</h2><p>其实在性能提升这方面能提及的东西并不到，主要的还是减少垃圾回收的频率即可，最简单的方式就是建议创建变量，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">function foo( a， b) &#123;<br>  let result = new Vector();<br>  result.x = a<br>  result.y = b<br>  return result<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在上述函数中，变量result的声明周期其实很短，就在函数foo中使用。频繁使用foo函数会导致这个声明周期很短的变量不断重复占用内存然后被清理的这个过程，这可能会导致垃圾回收频繁的触发，这其实是会影响到浏览器运行时的效果。解决办法其实很简单，将这个创建过程减少，可以变成下面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">let result = new Vector()<br><br>function foo( a， b,result) &#123;<br>  result.x = a<br>  result.y = b<br>  return result<br>&#125;<br><br>result = null<br></code></pre></td></tr></table></figure>
+<p>当然，在这个变量没有用的时候，也可以相对应的设置为null，虽然不会立即触发垃圾回收，但是也可以在回收的时候减少这个变量的引用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是本篇文章的内容，相对来说没有那么硬核，所以打算后续会更新V8中的垃圾回收机制。</p>
+<style scoped>
+  article ul li {
+    position: static;
+  }
+
+  article ul li::after {
+    height:0;
+  }
+  article p{
+    font-size:16px;
+    line-height:28px;
+}
+
+
+  
+</style>
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/JavaScript/" rel="tag">JavaScript</a>
+    
+</div>
+
+  <!-- 开启评论和文章版权声明 -->
+  <div class="nexmoe-post-footer">
+    <!-- 
+      
+  <div class="nexmoe-post-copyright">
+    
+    <strong>本文作者：</strong>RadiomM<br>
+    <strong>本文链接：</strong><a href="http://example.com/2022/01/08/JS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" title="http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;01&#x2F;08&#x2F;JS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;01&#x2F;08&#x2F;JS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+     -->
+    <!-- comment开启文章评论 -->
+     
+  </div>
+</div>
+    </div>
+  </div>
+  <div id="music-wrapper"></div>
+<script
+    src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1643544244707"></script>-->
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/aplayer.js"></script>
+
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?1f8c7b61089021ddab0a2109105def2b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
