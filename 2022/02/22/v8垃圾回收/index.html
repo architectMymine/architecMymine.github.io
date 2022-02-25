@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" >
+
+<head>
+  
+  <title>v8垃圾回收 - RadiomM的博客世界</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="web前端开发的有趣学习者">
+  <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="1f8c7b61089021ddab0a2109105def2b" />
+
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
+  <meta name="description" content="距离上一次发文已经过去一个半月了，其实写这篇文章是很快就可以出来的，为什么会这么久才写呢？其实是这样的，最近在研究vue3的源码，简单的实现了一下里面的API，熟悉一下新版vue的核心逻辑，其实里面我最想了解的是编译模块，我的理解是，学会了编译模块才能算的上一个高级工程师。好了，废话说多了，现在上主菜，这次要说的就是上一篇文章说要补充的v8垃圾回收机制，由于我们开发基本在测试过程中基本用的是chr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="v8垃圾回收">
+<meta property="og:url" content="http://example.com/2022/02/22/v8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/index.html">
+<meta property="og:site_name" content="RadiomM的博客世界">
+<meta property="og:description" content="距离上一次发文已经过去一个半月了，其实写这篇文章是很快就可以出来的，为什么会这么久才写呢？其实是这样的，最近在研究vue3的源码，简单的实现了一下里面的API，熟悉一下新版vue的核心逻辑，其实里面我最想了解的是编译模块，我的理解是，学会了编译模块才能算的上一个高级工程师。好了，废话说多了，现在上主菜，这次要说的就是上一篇文章说要补充的v8垃圾回收机制，由于我们开发基本在测试过程中基本用的是chr">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/02/22/v8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/V8%E7%9A%84%E5%A0%86%E7%A9%BA%E9%97%B4.jpg">
+<meta property="og:image" content="http://example.com/2022/02/22/v8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%9B%BE%E4%BE%8B1.jpg">
+<meta property="og:image" content="http://example.com/2022/02/22/v8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%9B%BE%E4%BE%8B2.jpg">
+<meta property="og:image" content="http://example.com/2022/02/22/v8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%9B%BE%E4%BE%8B3.jpg">
+<meta property="og:image" content="http://example.com/2022/02/22/v8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%9B%BE%E4%BE%8B4.jpg">
+<meta property="article:published_time" content="2022-02-22T15:12:21.000Z">
+<meta property="article:modified_time" content="2022-02-25T13:10:42.127Z">
+<meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/02/22/v8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/V8%E7%9A%84%E5%A0%86%E7%A9%BA%E9%97%B4.jpg">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css"
+    crossorigin>
+  
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
+  <!--<link rel="stylesheet" href="/css/style.css?v=1645794743206">-->
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i
+            class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img
+            src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM"></a>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+    <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="RadiomM">
+            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>17</div>
+        <div><span>标签</span>10</div>
+        <div><span>分类</span>1</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about" title="个人简介">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                个人简介
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=https://architectmymine.github.io" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        
+        <a class="mdui-ripple" href="https://space.bilibili.com/86206061"
+            target="_blank" mdui-tooltip="{content: '哔哩哔哩'}"
+            style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a>
+        <a class="mdui-ripple" href="https://github.com/architectMymine"
+            target="_blank" mdui-tooltip="{content: 'GitHub'}"
+            style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+        <a class="mdui-ripple" href="tencent://message/?uin=516782176&Site=&Menu=yes"
+            target="_blank" mdui-tooltip="{content: 'QQ'}"
+            style="color: rgb(27,193,250);background-color: rgba(27,193,250, .15);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web前端/">web前端</a>
+          <span class="category-list-count">17</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/tags/VScode/" style="font-size: 10px;">VScode</a> <a href="/tags/Wx%E7%94%9F%E6%80%81%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/" style="font-size: 10px;">Wx生态的那些事</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/git/" style="font-size: 15px;">git</a> <a href="/tags/vue/" style="font-size: 15px;">vue</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E7%83%A6%E4%BA%BA%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/" style="font-size: 15px;">那些烦人的项目搭建</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E8%AE%A8%E4%BA%BA%E5%8E%8C%E7%9A%84%E9%9C%80%E6%B1%82/" style="font-size: 10px;">那些讨人厌的需求</a>
+    </div>
+    
+  </div>
+
+  
+  <!-- 
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+    </div>
+  </div>
+ -->
+
+<!-- 文件归档 -->
+  
+  <style>
+    .about-me {
+        margin: 5px 0;
+    }
+
+    .music-wrapper {
+        box-shadow: 0 0 1rem rgba(161, 177, 204, .4);
+        background-color: #fff;
+        margin: 20px;
+        overflow: hidden;
+        white-space: normal;
+    }
+    .music-wrapper .aplayer{
+        height: auto !important;
+        margin: 0 !important;
+    }
+    .music-wrapper .aplayer .aplayer-body{
+        padding-bottom: 10px;
+    }
+    .music-wrapper .aplayer.aplayer-withlrc .aplayer-pic{
+        /* width: 95px;
+        height: 95px; */
+    }
+    .music-wrapper .aplayer.aplayer-withlist .aplayer-info{
+        /* margin-left: 95px;
+        height: 95px; */
+        border: none;
+    }
+</style>
+<div class="music-wrapper">
+    <div id="player"></div>
+</div>
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 RadiomM
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+        <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
+    </div>
+</div><!-- .nexmoe-drawer -->
+
+
+
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+      <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 56.25%;"> 
+          <img data-src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/cover/2022-02-22.jpg" data-sizes="auto" alt="v8垃圾回收" class="lazyload">
+          <h1>v8垃圾回收</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年02月22日</a>
+    <a><i class="nexmoefont icon-areachart"></i>2.2k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 9 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#V8-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">V8 垃圾回收工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v8%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">v8的垃圾回收实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%AF%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="toc-number">2.0.1.</span> <span class="toc-text">副垃圾回收器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="toc-number">2.0.2.</span> <span class="toc-text">主垃圾回收器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <p>距离上一次发文已经过去一个半月了，其实写这篇文章是很快就可以出来的，为什么会这么久才写呢？其实是这样的，最近在研究vue3的源码，简单的实现了一下里面的API，熟悉一下新版vue的核心逻辑，其实里面我最想了解的是编译模块，我的理解是，学会了编译模块才能算的上一个高级工程师。好了，废话说多了，现在上主菜，这次要说的就是上一篇文章说要补充的v8垃圾回收机制，由于我们开发基本在测试过程中基本用的是chrome浏览器，它的内核是v8，所以有必要去了解一下它是如何在浏览器中进行垃圾回收工作的。<span id="more"></span></p>
+<h2 id="V8-垃圾回收工作原理"><a href="#V8-垃圾回收工作原理" class="headerlink" title="V8 垃圾回收工作原理"></a>V8 垃圾回收工作原理</h2><p>在上一篇文章中我们说了，现在主流的垃圾回收的算法基本都是<strong>标记清除</strong>，V8其实就是而且存在了不少的优化，下面来介绍一下工作原理。</p>
+<p>首先，通过 GC Root 标记空间中<strong>活动对象</strong>和<strong>非活动对象</strong>。将一些 GC Root 作为初始存活的对象的集合，从 GC Roots 对象出发，遍历 GC Root 中的所有对象：</p>
+<ul>
+<li><p>通过 GC Root 遍历到的对象，我们就认为该对象是<strong>可访问的（reachable）</strong>，<br>那么必须保证这些对象应该在内存中保留，我们也称可访问的对象为活动对象；</p>
+</li>
+<li><p>通过 GC Roots 没有遍历到的对象，则是<strong>不可访问的（unreachable）</strong>，<br>那么这些不可访问的对象就可能被回收，我们称不可访问的对象为非活动对象。</p>
+</li>
+</ul>
+<p> 在浏览器环境中，GC Root 有很多，通常包括了以下几种 (但是不止于这几种)：</p>
+<ul>
+<li><p>全局的 window 对象（位于每个 iframe 中）；</p>
+</li>
+<li><p>文档 DOM 树，由可以通过遍历文档到达的所有原生 DOM 节点组成；</p>
+</li>
+<li><p>存放栈上变量。</p>
+</li>
+</ul>
+<p>然后，回收非活动对象所占据的内存。其实就是在所有的标记完成之后，统一清理内存中所有被标记为可回收的对象。</p>
+<p>最后做的是内存碎片化整理。一般来说，经历过频繁的垃圾回收的话，会出现大量不连续空间，这些不连续空间就可以成为是<strong>内存碎片</strong>。当内存碎片多的时候，假如出现要一次性分配较大的连续内存大的时候，就会出现内存不足的情况，所以需要在最后一步整理内存碎片，将他们整理成一个连续的内存空间。但是，不一定每次的垃圾回收都会产品内存碎片，所以未必都会做到这一步。</p>
+<h2 id="v8的垃圾回收实现"><a href="#v8的垃圾回收实现" class="headerlink" title="v8的垃圾回收实现"></a>v8的垃圾回收实现</h2><p>目前V8采用了两个垃圾回收器，<strong>主垃圾回收器 -Major GC 和副垃圾回收器 -Minor GC (Scavenger)<strong>。为什么会使用两个回收器呢？是受到</strong>代际假说（The Generational Hypothesis）</strong>的影响，简单的归纳就是两点：</p>
+<ul>
+<li><p>1、大部分的对象存活的时间不久，比如函数内部声明的变量，或者块级作用域中的变量，当函数或者代码块执行结束时，作用域中定义的变量就会被销毁，所以这些内存实际上会很快就被回收到。</p>
+</li>
+<li><p>2、有一些基本不会被回收的对象，比如全局的 window、DOM、Web API 等对象。</p>
+</li>
+</ul>
+<p>在此基础上，V8还有关于<strong>堆</strong>的优化，将堆分为新生代和老生代两个区域，<strong>新生代中存放的是生存时间短的对象，老生带中存放生存时间久的对象。</strong>。新生代通常只支持1~8M的容量，而老生代支持的容量会大很多。<br>其实对应的就是上面的两个回收器。</p>
+<ul>
+<li><p><strong>副垃圾回收器 -Minor GC (Scavenger)，主要负责新生代的垃圾回收。</strong></p>
+</li>
+<li><p><strong>主垃圾回收器 -Major GC，主要负责老生代的垃圾回收。</strong></p>
+</li>
+</ul>
+<h4 id="副垃圾回收器"><a href="#副垃圾回收器" class="headerlink" title="副垃圾回收器"></a>副垃圾回收器</h4><p>副垃圾回收器主要负责新生代的垃圾回收。通常情况下，大多数小的对象都会被分配到新生代，所以说这个区域虽然不大，但是垃圾回收还是比较频繁的。</p>
+<p>新生代中的垃圾数据用 Scavenge 算法来处理。所谓 Scavenge 算法，是把新生代空间对半划分为两个区域，一半是对象区域 (from-space)，一半是空闲区域 (to-space)，如下图所示：</p>
+<p><img data-sizes="auto" data-src="V8%E7%9A%84%E5%A0%86%E7%A9%BA%E9%97%B4.jpg" alt="V8的堆空间" class="lazyload"></p>
+<p>新加入的对象都会存放到对象区域，当对象区域快被写满时，就需要执行一次垃圾清理操作。</p>
+<p>在垃圾回收过程中，首先要对对象区域中的垃圾做标记；标记完成之后，就进入垃圾清理阶段。副垃圾回收器会把这些存活的对象复制到空闲区域中，同时它还会把这些对象有序地排列起来，所以这个复制过程，也就相当于完成了内存整理操作，复制后空闲区域就没有内存碎片了。</p>
+<p><img data-sizes="auto" data-src="%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%9B%BE%E4%BE%8B1.jpg" alt="垃圾回收图例1" class="lazyload"></p>
+<p>完成复制后，对象区域与空闲区域进行角色翻转，也就是原来的对象区域变成空闲区域，原来的空闲区域变成了对象区域。<strong>这样就完成了垃圾对象的回收操作，同时，这种角色翻转的操作还能让新生代中的这两块区域无限重复使用下去。</strong></p>
+<p><img data-sizes="auto" data-src="%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%9B%BE%E4%BE%8B2.jpg" alt="垃圾回收图例2" class="lazyload"></p>
+<p>不过，副垃圾回收器每次执行清理操作时，都需要将存活的对象从对象区域复制到空闲区域，复制操作需要时间成本，如果新生区空间设置得太大了，那么每次清理的时间就会过久，所以<strong>为了执行效率，一般新生区的空间会被设置得比较小。</strong></p>
+<p>也正是因为新生区的空间不大，所以很容易被存活的对象装满整个区域，副垃圾回收器一旦监控对象装满了，便执行垃圾回收。同时，副垃圾回收器还会采用<strong>对象晋升策略</strong>，也就是移动那些经过两次垃圾回收依然还存活的对象到老生代中。</p>
+<h4 id="主垃圾回收器"><a href="#主垃圾回收器" class="headerlink" title="主垃圾回收器"></a>主垃圾回收器</h4><p>主垃圾回收器主要负责老生代中的垃圾回收。除了新生代中晋升的对象，一些大的对象会直接被分配到老生代里。因此，老生代中的对象有两个特点：</p>
+<ul>
+<li><p>一个是对象占用空间大；</p>
+</li>
+<li><p>另一个是对象存活时间长。</p>
+</li>
+</ul>
+<p>由于老生代的对象比较大，若要在老生代中使用 Scavenge 算法进行垃圾回收，复制这些大的对象将会花费比较多的时间，从而导致回收执行效率不高，同时还会浪费一半的空间。所以，主垃圾回收器是采用<strong>标记 - 清除（Mark-Sweep）</strong>的算法进行垃圾回收的。</p>
+<p>那么，标记 - 清除算法是如何工作的呢？</p>
+<p><strong>首先是标记过程阶段</strong>。标记阶段就是从一组根元素开始，递归遍历这组根元素，在这个遍历过程中，能到达的元素称为活动对象，没有到达的元素就可以判断为垃圾数据。</p>
+<p><strong>接下来就是垃圾的清除过程</strong>。它和副垃圾回收器的垃圾清除过程完全不同，主垃圾回收器会直接将标记为垃圾的数据清理掉。</p>
+<p>你可以理解这个过程是清除掉下图中红色标记数据的过程，你可参考下图大致理解下其清除过程：</p>
+<p><img data-sizes="auto" data-src="%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%9B%BE%E4%BE%8B3.jpg" alt="垃圾回收图例3" class="lazyload"></p>
+<p>对垃圾数据进行标记，然后清除，这就是 <strong>标记 - 清除算法</strong>，不过对一块内存多次执行标记 - 清除算法后，会产生大量不连续的内存碎片。而碎片过多会导致大对象无法分配到足够的连续内存，于是又引入了另外一种算法—— <strong>标记 - 整理（Mark-Compact）</strong>。</p>
+<p>这个算法的标记过程仍然与标记 - 清除算法里的是一样的，先标记可回收对象，但后续步骤不是直接对可回收对象进行清理，而是让所有存活的对象都向一端移动，然后直接清理掉这一端之外的内存。你可以参考下图：</p>
+<p><img data-sizes="auto" data-src="%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%9B%BE%E4%BE%8B4.jpg" alt="垃圾回收图例4" class="lazyload"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>基本上，我们了解到V8垃圾回收的算法，原理，以及实现，后续可能会更新有关V8垃圾回收的优化。</p>
+<style scoped>
+ article ul li::before {
+   position: absolute !important;
+   top: 18px;
+   left: 27px;
+ }
+  article ul li::after {
+    height:0;
+  }
+  article p{
+    font-size:16px;
+    line-height:28px;
+}
+</style>
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/JavaScript/" rel="tag">JavaScript</a>
+    
+</div>
+
+  <!-- 开启评论和文章版权声明 -->
+  <div class="nexmoe-post-footer">
+    <!-- 
+      
+  <div class="nexmoe-post-copyright">
+    
+    <strong>本文作者：</strong>RadiomM<br>
+    <strong>本文链接：</strong><a href="http://example.com/2022/02/22/v8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" title="http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;02&#x2F;22&#x2F;v8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;02&#x2F;22&#x2F;v8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+     -->
+    <!-- comment开启文章评论 -->
+     
+  </div>
+</div>
+    </div>
+  </div>
+  <div id="music-wrapper"></div>
+<script
+    src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1645794743208"></script>-->
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/aplayer.js"></script>
+
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?1f8c7b61089021ddab0a2109105def2b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
