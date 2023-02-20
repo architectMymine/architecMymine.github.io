@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" >
+
+<head>
+  
+  <title>如何写一个函数式组件（vue2，vue3版） - RadiomM的博客世界</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="web前端开发的有趣学习者">
+  <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="1f8c7b61089021ddab0a2109105def2b" />
+
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
+  <meta name="description" content="最近迷上了函数式组件，主要是最近接到一个需求，就是公司的产品原来的loading效果都是用uniapp提供的方法，所以这次希望全部统一一种loading效果。不过这次就不带uniapp框架的限制，只考虑vue2、vue3怎么实现一个函数式组件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何写一个函数式组件（vue2，vue3版）">
+<meta property="og:url" content="http://example.com/2023/02/20/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6%EF%BC%88vue2%EF%BC%8Cvue3%E7%89%88%EF%BC%89/index.html">
+<meta property="og:site_name" content="RadiomM的博客世界">
+<meta property="og:description" content="最近迷上了函数式组件，主要是最近接到一个需求，就是公司的产品原来的loading效果都是用uniapp提供的方法，所以这次希望全部统一一种loading效果。不过这次就不带uniapp框架的限制，只考虑vue2、vue3怎么实现一个函数式组件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-20T15:36:06.000Z">
+<meta property="article:modified_time" content="2023-02-20T15:53:34.127Z">
+<meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="函数式组件">
+<meta property="article:tag" content="组件设计">
+<meta name="twitter:card" content="summary">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css"
+    crossorigin>
+  
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
+  <!--<link rel="stylesheet" href="/css/style.css?v=1676908464185">-->
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i
+            class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img
+            src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM"></a>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+    <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="RadiomM">
+            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>20</div>
+        <div><span>标签</span>13</div>
+        <div><span>分类</span>1</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about" title="个人简介">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                个人简介
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=https://architectmymine.github.io" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        
+        <a class="mdui-ripple" href="https://space.bilibili.com/86206061"
+            target="_blank" mdui-tooltip="{content: '哔哩哔哩'}"
+            style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a>
+        <a class="mdui-ripple" href="https://github.com/architectMymine"
+            target="_blank" mdui-tooltip="{content: 'GitHub'}"
+            style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+        <a class="mdui-ripple" href="tencent://message/?uin=516782176&Site=&Menu=yes"
+            target="_blank" mdui-tooltip="{content: 'QQ'}"
+            style="color: rgb(27,193,250);background-color: rgba(27,193,250, .15);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web前端/">web前端</a>
+          <span class="category-list-count">20</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/tags/VScode/" style="font-size: 10px;">VScode</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/Wx%E7%94%9F%E6%80%81%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/" style="font-size: 10px;">Wx生态的那些事</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/vue/" style="font-size: 16.67px;">vue</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">函数式组件</a> <a href="/tags/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1/" style="font-size: 13.33px;">组件设计</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E7%83%A6%E4%BA%BA%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/" style="font-size: 13.33px;">那些烦人的项目搭建</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E8%AE%A8%E4%BA%BA%E5%8E%8C%E7%9A%84%E9%9C%80%E6%B1%82/" style="font-size: 10px;">那些讨人厌的需求</a>
+    </div>
+    
+  </div>
+
+  
+  <!-- 
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+    </div>
+  </div>
+ -->
+
+<!-- 文件归档 -->
+  
+  <style>
+    .about-me {
+        margin: 5px 0;
+    }
+
+    .music-wrapper {
+        box-shadow: 0 0 1rem rgba(161, 177, 204, .4);
+        background-color: #fff;
+        margin: 20px;
+        overflow: hidden;
+        white-space: normal;
+    }
+    .music-wrapper .aplayer{
+        height: auto !important;
+        margin: 0 !important;
+    }
+    .music-wrapper .aplayer .aplayer-body{
+        padding-bottom: 10px;
+    }
+    .music-wrapper .aplayer.aplayer-withlrc .aplayer-pic{
+        /* width: 95px;
+        height: 95px; */
+    }
+    .music-wrapper .aplayer.aplayer-withlist .aplayer-info{
+        /* margin-left: 95px;
+        height: 95px; */
+        border: none;
+    }
+</style>
+<div class="music-wrapper">
+    <div id="player"></div>
+</div>
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2023 RadiomM
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+        <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
+    </div>
+</div><!-- .nexmoe-drawer -->
+
+
+
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+      <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 56.25%;"> 
+          <img data-src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/cover/2019-09-10.jpg" data-sizes="auto" alt="如何写一个函数式组件（vue2，vue3版）" class="lazyload">
+          <h1>如何写一个函数式组件（vue2，vue3版）</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2023年02月20日</a>
+    <a><i class="nexmoefont icon-areachart"></i>1.4k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 7 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue2"><span class="toc-number">2.</span> <span class="toc-text">vue2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue3"><span class="toc-number">3.</span> <span class="toc-text">vue3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <p>最近迷上了函数式组件，主要是最近接到一个需求，就是公司的产品原来的loading效果都是用uniapp提供的方法，所以这次希望全部统一一种loading效果。不过这次就不带uniapp框架的限制，只考虑vue2、vue3怎么实现一个函数式组件。</p>
+<span id="more"></span>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>这次实现的组件是loading组件，实现的功能主要下面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">/** 1、能直接调用 */<br>Loading()<br><br>/** 2、能直接传入文字调用 */<br>Loading(&#x27;加载中...&#x27;)<br><br>/** 3、有相关配置调用 */<br>Loading(&#123;<br>    text: &#x27;加载中...&#x27;,<br>    mask: true<br>&#125;)<br><br>/**  4、关闭实现 */<br>Loading.close()<br></code></pre></td></tr></table></figure>
+<p>为了方便使用，可以直接挂载在Vue的实例里面，但是Vue2，Vue3的方式不太相同，实现也不太相同，所以下面会分开实现。</p>
+<h2 id="vue2"><a href="#vue2" class="headerlink" title="vue2"></a>vue2</h2><p>首先是展示vue文件，这里不做过多的解释，这种程度难不了大家。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;template&gt;<br>  &lt;div class=&quot;loading-container&quot; :class=&quot;&#123; pe: !mask &#125;&quot; v-if=&quot;visible&quot;&gt;<br>    &lt;div class=&quot;loading-wrapper&quot; :class=&quot;&#123; mask: mask, pe: !mask &#125;&quot;&gt;<br>      &lt;img<br>        src=&quot;https://zhanchi-static.oss-cn-shenzhen.aliyuncs.com/zhancchi_recruit/loading.gif&quot;<br>      /&gt;<br>      &lt;div class=&quot;loading-text&quot;&gt;&#123;&#123; text &#125;&#125;&lt;/div&gt;<br>    &lt;/div&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br>&lt;script&gt;<br>export default &#123;<br>  name: &quot;globalLoading&quot;,<br>  data() &#123;<br>    return &#123;<br>      text: &quot;加载中&quot;,<br>      visible: false,<br>      mask: false<br>    &#125;;<br>  &#125;,<br>  methods: &#123;<br>    close() &#123;<br>      this.visible = false;<br>    &#125;<br>  &#125;,<br>  watch: &#123;<br>    visible(newVal) &#123;<br>      this.visible = newVal;<br>    &#125;<br>  &#125;<br>&#125;;<br>&lt;/script&gt;<br>&lt;style lang=&quot;scss&quot; scoped&gt;<br><br>.pe &#123;<br>  pointer-events: none;<br>&#125;<br>.loading-container &#123;<br>  position: fixed;<br>  left: 0;<br>  top: 0;<br>  right: 0;<br>  bottom: 0;<br>  z-index: 999;<br><br>  .loading-wrapper &#123;<br>    position: absolute;<br>    left: 0;<br>    top: 0;<br>    right: 0;<br>    bottom: 0;<br>    z-index: 999;<br>    display: flex;<br>    flex-direction: column;<br>    align-items: center;<br>    justify-content: center;<br><br>    img &#123;<br>      width: 32px;<br>      height: 32px;<br>    &#125;<br><br>    .loading-text &#123;<br>      display: inline-block;<br>      max-width: 100px;<br>      margin-top: 5px;<br>      font-size: 12px;<br>      color: #666<br>    &#125;<br>  &#125;<br><br>  .mask &#123;<br>    background: rgba(0, 0, 0, 0.5);<br>    .loading-text &#123;<br>      color: #fff;<br>    &#125;<br>  &#125;<br>&#125;<br>&lt;/style&gt;<br></code></pre></td></tr></table></figure>
+<p>大家可以根据自己的需求设计，下来就是怎么改成函数式组件。</p>
+<p>首先，我们需要Vue2里面给我提供的一个方法——<a target="_blank" rel="noopener" href="https://v2.cn.vuejs.org/v2/api/#Vue-extend">extend</a>。给予我们可以构建“子类”的办法，接着创建index.js文件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javaScript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><span class="hljs-keyword">import</span> Main <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./index.vue&#x27;</span><br><span class="hljs-keyword">let</span> LoadingConstructor = Vue.extend(Main)<br><span class="hljs-comment">/** 保存Loading构造实例 */</span><br><span class="hljs-keyword">let</span> instance <br></code></pre></td></tr></table></figure>
+
+<p>接着我们需要Loading方法，实现如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javaScript"><span class="hljs-keyword">const</span> Loading = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>) </span>&#123;<br>    options = options || &#123;&#125;<br>    <span class="hljs-comment">/** 实现功能点2 */</span><br>    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">&#x27;string&#x27;</span>) &#123;<br>        options =  &#123;<br>            <span class="hljs-attr">text</span>: options<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">/** 合并options跟data的属性 */</span><br>    instance = <span class="hljs-keyword">new</span> LoadingConstructor(&#123;<br>        <span class="hljs-attr">data</span>: options<br>    &#125;)<br>    <span class="hljs-comment">/** 挂载在VNode上面 */</span><br>    instance.$mount()<br>    <span class="hljs-comment">/** 插入到页面 */</span><br>    <span class="hljs-built_in">document</span>.body.appendChild(instance.$el)<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在上面将options给data赋值时，会将属性逐一合并，由于一开始我们设置了初始值，所以没有传options的时候，会默认使用组件设置的初始值。那么实现关闭loading的方法就简单了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javaScript">Loading.close = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>    instance &amp;&amp; (instance.visible = <span class="hljs-literal">false</span>)<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Loading<br></code></pre></td></tr></table></figure>
+<p>接着只需要在Vue实例挂载即可</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javaScript"><span class="hljs-comment">/** 导入的是index.js的Loading */</span><br>Vue.prototype.$Loading = Loading<br></code></pre></td></tr></table></figure>
+
+<h2 id="vue3"><a href="#vue3" class="headerlink" title="vue3"></a>vue3</h2><p>其实vue3的实现大同小异，只不过由于vue3写法等方面不一样了，所以实现方式也会有不一样。先看template文件：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">import</span> &#123; ref &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span></span><br><span class="javascript"></span><br><span class="javascript">defineProps(&#123;</span><br><span class="javascript">  <span class="hljs-attr">text</span>: &#123;</span><br><span class="javascript">    <span class="hljs-attr">type</span>: <span class="hljs-built_in">String</span>,</span><br><span class="javascript">    <span class="hljs-attr">default</span>: <span class="hljs-string">&#x27;加载中...&#x27;</span>,</span><br><span class="javascript">  &#125;,</span><br><span class="javascript">  <span class="hljs-attr">mask</span>: &#123;</span><br><span class="javascript">    <span class="hljs-attr">type</span>: <span class="hljs-built_in">Boolean</span>,</span><br><span class="javascript">    <span class="hljs-attr">default</span>: <span class="hljs-literal">false</span>,</span><br><span class="javascript">  &#125;,</span><br><span class="javascript">&#125;)</span><br><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">const</span> visible = ref(<span class="hljs-literal">false</span>)</span><br><span class="javascript"></span><br><span class="javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">open</span>(<span class="hljs-params"></span>) </span>&#123;</span><br><span class="javascript">  visible.value = <span class="hljs-literal">true</span></span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><br><span class="javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">close</span>(<span class="hljs-params"></span>) </span>&#123;</span><br><span class="javascript">  visible.value = <span class="hljs-literal">false</span></span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><br><span class="javascript">defineExpose(&#123;</span><br><span class="javascript">  close,</span><br><span class="javascript">  open,</span><br><span class="javascript">&#125;)</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-show</span>=<span class="hljs-string">&quot;visible&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;loading-container&quot;</span> <span class="hljs-attr">:class</span>=<span class="hljs-string">&quot;&#123; pe: !mask &#125;&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;loading-wrapper&quot;</span> <span class="hljs-attr">:class</span>=<span class="hljs-string">&quot;&#123; mask: mask, pe: !mask &#125;&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">img</span></span><br><span class="hljs-tag">        <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://zhanchi-static.oss-cn-shenzhen.aliyuncs.com/zhancchi_recruit/loading.gif&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;&quot;</span></span><br><span class="hljs-tag">      /&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;loading-text&quot;</span>&gt;</span>&#123;&#123; text &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;scss&quot;</span> <span class="hljs-attr">scoped</span>&gt;</span><span class="css"></span><br><span class="css"><span class="hljs-selector-class">.loading-container</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">position</span>: fixed;</span><br><span class="css">  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;</span><br><span class="css">  <span class="hljs-attribute">right</span>: <span class="hljs-number">0</span>;</span><br><span class="css">  <span class="hljs-attribute">bottom</span>: <span class="hljs-number">0</span>;</span><br><span class="css">  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;</span><br><span class="css">  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">999</span>;</span><br><span class="css"></span><br><span class="css">  <span class="hljs-selector-class">.loading-wrapper</span> &#123;</span><br><span class="css">    <span class="hljs-attribute">position</span>: absolute;</span><br><span class="css">    <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;</span><br><span class="css">    <span class="hljs-attribute">right</span>: <span class="hljs-number">0</span>;</span><br><span class="css">    <span class="hljs-attribute">bottom</span>: <span class="hljs-number">0</span>;</span><br><span class="css">    <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;</span><br><span class="css">    <span class="hljs-attribute">z-index</span>: <span class="hljs-number">999</span>;</span><br><span class="css">    <span class="hljs-attribute">display</span>: flex;</span><br><span class="css">    <span class="hljs-attribute">flex-direction</span>: column;</span><br><span class="css">    <span class="hljs-attribute">align-items</span>: center;</span><br><span class="css">    <span class="hljs-attribute">justify-content</span>: center;</span><br><span class="css"></span><br><span class="css">    <span class="hljs-selector-tag">img</span> &#123;</span><br><span class="css">      <span class="hljs-attribute">width</span>: <span class="hljs-number">32px</span>;</span><br><span class="css">      <span class="hljs-attribute">height</span>: <span class="hljs-number">32px</span>;</span><br><span class="css">    &#125;</span><br><span class="css"></span><br><span class="css">    <span class="hljs-selector-class">.loading-text</span> &#123;</span><br><span class="css">      <span class="hljs-attribute">display</span>: inline-block;</span><br><span class="css">      <span class="hljs-attribute">max-width</span>: <span class="hljs-number">100px</span>;</span><br><span class="css">      <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">5px</span>;</span><br><span class="css">      <span class="hljs-attribute">font-size</span>: <span class="hljs-number">12px</span>;</span><br><span class="css">      <span class="hljs-attribute">color</span>: <span class="hljs-number">#666</span>;</span><br><span class="css">    &#125;</span><br><span class="css">  &#125;</span><br><span class="css"></span><br><span class="css">  <span class="hljs-selector-class">.mask</span> &#123;</span><br><span class="css">    <span class="hljs-attribute">background</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> / <span class="hljs-number">50%</span>);</span><br><span class="css"></span><br><span class="css">    <span class="hljs-selector-class">.loading-text</span> &#123;</span><br><span class="css">      <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;</span><br><span class="css">    &#125;</span><br><span class="css">  &#125;</span><br><span class="css">&#125;</span><br><span class="css"></span><br><span class="css"><span class="hljs-selector-class">.pe</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">pointer-events</span>: none;</span><br><span class="css">&#125;</span><br><span class="css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>在vue2中，我们可以将参数定义在data，通过构造器合并属性的方式来传递参数，但是在vue3中已经不提供这样的方法了，所以需要将参数定义为<code>props</code>，并且通过<code>defineExpose</code>暴露方法在外部使用（其实直接修改visible值也可以，但是使用者来说，还是希望更语义化点吧）。</p>
+<p>接着是index.js文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs javaScript"><span class="hljs-keyword">import</span> &#123; createVNode, render &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> Main <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./index.vue&#x27;</span><br><br><span class="hljs-keyword">let</span> instance<br><span class="hljs-keyword">const</span> container = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&#x27;div&#x27;</span>)<br><span class="hljs-keyword">const</span> Loading = <span class="hljs-function"><span class="hljs-params">options</span> =&gt;</span> &#123;<br>  <span class="hljs-keyword">if</span> (instance) &#123;<br>    <span class="hljs-built_in">document</span>.body.removeChild(container.firstElementChild)<br>  &#125;<br>  <span class="hljs-keyword">let</span> props = options || &#123;&#125;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">&#x27;string&#x27;</span>) &#123;<br>    props = &#123;<br>      <span class="hljs-attr">text</span>: options,<br>    &#125;<br>  &#125;<br>  <span class="hljs-comment">/** 创建vnode */</span><br>  instance = createVNode(Main, props)<br>   <span class="hljs-comment">/** 渲染成到容器 */</span><br>  render(instance, container)<br>  <span class="hljs-comment">/** container.firstElementChild：实际上我们只挂在了Loading组件 */</span><br>  <span class="hljs-built_in">document</span>.body.appendChild(container.firstElementChild)<br>  <span class="hljs-comment">/** 展示loading */</span><br>  <span class="hljs-keyword">const</span> vm = instance.component<br>  <span class="hljs-comment">/** 调用展示方法 */</span><br>  vm.exposed.open()<br>&#125;<br><br>Loading.close = <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">if</span> (instance) &#123;<br>      <span class="hljs-comment">/** 调用关闭方法 */</span><br>    instance.component.exposed.close()<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Loading<br></code></pre></td></tr></table></figure>
+<p>不同于vue2挂载在实例的方法，vue3是下面方式挂载，但调用就是少写个this罢了<code>（因为vue3没有this概念）</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javaScript"><span class="hljs-keyword">import</span> &#123; createApp &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App.vue&#x27;</span><br><span class="hljs-keyword">import</span> Loading <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/component/loading/index.js&#x27;</span><br><br><span class="hljs-keyword">const</span> app = createApp(App)<br>app.config.globalProperties.$Loading = Loading<br></code></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>至此就完成了函数式组件的写法，当然这是Loading组件只展示的了最简单实现，比如你可以添加一些回调函数，如：success，faild等等，套路都一样，实现起来也没啥难度，文章到此为止。</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/vue/" rel="tag">vue</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6/" rel="tag">函数式组件</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1/" rel="tag">组件设计</a>
+    
+</div>
+
+  <!-- 开启评论和文章版权声明 -->
+  <div class="nexmoe-post-footer">
+    <!-- 
+      
+  <div class="nexmoe-post-copyright">
+    
+    <strong>本文作者：</strong>RadiomM<br>
+    <strong>本文链接：</strong><a href="http://example.com/2023/02/20/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6%EF%BC%88vue2%EF%BC%8Cvue3%E7%89%88%EF%BC%89/" title="http:&#x2F;&#x2F;example.com&#x2F;2023&#x2F;02&#x2F;20&#x2F;%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6%EF%BC%88vue2%EF%BC%8Cvue3%E7%89%88%EF%BC%89&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2023&#x2F;02&#x2F;20&#x2F;%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6%EF%BC%88vue2%EF%BC%8Cvue3%E7%89%88%EF%BC%89&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+     -->
+    <!-- comment开启文章评论 -->
+     
+  </div>
+</div>
+    </div>
+  </div>
+  <div id="music-wrapper"></div>
+<script
+    src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1676908464186"></script>-->
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/aplayer.js"></script>
+
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?1f8c7b61089021ddab0a2109105def2b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
