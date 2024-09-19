@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" >
+
+<head>
+  
+  <title>从一次需求封装，对比函数式组件与模板组件优劣 - RadiomM的博客世界</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="web前端开发的有趣学习者">
+  <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="1f8c7b61089021ddab0a2109105def2b" />
+
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
+  <meta name="description" content="开发总是领导们的玩具，领导们的需求就是朝令夕改。这不，领导上网随便一搜一个时髦的后台框架，一眼就相中了**列展示这个骚功能（注意，下面的实现都是 Vue2**）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从一次需求封装，对比函数式组件与模板组件优劣">
+<meta property="og:url" content="http://example.com/2023/10/26/%E4%BB%8E%E4%B8%80%E6%AC%A1%E9%9C%80%E6%B1%82%E5%B0%81%E8%A3%85%EF%BC%8C%E5%AF%B9%E6%AF%94%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%A8%A1%E6%9D%BF%E7%BB%84%E4%BB%B6%E4%BC%98%E5%8A%A3/index.html">
+<meta property="og:site_name" content="RadiomM的博客世界">
+<meta property="og:description" content="开发总是领导们的玩具，领导们的需求就是朝令夕改。这不，领导上网随便一搜一个时髦的后台框架，一眼就相中了**列展示这个骚功能（注意，下面的实现都是 Vue2**）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/237be89c693c4f278ba4aaf801c3a576~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1692&h=708&s=430299&e=gif&f=94&b=fbfbfb">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f8f32ebc38534128b7af3b4ade81b89c~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1667&h=370&s=7327&e=png&b=fffdfd">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c4844a56e8f6428e9d58a0741155be46~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=884&h=431&s=71495&e=png&b=1f2430">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e7a00ea91cd445a0aa842b67e1d810d0~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=785&h=297&s=46985&e=png&b=1f2430">
+<meta property="article:published_time" content="2023-10-26T14:36:36.000Z">
+<meta property="article:modified_time" content="2024-08-21T09:09:35.043Z">
+<meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="组件设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/237be89c693c4f278ba4aaf801c3a576~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1692&h=708&s=430299&e=gif&f=94&b=fbfbfb">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css"
+    crossorigin>
+  
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
+  <!--<link rel="stylesheet" href="/css/style.css?v=1724231451834">-->
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i
+            class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img
+            src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM"></a>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+    <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="RadiomM">
+            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>21</div>
+        <div><span>标签</span>13</div>
+        <div><span>分类</span>1</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about" title="个人简介">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                个人简介
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=https://architectmymine.github.io" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        
+        <a class="mdui-ripple" href="https://space.bilibili.com/86206061"
+            target="_blank" mdui-tooltip="{content: '哔哩哔哩'}"
+            style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a>
+        <a class="mdui-ripple" href="https://github.com/architectMymine"
+            target="_blank" mdui-tooltip="{content: 'GitHub'}"
+            style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+        <a class="mdui-ripple" href="tencent://message/?uin=516782176&Site=&Menu=yes"
+            target="_blank" mdui-tooltip="{content: 'QQ'}"
+            style="color: rgb(27,193,250);background-color: rgba(27,193,250, .15);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web前端/">web前端</a>
+          <span class="category-list-count">21</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/tags/VScode/" style="font-size: 10px;">VScode</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/Wx%E7%94%9F%E6%80%81%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/" style="font-size: 10px;">Wx生态的那些事</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/vue/" style="font-size: 17.5px;">vue</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">函数式组件</a> <a href="/tags/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1/" style="font-size: 15px;">组件设计</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E7%83%A6%E4%BA%BA%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/" style="font-size: 12.5px;">那些烦人的项目搭建</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E8%AE%A8%E4%BA%BA%E5%8E%8C%E7%9A%84%E9%9C%80%E6%B1%82/" style="font-size: 10px;">那些讨人厌的需求</a>
+    </div>
+    
+  </div>
+
+  
+  <!-- 
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+    </div>
+  </div>
+ -->
+
+<!-- 文件归档 -->
+  
+  <style>
+    .about-me {
+        margin: 5px 0;
+    }
+
+    .music-wrapper {
+        box-shadow: 0 0 1rem rgba(161, 177, 204, .4);
+        background-color: #fff;
+        margin: 20px;
+        overflow: hidden;
+        white-space: normal;
+    }
+    .music-wrapper .aplayer{
+        height: auto !important;
+        margin: 0 !important;
+    }
+    .music-wrapper .aplayer .aplayer-body{
+        padding-bottom: 10px;
+    }
+    .music-wrapper .aplayer.aplayer-withlrc .aplayer-pic{
+        /* width: 95px;
+        height: 95px; */
+    }
+    .music-wrapper .aplayer.aplayer-withlist .aplayer-info{
+        /* margin-left: 95px;
+        height: 95px; */
+        border: none;
+    }
+</style>
+<div class="music-wrapper">
+    <div id="player"></div>
+</div>
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2024 RadiomM
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+        <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
+    </div>
+</div><!-- .nexmoe-drawer -->
+
+
+
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+      <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 56.25%;"> 
+          <img data-src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/cover/2019-09-10.jpg" data-sizes="auto" alt="从一次需求封装，对比函数式组件与模板组件优劣" class="lazyload">
+          <h1>从一次需求封装，对比函数式组件与模板组件优劣</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2023年10月26日</a>
+    <a><i class="nexmoefont icon-areachart"></i>2.3k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 10 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%A8%A1%E6%9D%BF%E8%A1%A8%E6%A0%BC%E5%B0%81%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">实现模板表格封装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81tableCloumn-%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F%E5%B1%9E%E6%80%A7%E8%BF%87%E5%A4%9A"><span class="toc-number">1.0.1.</span> <span class="toc-text">1、tableCloumn 数据格式属性过多</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E9%9C%80%E8%A6%81%E5%85%BC%E5%AE%B9%E5%A4%9A%E4%B8%AA-el-tabel-column-%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="toc-number">1.0.2.</span> <span class="toc-text">2、需要兼容多个 el-tabel-column 的属性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">函数式组件的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-number">2.0.1.</span> <span class="toc-text">优点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%9A%84%E5%90%B9%E7%89%9B"><span class="toc-number">3.</span> <span class="toc-text">最后的吹牛</span></a></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <p>开发总是领导们的玩具，领导们的需求就是朝令夕改。这不，领导上网随便一搜一个时髦的后台框架，一眼就相中了**<em>列展示</em><strong>这个骚功能（</strong><em>注意，下面的实现都是 Vue2</em>**） <span id="more"></span>。具体如下：</p>
+<p><img data-sizes="auto" data-src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/237be89c693c4f278ba4aaf801c3a576~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1692&h=708&s=430299&e=gif&f=94&b=fbfbfb" alt="列展示功能展示.gif" class="lazyload"><br>由于用的是 Element 框架，本身就不提供这样的方法，没办法，这只能自己去造了。</p>
+<h2 id="实现模板表格封装"><a href="#实现模板表格封装" class="headerlink" title="实现模板表格封装"></a>实现模板表格封装</h2><p>要实现这样的功能，基本上是需要**<em>多选框</em><strong>与</strong><em>表格</em><strong>相互配合好才行，由于用过像 Ant Design Vue 这样的框架，所以我第一时间就想到的是写</strong><em>对象数组</em>**，参考 el-table-column 的属性，我就可以得出下面的数据接口。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> tableData = [<br>  &#123;<br>    <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;测试&quot;</span>,<br>    <span class="hljs-attr">unit_name</span>: <span class="hljs-string">&quot;这是单位&quot;</span>,<br>    <span class="hljs-attr">unit_nature_name</span>: <span class="hljs-string">&quot;这是单位性质&quot;</span>,<br>    <span class="hljs-attr">nature_name</span>: <span class="hljs-string">&quot;这是职位性质&quot;</span>,<br>  &#125;,<br>];<br><br><span class="hljs-keyword">const</span> tableColumn = [<br>  &#123;<br>    <span class="hljs-attr">prop</span>: <span class="hljs-string">&quot;title&quot;</span>,<br>    <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;职位名称&quot;</span>,<br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">prop</span>: <span class="hljs-string">&quot;unit_name&quot;</span>,<br>    <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;单位名称&quot;</span>,<br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">prop</span>: <span class="hljs-string">&quot;unit_nature_name&quot;</span>,<br>    <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;单位性质&quot;</span>,<br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">prop</span>: <span class="hljs-string">&quot;nature_name&quot;</span>,<br>    <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;职位性质&quot;</span>,<br>  &#125;,<br>];<br></code></pre></td></tr></table></figure>
+
+<p>接着我只需要设计一个组件，如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;template&gt;<br>  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">el-table</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">v-bind</span>=<span class="hljs-string">&quot;$attrs&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">:cell-style</span>=<span class="hljs-string">&quot;&#123;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">      height: &#x27;76px&#x27;,</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">    &#125;&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">:header-cell-style</span>=<span class="hljs-string">&quot;&#123;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">      height: &#x27;56px&#x27;,</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">      backgroundColor: &#x27;#FCF2F1&#x27;,</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">      color: &#x27;#573E41&#x27;,</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">      textAlign: &#x27;center&#x27;,</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">    &#125;&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">  &gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;(column, index) in tableColumn&quot;</span>&gt;</span></span><br><span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">el-table-column</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;index&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:prop</span>=<span class="hljs-string">&quot;column.prop&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:label</span>=<span class="hljs-string">&quot;column.label&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:width</span>=<span class="hljs-string">&quot;column.width&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">      &gt;</span></span><br><span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">el-table-column</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">el-table</span>&gt;</span></span><br>&lt;/template&gt;<br><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="javascript"><span class="xml"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;</span></span><br><span class="javascript"><span class="xml">  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;HelloWorld&quot;</span>,</span></span><br><span class="javascript"><span class="xml">  <span class="hljs-attr">props</span>: &#123;</span></span><br><span class="javascript"><span class="xml">    <span class="hljs-attr">tableColumn</span>: &#123;</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">type</span>: <span class="hljs-built_in">Array</span>,</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-function"><span class="hljs-title">default</span>(<span class="hljs-params"></span>)</span> &#123;</span></span><br><span class="javascript"><span class="xml">        <span class="hljs-keyword">return</span> [];</span></span><br><span class="javascript"><span class="xml">      &#125;,</span></span><br><span class="javascript"><span class="xml">    &#125;,</span></span><br><span class="javascript"><span class="xml">  &#125;,</span></span><br><span class="javascript"><span class="xml">&#125;;</span></span><br><span class="javascript"><span class="xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><br><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">scoped</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span><br><br></code></pre></td></tr></table></figure>
+
+<p>那么我就可以实现一个最基础的渲染了表格。如下：</p>
+<p><img data-sizes="auto" data-src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f8f32ebc38534128b7af3b4ade81b89c~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1667&h=370&s=7327&e=png&b=fffdfd" alt="Snipaste_2023-10-27_16-13-08.png" class="lazyload"><br>当然，表格的需求往往没这么简单，剩下的需求实现，我就斗胆献丑了，给大家参考一下我的最终代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;template&gt;<br>  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">el-table</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;caitlynTable&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">v-loading</span>=<span class="hljs-string">&quot;loading&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">border</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">:row-key</span>=<span class="hljs-string">&quot;rowKey&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">max-height</span>=<span class="hljs-string">&quot;500px&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">:cell-style</span>=<span class="hljs-string">&quot;&#123;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">      height: &#x27;76px&#x27;,</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">    &#125;&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">:header-cell-style</span>=<span class="hljs-string">&quot;&#123;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">      height: &#x27;56px&#x27;,</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">      backgroundColor: &#x27;#FCF2F1&#x27;,</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">      color: &#x27;#573E41&#x27;,</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">      textAlign: &#x27;center&#x27;,</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">    &#125;&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">    <span class="hljs-attr">v-bind</span>=<span class="hljs-string">&quot;$attrs&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">    @<span class="hljs-attr">selection-change</span>=<span class="hljs-string">&quot;selectionChange&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">  &gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">el-table-column</span></span></span><br><span class="hljs-tag"><span class="xml">      <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;needIndex&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">      <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;caitlynKey&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">      <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;selection&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">      <span class="hljs-attr">:selectable</span>=<span class="hljs-string">&quot;selectable&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">      <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;55&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">      <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">    &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">el-table-column</span>&gt;</span></span><br><span class="xml"></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;(column, index) in tableColumn&quot;</span>&gt;</span></span><br><span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">el-table-column</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;!column.show&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;index&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:prop</span>=<span class="hljs-string">&quot;column.prop&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:label</span>=<span class="hljs-string">&quot;column.label&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:width</span>=<span class="hljs-string">&quot;column.width&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:fixed</span>=<span class="hljs-string">&quot;column.fixed&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:align</span>=<span class="hljs-string">&quot;column.align ? column.align : &#x27;center&#x27;&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:formatter</span>=<span class="hljs-string">&quot;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">          (row, column, cellValue, index) =&gt; &#123;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">            if (!cellValue &amp;&amp; cellValue !== 0) &#123;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">              return &#x27;--&#x27;;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">            &#125; else &#123;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">              return cellValue;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">            &#125;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">          &#125;</span></span></span><br><span class="hljs-string"><span class="hljs-tag"><span class="xml">        &quot;</span></span></span><br><span class="hljs-tag"><span class="xml">      &gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;column.slotHeader&quot;</span> #<span class="hljs-attr">header</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span></span><br><span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">slot</span> <span class="hljs-attr">:name</span>=<span class="hljs-string">&quot;column.slotHeader&quot;</span> <span class="hljs-attr">v-bind</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">slot</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;column.slotName&quot;</span> #<span class="hljs-attr">default</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span></span><br><span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">slot</span> <span class="hljs-attr">:name</span>=<span class="hljs-string">&quot;column.slotName&quot;</span> <span class="hljs-attr">v-bind</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">slot</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span><br><span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">el-table-column</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">el-table</span>&gt;</span></span><br>&lt;/template&gt;<br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="javascript"><span class="xml"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;</span></span><br><span class="javascript"><span class="xml">  <span class="hljs-attr">props</span>: &#123;</span></span><br><span class="javascript"><span class="xml">    <span class="hljs-attr">loading</span>: &#123;</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">type</span>: <span class="hljs-built_in">Boolean</span>,</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">default</span>: <span class="hljs-literal">false</span>,</span></span><br><span class="javascript"><span class="xml">    &#125;,</span></span><br><span class="javascript"><span class="xml">    <span class="hljs-attr">tableColumn</span>: &#123;</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">type</span>: <span class="hljs-built_in">Array</span>,</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-function"><span class="hljs-title">default</span>(<span class="hljs-params"></span>)</span> &#123;</span></span><br><span class="javascript"><span class="xml">        <span class="hljs-keyword">return</span> [];</span></span><br><span class="javascript"><span class="xml">      &#125;,</span></span><br><span class="javascript"><span class="xml">    &#125;,</span></span><br><span class="javascript"><span class="xml">    <span class="hljs-attr">needIndex</span>: &#123;</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">type</span>: <span class="hljs-built_in">Boolean</span>,</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">default</span>: <span class="hljs-literal">false</span>,</span></span><br><span class="javascript"><span class="xml">    &#125;,</span></span><br><span class="javascript"><span class="xml">    <span class="hljs-attr">rowKey</span>: &#123;</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">type</span>: <span class="hljs-built_in">String</span>,</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">default</span>: <span class="hljs-string">&#x27;id&#x27;</span>,</span></span><br><span class="javascript"><span class="xml">    &#125;,</span></span><br><span class="javascript"><span class="xml">    <span class="hljs-attr">selectionChange</span>: &#123;</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">type</span>: <span class="hljs-built_in">Function</span>,</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-function"><span class="hljs-title">default</span>(<span class="hljs-params"></span>)</span> &#123;</span></span><br><span class="javascript"><span class="xml">        <span class="hljs-keyword">return</span> &#123;&#125;;</span></span><br><span class="javascript"><span class="xml">      &#125;,</span></span><br><span class="javascript"><span class="xml">    &#125;,</span></span><br><span class="javascript"><span class="xml">    <span class="hljs-attr">selectable</span>: &#123;</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">type</span>: <span class="hljs-built_in">Function</span>,</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-function"><span class="hljs-title">default</span>(<span class="hljs-params"></span>)</span> &#123;</span></span><br><span class="javascript"><span class="xml">        <span class="hljs-keyword">return</span> &#123;&#125;;</span></span><br><span class="javascript"><span class="xml">      &#125;,</span></span><br><span class="javascript"><span class="xml">    &#125;,</span></span><br><span class="javascript"><span class="xml">  &#125;,</span></span><br><span class="javascript"><span class="xml">  <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span> &#123;</span></span><br><span class="javascript"><span class="xml">    <span class="hljs-keyword">return</span> &#123;</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">caitlynKey</span>: <span class="hljs-string">&#x27;caitlynKey&#x27;</span>,</span></span><br><span class="javascript"><span class="xml">    &#125;;</span></span><br><span class="javascript"><span class="xml">  &#125;,</span></span><br><span class="javascript"><span class="xml">  <span class="hljs-attr">watch</span>: &#123;</span></span><br><span class="javascript"><span class="xml">    <span class="hljs-attr">tableColumn</span>: &#123;</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-function"><span class="hljs-title">handler</span>(<span class="hljs-params"></span>)</span> &#123;</span></span><br><span class="javascript"><span class="xml">        <span class="hljs-built_in">this</span>.$refs.caitlynTable.doLayout();</span></span><br><span class="javascript"><span class="xml">      &#125;,</span></span><br><span class="javascript"><span class="xml">      <span class="hljs-attr">deep</span>: <span class="hljs-literal">true</span>,</span></span><br><span class="javascript"><span class="xml">    &#125;,</span></span><br><span class="javascript"><span class="xml">  &#125;,</span></span><br><span class="javascript"><span class="xml">&#125;;</span></span><br><span class="javascript"><span class="xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">scoped</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;scss&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<p>这样的封装已经能实现我项目的所有需求了。由于我需要自己手动改的表格非常的多，就单单这个修改需求，我就整整做了有一个星期有余，我就开始发现了不少缺点。（列展示组件的如何实现不是本文的重点，所以就不展示相关代码）</p>
+<h4 id="1、tableCloumn-数据格式属性过多"><a href="#1、tableCloumn-数据格式属性过多" class="headerlink" title="1、tableCloumn 数据格式属性过多"></a>1、tableCloumn 数据格式属性过多</h4><p>因为原来的表格都是用 Element 上面的例子做的，所以就会出现很多 el-table-column 的情况，由于需要写一个 tableColumn 的数组，我需要写很多个数据，非常的麻烦，譬如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&#123;<br>  prop: &#x27;&#x27;,<br>  label: &#x27;操作&#x27;,<br>  width: &#x27;150&#x27;,<br>  fixed: &#x27;right&#x27;,<br>  slotName: &#x27;operation&#x27;,<br>  slotHeader: &#x27;operateHeader&#x27;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>记的属性过多，插槽名虽然是自定义的，但是如果这个表格非常多的插槽的时候，会不会变成插槽灾难区呢？</p>
+<p><img data-sizes="auto" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c4844a56e8f6428e9d58a0741155be46~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=884&h=431&s=71495&e=png&b=1f2430" alt="Snipaste_2023-10-27_16-31-21.png" class="lazyload"><br>像上面这种没注释的，你根本不知道那个插槽是哪个，还不如 el-table-column 那种形式查看的实在。</p>
+<h4 id="2、需要兼容多个-el-tabel-column-的属性"><a href="#2、需要兼容多个-el-tabel-column-的属性" class="headerlink" title="2、需要兼容多个 el-tabel-column 的属性"></a>2、需要兼容多个 el-tabel-column 的属性</h4><p>我们都知道，封装兼容东西的大部分做法是，直接将他所有的功能都做了，你需要什么就自己配什么。比如我在封装这个组件的时候，基本是遇到一个问题，发现组件没有兼容，然后就需要在里面加，遇到一个加一个。其实这个里面就有心智成本，说到底这样的通用组件，避免不了有些功能没兼容的情况，你自己封装的人会很清楚，哪个属性干什么，但是对用第一次使用的人来说，他根本不知道你这个组件的功能实现需要哪个属性！然后就是去看一遍你的代码，更有甚至缺失的功能要他自己手动添加！</p>
+<h2 id="函数式组件的使用"><a href="#函数式组件的使用" class="headerlink" title="函数式组件的使用"></a>函数式组件的使用</h2><p>基于上面的问题，我就在想，能不能不修改原来那么多 el-table-column，直接就渲染他们出来，我只需要知道，哪个需要渲染而哪个不需要渲染就行了，基于这个原因，我想到了 Vue 提供的渲染函数：**<em>函数式组件</em>**。<br>可以参考这两个地址：<a target="_blank" rel="noopener" href="https://v2.cn.vuejs.org/v2/guide/render-function.html#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6">Vue2 函数式组件</a> <a target="_blank" rel="noopener" href="https://github.com/vuejs/jsx-vue2#installation">函数式组件语法</a>。那么下面展示代码：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">const</span> Table = &#123;<br>  <span class="hljs-attr">functional</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;wRenderTable&quot;</span>,<br>  <span class="hljs-attr">props</span>: &#123;<br>    <span class="hljs-attr">selectionChange</span>: &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-built_in">Function</span>,<br>      <span class="hljs-function"><span class="hljs-title">default</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-keyword">return</span> &#123;&#125;;<br>      &#125;,<br>    &#125;,<br>    <span class="hljs-attr">tableColumn</span>: &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-built_in">Array</span>,<br>      <span class="hljs-function"><span class="hljs-title">default</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-keyword">return</span> [];<br>      &#125;,<br>    &#125;,<br>  &#125;,<br>  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params">h, context</span>)</span> &#123;<br>    <span class="hljs-keyword">const</span> &#123;<br>      props,<br>      <span class="hljs-attr">data</span>: &#123; attrs &#125;,<br>    &#125; = context;<br>    <span class="hljs-keyword">const</span> cellStyle = &#123; <span class="hljs-attr">height</span>: <span class="hljs-string">&quot;76px&quot;</span> &#125;;<br>    <span class="hljs-keyword">const</span> headerCellStyle = &#123;<br>      <span class="hljs-attr">height</span>: <span class="hljs-string">&quot;56px&quot;</span>,<br>      <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&quot;#FCF2F1&quot;</span>,<br>      <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;#573E41&quot;</span>,<br>      <span class="hljs-attr">textAlign</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>    &#125;;<br><br>    <span class="hljs-keyword">const</span> column = props.tableColumn.map(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> item.label);<br>    <span class="hljs-keyword">return</span> (<br>      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">el-table</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">vLoading</span>=<span class="hljs-string">&#123;attrs.loading&#125;</span></span></span><br><span class="hljs-tag"><span class="xml">        &#123;<span class="hljs-attr">...</span>&#123; <span class="hljs-attr">attrs</span> &#125;&#125;</span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">cell-style</span>=<span class="hljs-string">&#123;cellStyle&#125;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">header-cell-style</span>=<span class="hljs-string">&#123;headerCellStyle&#125;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">border</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">row-key</span>=<span class="hljs-string">&quot;id&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">vOn:selection-change</span>=<span class="hljs-string">&#123;props.selectionChange&#125;</span></span></span><br><span class="hljs-tag"><span class="xml">      &gt;</span></span><br><span class="xml">        &#123;context.children.map((child) =&gt; &#123;</span><br><span class="xml">          const &#123; propsData &#125; = child.componentOptions;</span><br><span class="xml">          if (!propsData.type) &#123;</span><br><span class="xml">            /* 无数据格式化  */</span><br><span class="xml">            propsData.formatter = (row, column, cellValue) =&gt; &#123;</span><br><span class="xml">              if (!cellValue &amp;&amp; cellValue !== 0) &#123;</span><br><span class="xml">                return &quot;--&quot;;</span><br><span class="xml">              &#125; else &#123;</span><br><span class="xml">                return cellValue;</span><br><span class="xml">              &#125;</span><br><span class="xml">            &#125;;</span><br><span class="xml">            /* 默认居中 */</span><br><span class="xml">            !propsData.align &amp;&amp; (propsData.align = &quot;center&quot;);</span><br><span class="xml">          &#125;</span><br><span class="xml">          /*propsData.type是选择框时才有。 */</span><br><span class="xml">          if (column.includes(propsData.label) || propsData.type) &#123;</span><br><span class="xml">            return child;</span><br><span class="xml">          &#125; else &#123;</span><br><span class="xml">            return null;</span><br><span class="xml">          &#125;</span><br><span class="xml">        &#125;)&#125;</span><br><span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">el-table</span>&gt;</span></span><br>    );<br>  &#125;,<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Table;<br></code></pre></td></tr></table></figure>
+
+<p>**<em>context.children</em>**能获取到函数式组件下面所有的 node 节点，如下图：</p>
+<p><img data-sizes="auto" data-src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e7a00ea91cd445a0aa842b67e1d810d0~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=785&h=297&s=46985&e=png&b=1f2430" alt="Snipaste_2023-10-27_16-57-10.png" class="lazyload"><br>那么我如何控制，到底那个列不需要渲染呢。没错，我只需要通过遍历时，从传进来的 tableColumn 中判断子节点是否存在，来判断是否渲染，不渲染的时候时候，返回 null 即可。</p>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>最大的优点就是，我不需要删除原来一大堆的 el-table-column，又去写一个繁杂麻烦的对象数组。</li>
+<li>使用者没有多少心智负担，比如列展示的组件会处理最终展示的列，只需要将这个列数组传给表格组件，通过判断即可处理渲染不渲染的逻辑。（为什么需要判断呢，因为获取的节点是全部的，只能内部判断那个节点需要渲染，可以看上面的判断逻辑，很简单）</li>
+<li>最重要的是，由于可以使用原来 el-talbel-column，就不需要配置在组件内部配置一大堆属性，而且插槽也不需要自己去定义名字，也不会出现一大堆插槽，不知道谁是谁的局面。</li>
+<li>还有一个必须需要注意的点就是，**<em>函数式组件是无状态的，也没有实例的（this）</em><strong>，这个意味着什么，我一开始也不知道，直到我碰到那个问题——</strong><em>我怎么知道进来 tableColumn 是不是最新的</em><strong>。我找了很久都不知道这个怎么去解决，函数式组件也没有 watch 方法。</strong><em>无状态，所以非常依赖外部状态，当 props 里面的属性，更新的时候，这个函数式组件也会重新渲染，那么不就意味着，我根本不需要管 tableColumn 的值，因为它自动会重新熏染。</em>**</li>
+</ol>
+<h2 id="最后的吹牛"><a href="#最后的吹牛" class="headerlink" title="最后的吹牛"></a>最后的吹牛</h2><p>感觉组件封装就是这样的，先是找到一个可以实现功能的方案，然后就是实现功能的过程中，发现这个方案非常的麻烦，然后就开始思考能不能最小化干扰原来的东西，也能修改。这大概就是我最终选用函数式组件的原因。觉得有用的兄弟够我点个赞或者是收藏，呆在 3 级好久了，谢谢兄弟们了（砰砰砰）</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/vue/" rel="tag">vue</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1/" rel="tag">组件设计</a>
+    
+</div>
+
+  <!-- 开启评论和文章版权声明 -->
+  <div class="nexmoe-post-footer">
+    <!-- 
+      
+  <div class="nexmoe-post-copyright">
+    
+    <strong>本文作者：</strong>RadiomM<br>
+    <strong>本文链接：</strong><a href="http://example.com/2023/10/26/%E4%BB%8E%E4%B8%80%E6%AC%A1%E9%9C%80%E6%B1%82%E5%B0%81%E8%A3%85%EF%BC%8C%E5%AF%B9%E6%AF%94%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%A8%A1%E6%9D%BF%E7%BB%84%E4%BB%B6%E4%BC%98%E5%8A%A3/" title="http:&#x2F;&#x2F;example.com&#x2F;2023&#x2F;10&#x2F;26&#x2F;%E4%BB%8E%E4%B8%80%E6%AC%A1%E9%9C%80%E6%B1%82%E5%B0%81%E8%A3%85%EF%BC%8C%E5%AF%B9%E6%AF%94%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%A8%A1%E6%9D%BF%E7%BB%84%E4%BB%B6%E4%BC%98%E5%8A%A3&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2023&#x2F;10&#x2F;26&#x2F;%E4%BB%8E%E4%B8%80%E6%AC%A1%E9%9C%80%E6%B1%82%E5%B0%81%E8%A3%85%EF%BC%8C%E5%AF%B9%E6%AF%94%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%A8%A1%E6%9D%BF%E7%BB%84%E4%BB%B6%E4%BC%98%E5%8A%A3&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+     -->
+    <!-- comment开启文章评论 -->
+     
+  </div>
+</div>
+    </div>
+  </div>
+  <div id="music-wrapper"></div>
+<script
+    src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1724231451834"></script>-->
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/aplayer.js"></script>
+
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?1f8c7b61089021ddab0a2109105def2b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
