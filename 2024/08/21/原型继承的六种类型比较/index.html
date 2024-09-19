@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" >
+
+<head>
+  
+  <title>原型继承的六种类型比较 - RadiomM的博客世界</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="web前端开发的有趣学习者">
+  <meta name="baidu-site-verification" content="LHWFIbYYHZ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="1f8c7b61089021ddab0a2109105def2b" />
+
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@static/static/images/avatar1.png" type="image/png" />
+  <meta name="description" content="最近在恶补基础，发现我目前虽然对原型以及原型链有一定的理解，但是真要去记住继承的这几种方式的优缺点的时候，反而不能够说的出来，加上本来就这种东西理解还是不够，故我决定是时候重新开始写一篇文章去总结这个东西，当然这些东西都是需要记的，所以说，有一定理解之后再去记这些东西是比较好的，那废话不说了，我们开始吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原型继承的六种类型比较">
+<meta property="og:url" content="http://example.com/2024/08/21/%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6%89%BF%E7%9A%84%E5%85%AD%E7%A7%8D%E7%B1%BB%E5%9E%8B%E6%AF%94%E8%BE%83/index.html">
+<meta property="og:site_name" content="RadiomM的博客世界">
+<meta property="og:description" content="最近在恶补基础，发现我目前虽然对原型以及原型链有一定的理解，但是真要去记住继承的这几种方式的优缺点的时候，反而不能够说的出来，加上本来就这种东西理解还是不够，故我决定是时候重新开始写一篇文章去总结这个东西，当然这些东西都是需要记的，所以说，有一定理解之后再去记这些东西是比较好的，那废话不说了，我们开始吧。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-21T09:20:22.000Z">
+<meta property="article:modified_time" content="2024-08-22T15:59:43.610Z">
+<meta property="article:author" content="RadiomM">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css"
+    crossorigin>
+  
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/css/APlayer.min.css">
+  <!--<link rel="stylesheet" href="/css/style.css?v=1726712764551">-->
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://s2.hdslb.com/bfs/static/blive/blfe-message-web/static/img/infocenterbg.a1a0d152.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i
+            class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="RadiomM" class="mdui-btn mdui-btn-icon"><img
+            src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM"></a>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+    <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="RadiomM">
+            <img src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/images/avatar1.png" alt="RadiomM" alt="RadiomM">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>22</div>
+        <div><span>标签</span>13</div>
+        <div><span>分类</span>1</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about" title="个人简介">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                个人简介
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=https://architectmymine.github.io" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        
+        <a class="mdui-ripple" href="https://space.bilibili.com/86206061"
+            target="_blank" mdui-tooltip="{content: '哔哩哔哩'}"
+            style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a>
+        <a class="mdui-ripple" href="https://github.com/architectMymine"
+            target="_blank" mdui-tooltip="{content: 'GitHub'}"
+            style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+        <a class="mdui-ripple" href="tencent://message/?uin=516782176&Site=&Menu=yes"
+            target="_blank" mdui-tooltip="{content: 'QQ'}"
+            style="color: rgb(27,193,250);background-color: rgba(27,193,250, .15);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web前端/">web前端</a>
+          <span class="category-list-count">22</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/tags/VScode/" style="font-size: 10px;">VScode</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/Wx%E7%94%9F%E6%80%81%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/" style="font-size: 10px;">Wx生态的那些事</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/vue/" style="font-size: 17.5px;">vue</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">函数式组件</a> <a href="/tags/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1/" style="font-size: 15px;">组件设计</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E7%83%A6%E4%BA%BA%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/" style="font-size: 12.5px;">那些烦人的项目搭建</a> <a href="/tags/%E9%82%A3%E4%BA%9B%E8%AE%A8%E4%BA%BA%E5%8E%8C%E7%9A%84%E9%9C%80%E6%B1%82/" style="font-size: 10px;">那些讨人厌的需求</a>
+    </div>
+    
+  </div>
+
+  
+  <!-- 
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+    </div>
+  </div>
+ -->
+
+<!-- 文件归档 -->
+  
+  <style>
+    .about-me {
+        margin: 5px 0;
+    }
+
+    .music-wrapper {
+        box-shadow: 0 0 1rem rgba(161, 177, 204, .4);
+        background-color: #fff;
+        margin: 20px;
+        overflow: hidden;
+        white-space: normal;
+    }
+    .music-wrapper .aplayer{
+        height: auto !important;
+        margin: 0 !important;
+    }
+    .music-wrapper .aplayer .aplayer-body{
+        padding-bottom: 10px;
+    }
+    .music-wrapper .aplayer.aplayer-withlrc .aplayer-pic{
+        /* width: 95px;
+        height: 95px; */
+    }
+    .music-wrapper .aplayer.aplayer-withlist .aplayer-info{
+        /* margin-left: 95px;
+        height: 95px; */
+        border: none;
+    }
+</style>
+<div class="music-wrapper">
+    <div id="player"></div>
+</div>
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2024 RadiomM
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+        <p class="copyright"><a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备20034857号</a></p>
+    </div>
+</div><!-- .nexmoe-drawer -->
+
+
+
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+      <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 56.25%;"> 
+          <img data-src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/static/cover/2019-09-10.jpg" data-sizes="auto" alt="原型继承的六种类型比较" class="lazyload">
+          <h1>原型继承的六种类型比较</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2024年08月21日</a>
+    <a><i class="nexmoefont icon-areachart"></i>2.2k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 10 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BE%E5%89%8D%E6%80%BB%E7%BB%93"><span class="toc-number">1.</span> <span class="toc-text">课前总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%BB%A7%E6%89%BF"><span class="toc-number">1.1.</span> <span class="toc-text">原型链继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%80%9F%E5%8A%A9-call%E3%80%81apply-%E5%87%BD%E6%95%B0%E7%BB%A7%E6%89%BF"><span class="toc-number">1.2.</span> <span class="toc-text">借助 call、apply 函数继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E5%90%88%E7%BB%A7%E6%89%BF"><span class="toc-number">1.3.</span> <span class="toc-text">组合继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E5%BC%8F%E7%BB%A7%E6%89%BF"><span class="toc-number">1.4.</span> <span class="toc-text">原型式继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%84%E7%94%9F%E7%BB%A7%E6%89%BF"><span class="toc-number">1.5.</span> <span class="toc-text">寄生继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%84%E7%94%9F%E7%BB%84%E5%90%88%E7%BB%A7%E6%89%BF"><span class="toc-number">1.6.</span> <span class="toc-text">寄生组合继承</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.</span> <span class="toc-text">总结</span></a></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <p>最近在恶补基础，发现我目前虽然对原型以及原型链有一定的理解，但是真要去记住继承的这几种方式的优缺点的时候，反而不能够说的出来，加上本来就这种东西理解还是不够，故我决定是时候重新开始写一篇文章去总结这个东西，当然这些东西都是需要记的，所以说，有一定理解之后再去记这些东西是比较好的，那废话不说了，我们开始吧。</p>
+<span id="more"></span>
+
+<h2 id="课前总结"><a href="#课前总结" class="headerlink" title="课前总结"></a>课前总结</h2><p>虽然我之前写的一篇文章有粗略的说过几种继承方式，但是不够全面，而且着重于解决办法，却没有具体的总结。其实原型的继承无非就是下面几点：</p>
+<ul>
+<li><p><strong>父原型上的方法和定义的变量能否获取以及被影响</strong></p>
+</li>
+<li><p><strong>能否向父原型上的方法传递参数</strong></p>
+</li>
+</ul>
+<h3 id="原型链继承"><a href="#原型链继承" class="headerlink" title="原型链继承"></a>原型链继承</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">function Dog(name, age) &#123;<br>    this.name = name<br>    this.age = age<br>&#125;<br>Dog.prototype.eat = function () &#123;<br>    console.log(&#x27;吃东西&#x27;)<br>&#125;<br>Dog.prototype.drink = function () &#123;<br>    console.log(&#x27;喝东西&#x27;)<br>&#125;<br><br><br>function dog() &#123;&#125;<br><br>dog.prototype = new Dog()  // 记住这个方式<br><br></code></pre></td></tr></table></figure>
+
+<p>我们知道原型上还有一个 construtor 指向的是构造函数本身，所以很明显，这里 dog 的 construtor 指向的是 Dog 函数本身。而且这样的继承方式虽然可以获取到<strong>Dog</strong>上面定义的变量以及原型上的方法，但是假如是定义的是一个引用类型，那么，这样的继承方式就会印象到其他的实例对象，像下面一样：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs diff">function Dog(name, age) &#123;<br>    this.name = name<br>    this.age = age<br><span class="hljs-addition">+   this.c =  &#123;</span><br><span class="hljs-addition">+       foo: &#x27;1&#x27;,</span><br><span class="hljs-addition">+       bar: &#x27;2&#x27;</span><br><span class="hljs-addition">+   &#125;</span><br>&#125;<br><br><br>const b = new dog()<br><br>const a = new dog()<br><br>b.c.foo = &quot;3&quot;<br><br>console.log(&quot;a&quot;, a.c.foo); // 3<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="借助-call、apply-函数继承"><a href="#借助-call、apply-函数继承" class="headerlink" title="借助 call、apply 函数继承"></a>借助 call、apply 函数继承</h3><p>我们使用下面的代码进行测试：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">function Dog(name, age) &#123;<br>    this.name = name<br>    this.age = age<br>    this.c =  &#123;<br>        foo: &#x27;1&#x27;,<br>        bar: &#x27;2&#x27;<br>    &#125;<br>&#125;<br>Dog.prototype.eat = function () &#123;<br>    console.log(&#x27;吃东西&#x27;)<br>&#125;<br>Dog.prototype.drink = function () &#123;<br>    console.log(&#x27;喝东西&#x27;)<br>&#125;<br><br><br>function dog() &#123;<br>    Dog.call(this,&#x27;ydw&#x27;,&#x27;28&#x27;)<br>&#125;<br><br>const b = new dog()<br><br>const a = new dog()<br><br><br>b.c.foo = &quot;3&quot;<br><br>console.log(&quot;b&quot;, b.c.foo); // 3<br>console.log(&quot;a&quot;, a.c.foo); // 1<br><br></code></pre></td></tr></table></figure>
+
+<p>通过借助<strong>call,apply</strong>函数，我们可以解决上面提到的引用类型修改影响其他实例对象的问题，但是这个也是不完美的，为什么呢，因为这种方法的使用，只能继承在<strong>Dog 函数</strong>上定义的东西，不能继承在<strong>Dog 函数</strong>原型上定义的方法或者变量。看下面代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">console.log(&quot;a.drink()&quot;, a.drink()); // a.drink is not a function<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="组合继承"><a href="#组合继承" class="headerlink" title="组合继承"></a>组合继承</h3><p>既然原型继承可以获取到原型上面的方法以及变量，而借助 call、apply 函数可以保证引用类型的数据不受影响，那么我们只需要将两者结合在一起，那是不是就可以完美解决这两个问题呢？，看下面代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">function Dog(name, age) &#123;<br>    this.name = name<br>    this.age = age<br>    this.c =  &#123;<br>        foo: &#x27;1&#x27;,<br>        bar: &#x27;2&#x27;<br>    &#125;<br>&#125;<br>Dog.prototype.eat = function () &#123;<br>    console.log(&#x27;吃东西&#x27;)<br>&#125;<br>Dog.prototype.drink = function () &#123;<br>    console.log(&#x27;喝东西&#x27;)<br>&#125;<br><br><br>function dog() &#123;<br>    Dog.call(this,&#x27;ydw&#x27;,&#x27;28&#x27;)<br>&#125;<br><br>dog.prototype = new Dog()<br><br>const a = new dog();<br>const b = new dog();<br><br>b.c.foo = &quot;3&quot;;<br><br>console.log(&quot;b&quot;, b.c.foo); // 3<br>console.log(&quot;a&quot;, a.c.foo); // 1<br><br>console.log(&quot;dog&quot;, dog.prototype);<br></code></pre></td></tr></table></figure>
+
+<p>这种方式确实是可以做到，传递参数以及是父类定义的变量和原型上的方法，不过还是有一个问题，还是 construtor 问题，指向的不对。也就是说虽然可以用，但是调用了两次父类的构造函数方法，比如：**new Dog()、Dog.call()**在性能上是不好的。</p>
+<h3 id="原型式继承"><a href="#原型式继承" class="headerlink" title="原型式继承"></a>原型式继承</h3><p>简单的说，我们之前都是需要先构造一个父类(<strong>如 Dog 函数</strong>)，然后再构造一个子类(<strong>如 dog 函数</strong>)，然后利用原型链继承的方式，实现继承。这个原型式继承，实则就是减少了其中一步，不需要另外构造一个子类，直接再内部实现一个，直接复制一份返回给你，但是依旧有问题，还是我们之前说的一样的问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext"><br>function copyObj(instance) &#123;<br>    function son() &#123;&#125;<br>    son.prototype = instance<br>    return new son()<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>因为是对属性的浅复制，所以还是避免不了所有引用类型的问题，就是共享引用类型存储地址。还有一个问题就是无法传递值的问题，我们知道之前我们可以通过 call,apply 的函数进行值传递，后面我们会逐一解决这个问题。<strong>其实还可以用 Object.create()去代替，效果也是一样的，第一层的浅复制。</strong></p>
+<h3 id="寄生继承"><a href="#寄生继承" class="headerlink" title="寄生继承"></a>寄生继承</h3><p>为什么会出现<strong>寄生继承</strong>呢，其实原则上是为了对原型链式的继承进行增强，也就是说，除了能对原型链上的属性以及方法得到继承外，我们还需要扩展到其他的属性方法，那么寄生继承就出现了，看看下面代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">let Dog = &#123;<br>  name: &quot;ydw&quot;,<br>  age: &quot;25&quot;,<br>  gender: &quot;男&quot;,<br>  sayhi: function () &#123;<br>    console.log(&quot;hi&quot;);<br>  &#125;,<br>&#125;<br>function clone() &#123;<br>  let copy = copyObj(Dog);<br>  copy.makeFriend = function () &#123;<br>    console.log(&quot;make friends&quot;);<br>  &#125;;<br>  copy.job = &quot;font-end-engineer&quot;;<br>  return copy;<br>&#125;<br>let dog = clone(Dog)<br>console.log(&quot;job&quot;, dog.job);<br>console.log(&quot;name&quot;, dog.name);<br>console.log(&quot;friend&quot;, dog.makeFriend);<br><br></code></pre></td></tr></table></figure>
+
+<p>虽然这种方式可以增强继承，但是总的来说，浅复制还是会有，引用类型赋值地址问题，还是无法从根本解决问题。其实我们从上面的例子中知道，只有通过 apply,call 这类的函数才能做到每个实例子类独享一份数据，但是不能继承原型上的方法属性，虽然组合继承结合了原型链以及构造函数的优点，但是两次调用父类构造函数，未免会觉得性能方面颇有缺失，那么有没有可以真正意义上能完美解决问题的方法呢？其实是有的，可以看下面。</p>
+<h3 id="寄生组合继承"><a href="#寄生组合继承" class="headerlink" title="寄生组合继承"></a>寄生组合继承</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">function clone(parent,child) &#123;<br>    child.prototype = Object.create(parent.prototype)<br>    child.prototype.construtor = child<br>&#125;<br><br>function Dog(name, age) &#123;<br>    this.name = name<br>    this.age = age<br>    this.c = &#123;<br>        foo: &#x27;1&#x27;,<br>        bar: &#x27;2&#x27;<br>    &#125;<br>&#125;<br><br>Dog.prototype.eat = function () &#123;<br>    console.log(&#x27;吃东西&#x27;)<br>&#125;<br><br>Dog.prototype.drink = function () &#123;<br>    console.log(&#x27;喝东西&#x27;)<br>&#125;<br><br><br>function dog() &#123;<br>    Dog.call(this)<br>    this.gender = &#x27;男&#x27;<br>&#125;<br><br>clone(Dog,dog)<br><br><br><br>const dog1 = new dog()<br>const dog2 = new dog()<br><br>dog2.c.pro = &#x27;3&#x27;<br><br>dog1.c.bor = &#x27;4&#x27;<br><br><br>console.log(&#x27;dog2&#x27;,dog2.c) /* &#123;foo: &#x27;1&#x27;, bar: &#x27;2&#x27;, pro: &#x27;3&#x27;&#125; */<br>console.log(&#x27;dog1&#x27;,dog1.c) // &#123;foo: &#x27;1&#x27;, bar: &#x27;2&#x27;, bor: &#x27;4&#x27;&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>这是目前比较完美的实现继承的方式，也是 ES6 版本 class 关键词所使用的继承方式，在减少调用父类构造方法的同时，也能使用原型链上的属性以及方法，同时保证了实例对象数据独享的问题。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在说原型，原型链的文章中，我也说过部分类似的继承，但是说的比较简单，这次写这边文章主要是最近的发现对这个东西一窍不通了，也是为了之后可以复习所用。说回到这个继承的东西，在一开始的时候，我说了两个结论，实际上这两个东西一直在贯穿着继承的问题，我们知道在这些实现继承的方法中，无非就两个东西，<strong>原型链以及是构造方法</strong>。</p>
+<ul>
+<li><p>原型链：通过子类继承父类的原型上，可以实现对原型的方法以及属性的调用，但是却不能做到方法以及属性的独享。</p>
+</li>
+<li><p>构造方法： 虽然能实现方法以及属性的独享，但是无法获取到父类原型上的方法以及属性，也就是说是不可枚举的。</p>
+</li>
+</ul>
+<p>实际上，对应<strong>原型链</strong>方法的有：原型链继承、原型式继承（实则是浅复制属性和方法）、寄生继承。对应<strong>构造方法</strong>的有：call、apply 函数。像组合继承、寄生组合继承，都是在结合这两个方法的基础上优化一点，得出来的，像<strong>组合继承</strong>他的唯一缺点就是多次调用了父类构造方法，像<strong>寄生组合</strong>在原型式基础上，使用 Object.create 方法优化复制，减少了父类构造方法的次数，然后结合<strong>构造方法</strong>最终实现的继承。</p>
+<style scoped>
+ article ul li::before {
+   position: absolute !important;
+   top: 18px;
+   left: 27px;
+ }
+  article ul li::after {
+    height:0;
+  }
+  article p{
+    font-size:16px; 
+    line-height:28px;
+}
+</style>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/JavaScript/" rel="tag">JavaScript</a>
+    
+</div>
+
+  <!-- 开启评论和文章版权声明 -->
+  <div class="nexmoe-post-footer">
+    <!-- 
+      
+  <div class="nexmoe-post-copyright">
+    
+    <strong>本文作者：</strong>RadiomM<br>
+    <strong>本文链接：</strong><a href="http://example.com/2024/08/21/%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6%89%BF%E7%9A%84%E5%85%AD%E7%A7%8D%E7%B1%BB%E5%9E%8B%E6%AF%94%E8%BE%83/" title="http:&#x2F;&#x2F;example.com&#x2F;2024&#x2F;08&#x2F;21&#x2F;%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6%89%BF%E7%9A%84%E5%85%AD%E7%A7%8D%E7%B1%BB%E5%9E%8B%E6%AF%94%E8%BE%83&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2024&#x2F;08&#x2F;21&#x2F;%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6%89%BF%E7%9A%84%E5%85%AD%E7%A7%8D%E7%B1%BB%E5%9E%8B%E6%AF%94%E8%BE%83&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+     -->
+    <!-- comment开启文章评论 -->
+     
+  </div>
+</div>
+    </div>
+  </div>
+  <div id="music-wrapper"></div>
+<script
+    src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1726712764552"></script>-->
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/architectMymine/architectMymine.github.io@latest/js/aplayer.js"></script>
+
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?1f8c7b61089021ddab0a2109105def2b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
